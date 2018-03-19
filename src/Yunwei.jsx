@@ -40,7 +40,7 @@ class Yunwei extends Component {
           <Router>
             <Switch>
               <Route exact path="/" render={(props)=>(
-                this.state.isLogin?<Redirect to="/content"/>:<Redirect to="/login" />
+                this.state.isLogin?<Redirect to="/content" />:<Redirect to="/login" />
                 )} />
               <Route path="/login" render={(props)=>(
                   this.state.isLogin?<Redirect to="/content" />:<Login {...props} />

@@ -7,11 +7,16 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import Menu, { MenuItem,MenuList } from 'material-ui/Menu';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import classNames from 'classnames';
-import List, { ListItem, ListItemText } from 'material-ui/List';
+
+import {ListItemIcon, ListItemText } from 'material-ui/List';
+import InboxIcon from 'material-ui-icons/MoveToInbox';
+import DraftsIcon from 'material-ui-icons/Drafts';
+import SendIcon from 'material-ui-icons/Send';
+
 import back from '../../images/back.jpg';
 
 const drawerWidth = 240;
@@ -42,7 +47,7 @@ const styles = theme => ({
     minWidth: 0, // So the Typography noWrap works
   },
   toolbar: theme.mixins.toolbar,
-  menu: {
+  menus: {
     paddingTop:1,
     paddingBottom:1,
   },
@@ -57,7 +62,17 @@ const styles = theme => ({
   typflex: {
     flex:1,
     padding:0,
-  }
+  },
+   menuItem: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& $primary, & $icon': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+  primary: {},
+  icon: {},
 });
 class Content extends Component {
   constructor(props, context){
@@ -85,24 +100,19 @@ class Content extends Component {
     <div className={classes.root}>
       <AppBar position="absolute" className={classes.appBar}>
         <Toolbar className={classes.toolbartitle}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            >
+          <IconButton  color="inherit"  aria-label="open drawer" >
             <MenuIcon />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.typflex} noWrap>
             运维支撑工具
           </Typography>
-          <Avatar
-            alt="用户"
-            src={back}
-            onClick={this.handleOpenUserMenu.bind(this)}
-            className={classNames(classes.avatar, classes.bigAvatar)}
-          />
+          <Avatar alt="用户"
+                  src={back}
+                  onClick={this.handleOpenUserMenu.bind(this)}
+                  className={classNames(classes.avatar, classes.bigAvatar)}
+            />
           <Menu
-            id="menu-appbar" 
-            className={classes.menu}
+            classes={{menu: classes.menus}}
             anchorEl={anchorEl}
             anchorOrigin={{
                     vertical: 'top',
@@ -115,30 +125,41 @@ class Content extends Component {
             open={openmenu}
             onClose={this.handleClose.bind(this)}  >
             <MenuItem onClick={this.handleClose.bind(this)}>用户属性</MenuItem>
+            <MenuItem onClick={this.handleClose.bind(this)}>etyn</MenuItem>
             <Divider />
-            <MenuItem onClick={this.handleClose.bind(this)}>我的账户</MenuItem>
+            <MenuItem onClick={this.handleClose.bind(this)}>注销</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent"
               classes={{paper: classes.drawerPaper}} >
         <div className={classes.toolbar} />
-        <List component="nav">
-          <ListItem button>
-            <ListItemText primary="套餐查询" onClick={this.openReport.bind(this)} />
-          </ListItem>
-          <Divider />
-          <ListItem button divider>
-            <ListItemText primary="订购报文" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="模块日志" />
-          </ListItem>
-          <Divider light />
-          <ListItem button>
-            <ListItemText primary="操作日志" />
-          </ListItem>
-        </List>
+        <MenuList>
+          <MenuItem className={classes.menuItem}>
+            <ListItemIcon className={classes.icon}>
+              <SendIcon />
+            </ListItemIcon>
+            <ListItemText classes={{ primary: classes.primary }} inset primary="套餐查询" />
+          </MenuItem>
+          <MenuItem className={classes.menuItem}>
+            <ListItemIcon className={classes.icon}>
+              <DraftsIcon />
+            </ListItemIcon>
+            <ListItemText classes={{ primary: classes.primary }} inset primary="订购报文" />
+          </MenuItem>
+          <MenuItem className={classes.menuItem}>
+            <ListItemIcon className={classes.icon}>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText classes={{ primary: classes.primary }} inset primary="模块日志" />
+          </MenuItem>
+          <MenuItem className={classes.menuItem}>
+            <ListItemIcon className={classes.icon}>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText classes={{ primary: classes.primary }} inset primary="操作记录" />
+          </MenuItem>
+        </MenuList>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
