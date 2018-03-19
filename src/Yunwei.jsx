@@ -27,6 +27,8 @@ const store = createStore(
   }),applyMiddleware(...middleware)
 )
 
+
+
 class Yunwei extends Component {
   constructor(props, context){
     super(props, context);
