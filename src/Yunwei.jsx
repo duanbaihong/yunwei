@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'
 import { createStore, combineReducers,applyMiddleware } from 'redux';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import blue from 'material-ui/colors/blue';
 // import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import { HashRouter as Router,
          Route,
@@ -32,11 +34,17 @@ const store = createStore(
 class Yunwei extends Component {
   constructor(props, context){
     super(props, context);
-    this.state={isLogin: true};
+    this.state={isLogin: false,
+                theme: {
+                  palette: {
+                    primary: blue,
+                  },
+                }};
   }
   render() {
     return (
       <Provider store={store}>
+        <MuiThemeProvider theme={createMuiTheme(this.state.theme)}>
           <Router>
             <Switch>
               <Route exact path="/" render={(props)=>(
@@ -53,6 +61,7 @@ class Yunwei extends Component {
                 }} />
             </Switch>
           </Router>
+        </MuiThemeProvider>
       </Provider>
     );
   }

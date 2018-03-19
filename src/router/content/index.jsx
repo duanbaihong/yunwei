@@ -63,7 +63,7 @@ const styles = theme => ({
     flex:1,
     padding:0,
   },
-   menuItem: {
+  menuItem: {
     '&:focus': {
       backgroundColor: theme.palette.primary.main,
       '& $primary, & $icon': {
@@ -89,7 +89,6 @@ class Content extends Component {
     this.setState({ anchorEl: null,openmenu: false });
   }
   openReport(){
-    console.log(this.props)
     this.props.history.push('/notfound11')
   }
   render() {
@@ -112,7 +111,6 @@ class Content extends Component {
                   className={classNames(classes.avatar, classes.bigAvatar)}
             />
           <Menu
-            classes={{menu: classes.menus}}
             anchorEl={anchorEl}
             anchorOrigin={{
                     vertical: 'top',
@@ -126,7 +124,6 @@ class Content extends Component {
             onClose={this.handleClose.bind(this)}  >
             <MenuItem onClick={this.handleClose.bind(this)}>用户属性</MenuItem>
             <MenuItem onClick={this.handleClose.bind(this)}>etyn</MenuItem>
-            <Divider />
             <MenuItem onClick={this.handleClose.bind(this)}>注销</MenuItem>
           </Menu>
         </Toolbar>
