@@ -92,7 +92,6 @@ class Content extends Component {
     this.props.history.push('/notfound11')
   }
   render() {
-    console.log(this.props)
     const { classes } = this.props;
     const { openmenu, anchorEl } = this.state;
     return (
