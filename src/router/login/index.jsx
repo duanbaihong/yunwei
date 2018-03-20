@@ -7,6 +7,8 @@ import Visibility from 'material-ui-icons/Visibility';
 import VisibilityOff from 'material-ui-icons/VisibilityOff';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import IconButton from 'material-ui/IconButton';
+import CloseIcon from 'material-ui-icons/Close';
+import Error from 'material-ui-icons/Error';
 import { CircularProgress } from 'material-ui/Progress';
 
 import {MuiThemeProvider,createMuiTheme} from 'material-ui/styles';
@@ -17,13 +19,13 @@ import { FormControl } from 'material-ui/Form';
 import { withStyles } from 'material-ui/styles';
 import blue from 'material-ui/colors/blue';
 import green from 'material-ui/colors/green';
+import red from 'material-ui/colors/red';
 import back from '../../images/back.jpg';
 import user from '../../images/user.png';
 
 
 const styles = theme => ({
   root: {
-    zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     height: "100%",
@@ -31,6 +33,7 @@ const styles = theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
     textAlign: 'center',
+    opacity:0.4
   },
   loginlayer: {
     width: 320,
@@ -41,6 +44,9 @@ const styles = theme => ({
     top:0,
     bottom:0,
     right:0,
+    padding:30,
+    borderRadius:4,
+    backgroundColor: "#ffffff7d",
   },
   useravater: {
     width: 140,
@@ -49,23 +55,42 @@ const styles = theme => ({
     marginBottom:20
   },
   forms:{
-    marginTop:20
+    marginTop:10
+  },
+  formsubmit:{
+    marginTop:50
   },
   buttonProgress: {
-    color: green[500],
+    color: green[300],
     position: 'absolute',
     left: '50%',
     marginLeft: -19,
   },
+  snackbarcontent:{
+    backgroundColor: blue[700],
+    padding: "0px 8px 0px 8px",
+    marginTop:5,
+    opacity:0.9
+  },
+  iconbutton:{
+    width:36,
+    height:36,
+    marginTop:-1
+  },
+  iconinfo:{
+    float:"left",
+    marginTop:-1,
+    color: red[400],
+    marginRight:5,
+  }
 });
-
 const theme = createMuiTheme({
   typography: {
     htmlFontSize: 14,
   },
   palette: {
     primary: blue,
-  },
+  }
 });
 
 class Login extends Component {
@@ -88,22 +113,24 @@ class Login extends Component {
   }
   loginCheck(){
     this.setState({isloginStatus:!this.state.isloginStatus})
-    setTimeout(this.initloginstatus.bind(this),2000);
+    // setTimeout(this.initloginstatus.bind(this),2000);
   }
   render(){
     const { classes } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
+      </div>
+      <div>
         <Zoom in={this.state.display} timeout={600}>
           <div className={classes.loginlayer}>
             <Avatar src={user} className={classes.useravater} />
-            <FormControl fullWidth >
+            <FormControl fullWidth className={classes.forms} required={true} >
               <InputLabel htmlFor="adornment-user">用户帐号</InputLabel>
               <Input id="adornment-user" 
                  />
             </FormControl>
-            <FormControl fullWidth className={classes.forms} >
+            <FormControl fullWidth className={classes.forms} required={true}>
               <InputLabel htmlFor="adornment-password">用户密码</InputLabel>
               <Input
                 id="adornment-password"
@@ -121,7 +148,7 @@ class Login extends Component {
                   </InputAdornment>
                 } />
             </FormControl>
-            <div className={classes.forms} >
+            <div className={classes.formsubmit} >
               <Button variant='raised' color="primary" fullWidth disabled={this.state.isloginStatus}  className={classes.button} onClick={this.loginCheck.bind(this)}>
                 {this.state.isloginStatus?"登陆中...":"登陆"}
               </Button>
@@ -134,7 +161,21 @@ class Login extends Component {
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={this.state.isloginStatus}
         onClose={this.handleClose}
-        message={<span id="message-id">用户认证失败！</span>}
+        SnackbarContentProps={{
+            className: classes.snackbarcontent,
+          }}
+        message={<span id="message-id">用户认证失败！<Error className={classes.iconinfo} /></span>}
+        action={[
+          <IconButton
+            key="close"
+            size="small"
+            aria-label="Close"
+            color="inherit"
+            className={classes.iconbutton}
+            onClick={this.initloginstatus.bind(this)} >
+            <CloseIcon />
+          </IconButton>,
+        ]}
       />
       </MuiThemeProvider>
     );
