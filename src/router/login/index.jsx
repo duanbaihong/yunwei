@@ -49,10 +49,10 @@ const styles = theme => ({
     backgroundColor: "#ffffff7d",
   },
   useravater: {
-    width: 140,
-    height: 140,
+    width: 160,
+    height: 160,
     margin:'auto',
-    marginBottom:20
+    marginBottom:10
   },
   forms:{
     marginTop:10
