@@ -8,6 +8,7 @@ import VisibilityOff from 'material-ui-icons/VisibilityOff';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
+import AccountBalance from 'material-ui-icons/AccountBalance';
 import Error from 'material-ui-icons/Error';
 import { CircularProgress } from 'material-ui/Progress';
 
@@ -33,24 +34,24 @@ const styles = theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: '100% 100%',
     textAlign: 'center',
-    opacity:0.4
+    opacity:0.6
   },
   loginlayer: {
-    width: 320,
-    height:400,
+    width: 300,
+    height:380,
     margin: 'auto',
     position: 'absolute',
     left:0,
     top:0,
     bottom:0,
     right:0,
-    padding:30,
-    borderRadius:4,
+    padding:25,
+    borderRadius:6,
     backgroundColor: "#ffffff7d",
   },
   useravater: {
-    width: 160,
-    height: 160,
+    width: 150,
+    height: 150,
     margin:'auto',
     marginBottom:10
   },
@@ -122,7 +123,7 @@ class Login extends Component {
       <div className={classes.root}>
       </div>
       <div>
-        <Zoom in={this.state.display} timeout={600}>
+        <Zoom in={this.state.display} timeout={700}>
           <div className={classes.loginlayer}>
             <Avatar src={user} className={classes.useravater} />
             <FormControl fullWidth className={classes.forms} required={true} >
