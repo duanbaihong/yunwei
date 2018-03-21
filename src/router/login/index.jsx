@@ -8,7 +8,6 @@ import VisibilityOff from 'material-ui-icons/VisibilityOff';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
-import AccountBalance from 'material-ui-icons/AccountBalance';
 import Error from 'material-ui-icons/Error';
 import { CircularProgress } from 'material-ui/Progress';
 
@@ -16,9 +15,10 @@ import {MuiThemeProvider,createMuiTheme} from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Snackbar from 'material-ui/Snackbar';
 import { FormControl } from 'material-ui/Form';
+import TextField from 'material-ui/TextField';
 
 import { withStyles } from 'material-ui/styles';
-import blue from 'material-ui/colors/blue';
+import lightBlue from 'material-ui/colors/lightBlue';
 import green from 'material-ui/colors/green';
 import red from 'material-ui/colors/red';
 import back from '../../images/back.jpg';
@@ -68,7 +68,7 @@ const styles = theme => ({
     marginLeft: -19,
   },
   snackbarcontent:{
-    backgroundColor: blue[700],
+    backgroundColor: lightBlue[700],
     padding: "0px 8px 0px 8px",
     marginTop:5,
     opacity:0.9
@@ -87,10 +87,10 @@ const styles = theme => ({
 });
 const theme = createMuiTheme({
   typography: {
-    htmlFontSize: 14,
+    htmlFontSize: 16,
   },
   palette: {
-    primary: blue,
+    primary: lightBlue,
   }
 });
 
@@ -98,13 +98,16 @@ class Login extends Component {
   constructor(props){
     super(props);
     this.state={
-      display: false,
-      showPassword: false,
-      isloginStatus: false,
+      ActionStatus:"用户认证失败！"
     }
   }
   initloginstatus(){
-    this.setState({isloginStatus:!this.state.isloginStatus})
+    this.setState({
+      showPassword: false,
+      SnackbarStatus: false,
+      isloginStatus: false,
+      ActionStatus:"用户认证失败！"
+    })
   }
   handleClickShowPasssword(){
     this.setState({ showPassword: !this.state.showPassword });
@@ -112,60 +115,66 @@ class Login extends Component {
   componentDidMount() {
     this.setState({ display: true})
   }
+  handleBarClose(){
+    this.setState({SnackbarStatus: false})
+  }
   loginCheck(){
-    this.setState({isloginStatus:!this.state.isloginStatus})
-    // setTimeout(this.initloginstatus.bind(this),2000);
+    this.setState({isloginStatus:!this.state.isloginStatus,
+                   SnackbarStatus: !this.state.SnackbarStatus})
+    setTimeout(this.initloginstatus.bind(this),2000);
   }
   render(){
     const { classes } = this.props;
+    const { showPassword,SnackbarStatus,isloginStatus,ActionStatus,display } = this.state;
     return (
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
       </div>
       <div>
-        <Zoom in={this.state.display} timeout={700}>
+        <Zoom in={display} timeout={700}>
           <div className={classes.loginlayer}>
             <Avatar src={user} className={classes.useravater} />
-            <FormControl fullWidth className={classes.forms} required={true} >
-              <InputLabel htmlFor="adornment-user">用户帐号</InputLabel>
-              <Input id="adornment-user" 
-                 />
-            </FormControl>
+            <TextField
+              id="login_user"
+              label="用户帐号"
+              placeholder="请输入用户帐号"
+              required={true}
+              fullWidth={true}
+            />
             <FormControl fullWidth className={classes.forms} required={true}>
-              <InputLabel htmlFor="adornment-password">用户密码</InputLabel>
+              <InputLabel htmlFor="login_password">用户密码</InputLabel>
               <Input
-                id="adornment-password"
-                type={this.state.showPassword ? 'text' : 'password'}
-                value={this.state.password}
+                id="login_password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="请输入用户密码"
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="显示密码"
                       onClick={this.handleClickShowPasssword.bind(this)}
-                      onMouseDown={this.handleMouseDownPassword}
                     >
-                      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 } />
             </FormControl>
             <div className={classes.formsubmit} >
-              <Button variant='raised' color="primary" fullWidth disabled={this.state.isloginStatus}  className={classes.button} onClick={this.loginCheck.bind(this)}>
-                {this.state.isloginStatus?"登陆中...":"登陆"}
+              <Button variant='raised' color="primary" fullWidth disabled={isloginStatus}  className={classes.button} onClick={this.loginCheck.bind(this)}>
+                {isloginStatus?"登陆中...":"登陆"}
               </Button>
-              {this.state.isloginStatus && <CircularProgress size={38} className={classes.buttonProgress} />}
+              {isloginStatus && <CircularProgress size={38} className={classes.buttonProgress} />}
             </div>
           </div>
         </Zoom>
       </div>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={this.state.isloginStatus}
-        onClose={this.handleClose}
+        open={SnackbarStatus}
+        onClose={this.handleBarClose.bind(this)}
         SnackbarContentProps={{
             className: classes.snackbarcontent,
           }}
-        message={<span id="message-id">用户认证失败！<Error className={classes.iconinfo} /></span>}
+        message={<span id="message-id">{ActionStatus}<Error className={classes.iconinfo} /></span>}
         action={[
           <IconButton
             key="close"
@@ -173,7 +182,7 @@ class Login extends Component {
             aria-label="Close"
             color="inherit"
             className={classes.iconbutton}
-            onClick={this.initloginstatus.bind(this)} >
+            onClick={this.handleBarClose.bind(this)} >
             <CloseIcon />
           </IconButton>,
         ]}
