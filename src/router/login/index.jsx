@@ -67,6 +67,12 @@ const styles = theme => ({
     left: '50%',
     marginLeft: -19,
   },
+  buttonProgressAvater: {
+    position: 'absolute',
+    left: '50%',
+    marginLeft: -95,
+    marginTop:-20,
+  },
   snackbarcontent:{
     backgroundColor: lightBlue[700],
     padding: "0px 8px 0px 8px",
@@ -100,20 +106,26 @@ class Login extends Component {
     this.state={
       ActionStatus:"用户认证失败！"
     }
+    this._isMounted=false
   }
   initloginstatus(){
     this.setState({
       showPassword: false,
       SnackbarStatus: false,
       isloginStatus: false,
-      ActionStatus:"用户认证失败！"
+      ActionStatus: "用户认证失败！"
     })
   }
   handleClickShowPasssword(){
     this.setState({ showPassword: !this.state.showPassword });
   }
   componentDidMount() {
-    this.setState({ display: true})
+    if(!this._isMounted){
+      this.setState({ display: true})
+    }
+  }
+  componentWillUnmount() {
+    this._isMounted=false;
   }
   handleBarClose(){
     this.setState({SnackbarStatus: false})
@@ -125,6 +137,7 @@ class Login extends Component {
   }
   render(){
     const { classes } = this.props;
+    console.log(this.props)
     const { showPassword,SnackbarStatus,isloginStatus,ActionStatus,display } = this.state;
     return (
       <MuiThemeProvider theme={theme}>
@@ -133,7 +146,14 @@ class Login extends Component {
       <div>
         <Zoom in={display} timeout={700}>
           <div className={classes.loginlayer}>
+          {isloginStatus && <CircularProgress size={190} 
+              className={classes.buttonProgressAvater} 
+              color="secondary"
+              variant="indeterminate"
+              thickness={0.4} />}
+            
             <Avatar src={user} className={classes.useravater} />
+            
             <TextField
               id="login_user"
               label="用户帐号"
