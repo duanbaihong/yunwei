@@ -1,6 +1,7 @@
 
 const initialState = {
-  userAuthenticated: false
+  userAuthenticated: true,
+  userInfo: []
 }
 
 export const LoginReducer = (state = initialState , action) => {

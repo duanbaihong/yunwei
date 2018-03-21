@@ -23,16 +23,16 @@ class YunweiRouter extends Component {
       <Router >
         <Switch>
           <Route exact path="/" render={(props)=>(
-            window.isLogin?<Redirect to="/content" {...props} />:<Redirect to="/login" {...props}/>
+            window.isLogin?<Redirect to="/content" />:<Redirect to="/login" />
             )} />
           <Route path="/login" render={(props)=>(
-              window.isLogin?<Redirect to="/content" {...props} />:<Login {...props} />
+              window.isLogin?<Redirect to="/content" />:<Login {...props} dispatch={this.props.dispatch}/>
             )} />
           <Route path="/content" render={(props)=>(
-              window.isLogin?<Content {...props} />:<Redirect to="/login" {...props} />
+              window.isLogin?<Content {...props} dispatch={this.props.dispatch} />:<Redirect to="/login" />
             )} />
           <Route render={(props)=>(
-              window.isLogin?<NotFound {...props}/>:<Redirect to="/login" {...props}/>
+              window.isLogin?<NotFound {...props}/>:<Redirect to="/login"/>
             )} />
         </Switch>
       </Router>
@@ -55,3 +55,5 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
   )(YunweiRouter);
+
+

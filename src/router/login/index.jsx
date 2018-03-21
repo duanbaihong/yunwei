@@ -70,8 +70,8 @@ const styles = theme => ({
   buttonProgressAvater: {
     position: 'absolute',
     left: '50%',
-    marginLeft: -95,
-    marginTop:-20,
+    marginLeft: -97,
+    marginTop:-22,
   },
   snackbarcontent:{
     backgroundColor: lightBlue[700],
@@ -133,7 +133,7 @@ class Login extends Component {
   loginCheck(){
     this.setState({isloginStatus:!this.state.isloginStatus,
                    SnackbarStatus: !this.state.SnackbarStatus})
-    setTimeout(this.initloginstatus.bind(this),2000);
+    // setTimeout(this.initloginstatus.bind(this),2000);
   }
   render(){
     const { classes } = this.props;
@@ -146,7 +146,7 @@ class Login extends Component {
       <div>
         <Zoom in={display} timeout={700}>
           <div className={classes.loginlayer}>
-          {isloginStatus && <CircularProgress size={190} 
+          {isloginStatus && <CircularProgress size={194} 
               className={classes.buttonProgressAvater} 
               color="secondary"
               variant="indeterminate"
