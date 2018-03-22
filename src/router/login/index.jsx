@@ -24,6 +24,7 @@ import red from 'material-ui/colors/red';
 import back from '../../images/back.jpg';
 import user from '../../images/user.png';
 
+import { ajax } from '../../commons/ajax'
 
 const styles = theme => ({
   root: {
@@ -131,13 +132,26 @@ class Login extends Component {
     this.setState({SnackbarStatus: false})
   }
   loginCheck(){
+    let _this=this;
     this.setState({isloginStatus:!this.state.isloginStatus,
                    SnackbarStatus: !this.state.SnackbarStatus})
+    ajax('/api',{id:1}).then(function(response){
+          if(response.data.resultCode===10000){
+            this.initloginstatus.bind(this)
+          }else{
+            _this.setState({SnackbarStatus:true,
+                            ActionStatus:"密码错误！请检查~",
+                            isloginStatus:false})
+          }
+        }).catch(function(error){
+          _this.setState({SnackbarStatus:true,
+                        // isloginStatus: !_this.state.isloginStatus,
+                        ActionStatus:"网络异常，或请求异常！"});
+        })
     // setTimeout(this.initloginstatus.bind(this),2000);
   }
   render(){
     const { classes } = this.props;
-    console.log(this.props)
     const { showPassword,SnackbarStatus,isloginStatus,ActionStatus,display } = this.state;
     return (
       <MuiThemeProvider theme={theme}>

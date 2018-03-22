@@ -1,19 +1,15 @@
-import axios from axios;
+import axios from 'axios';
 
-module.exports=function (url='/api',params,method='GET') {
+export const ajax = (url='/api',params,method='POST') =>{
   // body...
   let data={
     'method'  :method,
     'url'     :url,
-    'data'    :data,
+    'data'    :params,
     'headers' :{
             'Accept'      : 'application/json',
             'Content-Type': 'application/json;charset=utf-8'
             },
     }
-  axios(data).then(function(response){
-    
-  }).catch(function(error){
-
-  })
+  return axios(data);
 }
