@@ -1,23 +1,25 @@
+import immutable from 'immutable';
 
-const initialState = {
-  userAuthenticated: true,
-  userInfo: []
-}
+const initialState = immutable.Map({
+  userAuthenticated: false,
+  userInfo: {}
+});
 
 export const LoginReducer = (state = initialState , action) => {
   switch (action.type) {
     case 'AUTH_SUCCESS':
+      window.isLogin=true;
+      console.log(state)
       return {
-        ...state,
-        userAuthenticated: true
+        ...state.toJS()
       }
     case 'AUTH_FAIL':
+      window.isLogin=false;
       return {
-        ...state,
-        userAuthenticated: false
+        ...state.toJS()
       }
     default:
-      return state
+      return state.toJS()
   }
 }
 

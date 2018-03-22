@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 // Router party
 import { HashRouter as Router,
          Route,
@@ -26,10 +27,10 @@ class YunweiRouter extends Component {
             window.isLogin?<Redirect to="/content" />:<Redirect to="/login" />
             )} />
           <Route path="/login" render={(props)=>(
-              window.isLogin?<Redirect to="/content" />:<Login {...props} dispatch={this.props.dispatch}/>
+              window.isLogin?<Redirect to="/content" />:<Login {...props} />
             )} />
           <Route path="/content" render={(props)=>(
-              window.isLogin?<Content {...props} dispatch={this.props.dispatch} />:<Redirect to="/login" />
+              window.isLogin?<Content {...props}  />:<Redirect to="/login" />
             )} />
           <Route render={(props)=>(
               window.isLogin?<NotFound {...props}/>:<Redirect to="/login"/>
@@ -42,7 +43,7 @@ class YunweiRouter extends Component {
 
 function mapStateToProps(state) {
   return {
-    ...state.default.LoginReducer
+    ...state.login,
   }
 }
 function mapDispatchToProps(dispatch) {
@@ -53,7 +54,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(  
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
   )(YunweiRouter);
 
 

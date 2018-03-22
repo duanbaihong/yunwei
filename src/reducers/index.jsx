@@ -1,12 +1,19 @@
 
 
 import {combineReducers} from 'redux';
+import { routerReducer,
+         // routerMiddleware,
+        } from 'react-router-redux';
+import {LoginReducer} from './login'
+import {PackageReducer} from './package'
 
-import {LoginReducer} from './login.jsx'
-
-const loginReducer=combineReducers({
-  LoginReducer,
+const Reducers = combineReducers({
+  login:LoginReducer,
+  content:PackageReducer,
+  routing: routerReducer,
 })
-export default loginReducer;
+
+export default Reducers;
+
 
 

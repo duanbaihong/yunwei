@@ -1,4 +1,7 @@
 import React, { Component }  from 'react';
+import { connect } from 'react-redux'
+import immutable from 'immutable';
+
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Drawer from 'material-ui/Drawer';
@@ -89,7 +92,12 @@ class Content extends Component {
     this.setState({ anchorEl: null,openmenu: false });
   }
   openReport(){
-    this.props.history.push('/notfound11')
+    this.props.history.push('/notfound')
+  }
+  handleUserExit(){
+    let dispatch=this.props.dispatch
+
+    console.log(this.props)
   }
   render() {
     const { classes } = this.props;
@@ -123,7 +131,7 @@ class Content extends Component {
             onClose={this.handleClose.bind(this)}  >
             <MenuItem onClick={this.handleClose.bind(this)}>用户属性</MenuItem>
             <MenuItem onClick={this.handleClose.bind(this)}>etyn</MenuItem>
-            <MenuItem onClick={this.handleClose.bind(this)}>注销</MenuItem>
+            <MenuItem onClick={this.handleUserExit.bind(this)}>注销</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
@@ -170,4 +178,17 @@ Content.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Content);
+function mapStateToProps(state) {
+  return {
+    ...state.login
+  }
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch:dispatch
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(withStyles(styles)(Content));
