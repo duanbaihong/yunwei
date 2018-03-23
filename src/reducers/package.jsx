@@ -15,6 +15,6 @@ export const PackageReducer = (state = initialState , action) => {
         ...state.toJS()
       }
     default:
-      return state.toJS()
+      return state
   }
 }

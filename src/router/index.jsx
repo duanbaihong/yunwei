@@ -17,7 +17,7 @@ import NotFound from './notfound';
 class YunweiRouter extends Component {
   constructor(props){
     super(props);
-    window.isLogin=this.props.userAuthenticated;
+    
   }
   render(){
     return (

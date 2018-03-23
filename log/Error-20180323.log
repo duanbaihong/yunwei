@@ -1,0 +1,408 @@
+[2018-03-23T08:42:29.120Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: next is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:28
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:42:46.523Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: next is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:28
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:43:13.933Z] ::ffff:127.0.0.1 POST /api
+TypeError: next is not a function
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:32
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:43:23.232Z] ::ffff:127.0.0.1 POST /api
+TypeError: next is not a function
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:32
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:43:48.410Z] ::ffff:127.0.0.1 POST /api
+TypeError: next is not a function
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:48
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:44:31.760Z] ::ffff:127.0.0.1 POST /api
+TypeError: next is not a function
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:48
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:45:27.186Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:14
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:46:15.196Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:14
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:46:49.099Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:14
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:47:20.246Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:14
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:50:56.111Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:14
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:51:28.509Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:54
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:52:04.192Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:53:54
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T08:56:56.210Z] ::ffff:127.0.0.1 POST /api
+TypeError: Invalid non-string/buffer chunk
+    at validChunk (_stream_writable.js:254:10)
+    at WriteStream.Writable.write (_stream_writable.js:288:21)
+    at Object.<anonymous> (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/file-stream-rotator/FileStreamRotator.js:444:26)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:55:6
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+[2018-03-23T08:57:51.700Z] ::ffff:127.0.0.1 POST /api
+TypeError: Invalid non-string/buffer chunk
+    at validChunk (_stream_writable.js:254:10)
+    at WriteStream.Writable.write (_stream_writable.js:288:21)
+    at Object.<anonymous> (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/file-stream-rotator/FileStreamRotator.js:444:26)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:56:6
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+[2018-03-23T08:59:34.923Z] ::ffff:127.0.0.1 POST /api
+TypeError: Invalid non-string/buffer chunk
+    at validChunk (_stream_writable.js:254:10)
+    at WriteStream.Writable.write (_stream_writable.js:288:21)
+    at Object.<anonymous> (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/file-stream-rotator/FileStreamRotator.js:444:26)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:56:6
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+[2018-03-23T09:00:27.001Z] ::ffff:127.0.0.1 POST /api
+TypeError: Invalid non-string/buffer chunk
+    at validChunk (_stream_writable.js:254:10)
+    at WriteStream.Writable.write (_stream_writable.js:288:21)
+    at Object.<anonymous> (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/file-stream-rotator/FileStreamRotator.js:444:26)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:57:7
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+{"msgtype":"ACTION_USER_LOGIN","username":"123","password":"202cb962ac59075b964b07152d234b70","sign":"59bfd4a0455f46bbb7556a48cf2d8fe4"}[2018-03-23T09:00:56.635Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+{"msgtype":"ACTION_USER_LOGIN","username":"123","password":"202cb962ac59075b964b07152d234b70","sign":"59bfd4a0455f46bbb7556a48cf2d8fe4"}[2018-03-23T09:02:44.631Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+{"msgtype":"ACTION_USER_LOGIN","username":"123","password":"202cb962ac59075b964b07152d234b70","sign":"59bfd4a0455f46bbb7556a48cf2d8fe4"}[2018-03-23T09:03:08.495Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:06:42.820Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:07:11.883Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:07:35.329Z] ::ffff:127.0.0.1 POST /api
+TypeError: Cannot read property 'body' of undefined
+    at app.use (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:55:33)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:07:39.464Z] ::ffff:127.0.0.1 POST /api
+TypeError: Cannot read property 'body' of undefined
+    at app.use (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/server.js:55:33)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:317:13)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:260:14)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:09:17.944Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+{"msgtype":"ACTION_USER_LOGIN","username":"1231","password":"202cb962ac59075b964b07152d234b70","sign":"a869e4f292ececac8913b47d40aab44f"}{"msgtype":"ACTION_USER_LOGIN","username":"123","password":"6c14da109e294d1e8155be8aa4b1ce8e","sign":"04209997c768e0b45b2c2a3de76a0c45"}{"msgtype":"ACTION_USER_LOGIN","username":"123","password":"202cb962ac59075b964b07152d234b70","sign":"59bfd4a0455f46bbb7556a48cf2d8fe4"}[2018-03-23T09:17:59.227Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+{"msgtype":"ACTION_USER_LOGIN","username":"1323","password":"e53a0a2978c28872a4505bdb51db06dc","sign":"9bd427bf565042e120b187d32c06b157"}[2018-03-23T09:25:40.978Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:26:06.193Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:26:18.097Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:26:19.895Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:26:46.225Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: accessLogStream is not defined
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:44:15
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:30:17.220Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: logger is not defined
+    at sessionHandle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:7:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:30:39.866Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: logger is not defined
+    at sessionHandle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:7:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
+[2018-03-23T09:30:50.900Z] ::ffff:127.0.0.1 POST /api
+ReferenceError: sessionSet is not defined
+    at sessionHandle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/src/server/router/api.js:17:9)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:137:13)
+    at Route.dispatch (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/route.js:112:3)
+    at Layer.handle [as handle_request] (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/layer.js:95:5)
+    at /Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:281:22
+    at Function.process_params (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:275:10)
+    at Function.handle (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:174:3)
+    at router (/Users/dbh/Desktop/codes/ProjectNodejs/project3/yunwei/node_modules/express/lib/router/index.js:47:12)
