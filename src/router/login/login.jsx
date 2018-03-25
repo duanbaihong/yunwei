@@ -1,8 +1,6 @@
 
 import React, { Component }  from 'react';
-import md5 from 'md5';
-import ReactDOM from 'react-dom';
-
+import Snack from '../components/snackbar'
 import PropTypes from 'prop-types';
 import Avatar from 'material-ui/Avatar';
 import Zoom from 'material-ui/transitions/Zoom';
@@ -10,23 +8,21 @@ import Visibility from 'material-ui-icons/Visibility';
 import VisibilityOff from 'material-ui-icons/VisibilityOff';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import IconButton from 'material-ui/IconButton';
-import CloseIcon from 'material-ui-icons/Close';
-import Errors from 'material-ui-icons/Error';
+
 import { CircularProgress } from 'material-ui/Progress';
 import {MuiThemeProvider,createMuiTheme} from 'material-ui/styles';
 import Button from 'material-ui/Button';
-import Snackbar from 'material-ui/Snackbar';
 import { FormControl } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
 
 import { withStyles } from 'material-ui/styles';
 import lightBlue from 'material-ui/colors/lightBlue';
 import green from 'material-ui/colors/green';
-import red from 'material-ui/colors/red';
 import back from '../../images/back.jpg';
 import user from '../../images/user.png';
 
 import { ajax } from '../../commons/ajax'
+import md5 from 'md5';
 
 const styles = theme => ({
   root: {
@@ -75,23 +71,6 @@ const styles = theme => ({
     left: '50%',
     marginLeft: -97,
     marginTop:-22,
-  },
-  snackbarcontent:{
-    backgroundColor: lightBlue[700],
-    padding: "0px 8px 0px 8px",
-    marginTop:5,
-    opacity:0.9
-  },
-  iconbutton:{
-    width:36,
-    height:36,
-    marginTop:-1
-  },
-  iconinfo:{
-    float:"left",
-    marginTop:-1,
-    color: red[400],
-    marginRight:5,
   }
 });
 const theme = createMuiTheme({
@@ -99,25 +78,15 @@ const theme = createMuiTheme({
     htmlFontSize: 16,
   },
   palette: {
-    primary: lightBlue,
-  }
+      primary: lightBlue,
+  },
 });
 
 class Login extends Component {
   constructor(props){
     super(props);
-    this.state={
-      ActionStatus:"用户认证失败！"
-    }
+    this.state={ SnackBarMsg:"" }
     this._isMounted=false
-  }
-  initloginstatus(){
-    this.setState({
-      showPassword: false,
-      SnackbarStatus: false,
-      isloginStatus: false,
-      ActionStatus: "用户认证失败！"
-    })
   }
   handleClickShowPasssword(){
     this.setState({ showPassword: !this.state.showPassword });
@@ -130,55 +99,49 @@ class Login extends Component {
   componentWillUnmount() {
     this._isMounted=false;
   }
-  handleBarClose(){
-    this.setState({SnackbarStatus: false})
-  }
   loginCheck(){
-    let _this=this;
-    if(this.username.value == "") {
-      this.setState({SnackbarStatus:true,ActionStatus:"请输入用户名。"})
+    if(this.username.value === "") {
+      this.setState({SnackBarMsg:"请输入用户名。"})
       this.username.focus();
       return false;
 
     }
-    if(this.password.value == "") {
-      this.setState({SnackbarStatus:true,ActionStatus:"请输入用户密码。"})
+    if(this.password.value === "") {
+      this.setState({SnackBarMsg:"请输入用户密码。"})
       this.password.focus();
       return false;
     }
 
+    this.setState({isloginStatus:!this.state.isloginStatus})
     let params={
       msgtype: "ACTION_USER_LOGIN",
       username: this.username.value,
       password: md5(this.password.value),
       sign: md5(this.username.value+"sign"+this.password.value),
     }
-    this.setState({isloginStatus:!this.state.isloginStatus,
-                   SnackbarStatus: !this.state.SnackbarStatus})
-    ajax('/api',params).then(function(resp){
+    ajax('/api',params).then((resp)=>{
       if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000"){
-       
-        _this.props.userLoginIn()
+        this.props.userLoginIn()
       }else{
-        _this.setState(
-          { SnackbarStatus:true,
-            ActionStatus:"密码错误！请检查~",
+        this.setState(
+          { 
+            SnackBarMsg:"密码错误！请检查~",
             isloginStatus:false
           })
       }
     }).catch(function(error){
       console.log(error)
-      _this.setState(
-        { SnackbarStatus:true,
-          isloginStatus: !_this.state.isloginStatus,
-          ActionStatus:"网络异常，或请求异常！"}
+      this.setState(
+        { 
+          isloginStatus: !this.state.isloginStatus,
+          SnackBarMsg:"请求异常,网络异常!"}
         );
     })
     
   }
   render(){
     const { classes } = this.props;
-    const { showPassword,SnackbarStatus,isloginStatus,ActionStatus,display } = this.state;
+    const { showPassword,isloginStatus,display } = this.state;
     return (
       <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -230,26 +193,7 @@ class Login extends Component {
           </div>
         </Zoom>
       </div>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={SnackbarStatus}
-        onClose={this.handleBarClose.bind(this)}
-        SnackbarContentProps={{
-            className: classes.snackbarcontent,
-          }}
-        message={<span id="message-id">{ActionStatus}<Errors className={classes.iconinfo} /></span>}
-        action={[
-          <IconButton
-            key="close"
-            size="small"
-            aria-label="Close"
-            color="inherit"
-            className={classes.iconbutton}
-            onClick={this.handleBarClose.bind(this)} >
-            <CloseIcon />
-          </IconButton>,
-        ]}
-      />
+      <Snack title={this.state.SnackBarMsg} />
       </MuiThemeProvider>
     );
   }

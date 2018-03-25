@@ -11,5 +11,11 @@ export const ajax = (url='/api',params,method='POST') =>{
             'Content-Type': 'application/json;charset=utf-8'
             },
     }
-  return axios(data);
+  return axios(data)
+
+  // .then(function(req,rsp,next) {
+  //   if(req.status!==200 || req.statusText!=="OK"){
+
+  //   }
+  // });
 }

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Login from './login'
@@ -10,7 +9,6 @@ function mapStateToProps(state) {
   }
 }
 function mapDispatchToProps(dispatch) {
-  console.log(this.content)
   return {
     userLoginIn: bindActionCreators(userLoginIn, dispatch),
   }
