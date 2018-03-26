@@ -6,9 +6,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mysql = require('mysql');
+var myconnect = require('express-myconnection');
 
 var index = require('./router/index');
 var api = require('./router/api');
+var {mysqloption} =  require('./initconfig');
 
 var app = express();
 
@@ -22,7 +25,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
- 
+
+app.use(myconnect(mysql,mysqloption,'single'));
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());

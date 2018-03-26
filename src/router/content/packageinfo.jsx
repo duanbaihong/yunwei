@@ -41,22 +41,9 @@ class EnhancedTableHead extends React.Component {
   };
   constructor(props) {
       super(props);
-      this.state={
-        display: false
-      }
-      this._isMounted=false
-  }
-  componentDidMount() {
-    if(!this._isMounted){
-      this.setState({display:true})
-    }
-  }
-  componentWillUnmount() {
-    this._isMounted=false
   }
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-    const {display} = this.state
     return (
         <TableHead>
           <TableRow>

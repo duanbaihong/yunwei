@@ -20,7 +20,6 @@ function sessionHandle(req, res, next) {
   for (var i = 0; i < 1000000000; i++) {
     
   }
-  console.log('bb')
   next();
 }
 
