@@ -35,13 +35,13 @@ let logDirectory = path.join(__dirname, '../../log')
 fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
 var accessLogStream = FileStreamRotator.getStream({
   date_format: 'YYYYMMDD',
-  filename: path.join(logDirectory, 'Access-%DATE%.log'),
+  filename: path.join(logDirectory, 'access-%DATE%.log'),
   frequency: 'daily',
   verbose: false
 })
 let errorLogStream = FileStreamRotator.getStream({
   date_format: 'YYYYMMDD',
-  filename: path.join(logDirectory, 'Error-%DATE%.log'),
+  filename: path.join(logDirectory, 'error-%DATE%.log'),
   frequency: 'daily',
   verbose: false
 })

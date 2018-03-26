@@ -7,7 +7,7 @@ import back from '../../images/back.jpg';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import Button from 'material-ui/Button';
 import Dialog, {
   DialogActions,
@@ -17,6 +17,10 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 const styles = theme=>({
+  avatarRoot:{
+    position:"absolute",
+    right:0
+  },
   avatar: {
     marginRight: 20,
   },
@@ -50,7 +54,8 @@ class UserAvater extends Component {
     this.setState({ opendialog: false });
     this.props.userLoginOut()
   }
-  handleClose(){
+  handleClose(url=""){
+    if(url!=="") this.props.history.push(url);
     this.setState({ anchorEl: null,openmenu: false ,opendialog: false });
   }
   render() {
@@ -58,7 +63,7 @@ class UserAvater extends Component {
     const {openmenu,anchorEl} =this.state;
 
     return (
-      <div>
+      <div className={classes.avatarRoot}>
         <Avatar alt="用户"
                 src={back}
                 onClick={this.handleOpenUserMenu.bind(this)}
@@ -68,14 +73,10 @@ class UserAvater extends Component {
           transformOrigin={{ vertical: 'top', horizontal: 'right'}}
           open={openmenu}
           onClose={this.handleClose.bind(this)}  >
-              <MenuItem onClick={this.handleClose.bind(this)} component={(c)=>{
-                return <li><Link {...c} to="/content/userinfo" >用户属性</Link></li>
-              }}  >
-                
+              <MenuItem onClick={this.handleClose.bind(this,'/content/userinfo')} >
+                用户属性
               </MenuItem>
-          <MenuItem onClick={this.handleClose.bind(this)} component={(c)=>{
-                return <li><Link {...c} to="/content/password" >修改密码</Link></li>
-              }}></MenuItem>
+          <MenuItem onClick={this.handleClose.bind(this,'/content/password')}>修改密码</MenuItem>
           <Divider />
           <MenuItem onClick={this.handleUserExit.bind(this)}>注销</MenuItem>
         </Menu>
@@ -107,4 +108,4 @@ class UserAvater extends Component {
 UserAvater.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(UserAvater);
+export default withStyles(styles)(withRouter(UserAvater));

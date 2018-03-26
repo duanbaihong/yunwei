@@ -39,46 +39,60 @@ class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
-
+  constructor(props) {
+      super(props);
+      this.state={
+        display: false
+      }
+      this._isMounted=false
+  }
+  componentDidMount() {
+    if(!this._isMounted){
+      this.setState({display:true})
+    }
+  }
+  componentWillUnmount() {
+    this._isMounted=false
+  }
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-
+    const {display} = this.state
     return (
-      <TableHead>
-        <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell>
-          {columnData.map(column => {
-            return (
-              <TableCell
-                key={column.id}
-                numeric={column.numeric}
-                padding={column.disablePadding ? 'none' : 'default'}
-                sortDirection={orderBy === column.id ? order : false}
-              >
-                <Tooltip
-                  title="Sort"
-                  placement={column.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}
+        <TableHead>
+          <TableRow>
+            <TableCell padding="checkbox">
+              <Checkbox
+                indeterminate={numSelected > 0 && numSelected < rowCount}
+                checked={numSelected === rowCount}
+                onChange={onSelectAllClick}
+              />
+            </TableCell>
+            {columnData.map(column => {
+              return (
+                <TableCell
+                  key={column.id}
+                  numeric={column.numeric}
+                  padding={column.disablePadding ? 'none' : 'default'}
+                  sortDirection={orderBy === column.id ? order : false}
                 >
-                  <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={order}
-                    onClick={this.createSortHandler(column.id)}
+                  <Tooltip
+                    title="Sort"
+                    placement={column.numeric ? 'bottom-end' : 'bottom-start'}
+                    enterDelay={300}
                   >
-                    {column.label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            );
-          }, this)}
-        </TableRow>
-      </TableHead>
+                    <TableSortLabel
+                      active={orderBy === column.id}
+                      direction={order}
+                      onClick={this.createSortHandler(column.id)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+              );
+            }, this)}
+          </TableRow>
+        </TableHead>
     );
   }
 }
@@ -94,7 +108,9 @@ EnhancedTableHead.propTypes = {
 
 const toolbarStyles = theme => ({
   root: {
+    minHeight:45,
     paddingRight: theme.spacing.unit,
+
   },
   highlight:
     theme.palette.type === 'light'
@@ -129,7 +145,7 @@ let EnhancedTableToolbar = props => {
       <div className={classes.title}>
         {numSelected > 0 ? (
           <Typography color="inherit" variant="subheading">
-            {numSelected} selected
+            选中 {numSelected} 
           </Typography>
         ) : (
           <Typography variant="title">套餐明细</Typography>

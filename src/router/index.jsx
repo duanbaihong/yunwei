@@ -25,8 +25,8 @@ class YunweiRouter extends Component {
   checkLogin(){
     if(window.isLogin === undefined){
       let params={
-        msgtype: "ACTION_CHECK_USER_LOGIN",
-        sign: md5("ACTION_CHECK_USER_LOGIN"+"SIGN"),
+        MsgType: "ACTION_CHECK_USER_LOGIN",
+        Sign: md5("ACTION_CHECK_USER_LOGIN"+"SIGN"),
       }
       ajax('/api',params).then((resp)=>{
         if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000"){

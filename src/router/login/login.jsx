@@ -99,6 +99,26 @@ class Login extends Component {
   componentWillUnmount() {
     this._isMounted=false;
   }
+  handleLoginSuccess(resp){
+    console.log(resp)
+    if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000"){
+      console.log(this.props.userLoginIn(resp.data))
+    }else{
+      this.setState(
+        { 
+          SnackBarMsg:(resp.data.hasOwnProperty('resultMsg') && resp.data.hasOwnProperty('resultCode')?resp.data.resultMsg:"返回数据异常！"),
+          isloginStatus:false
+        })
+    }
+  }
+  handleLoginFailed(error){
+      console.log(error)
+      this.setState(
+        { 
+          isloginStatus: !this.state.isloginStatus,
+          SnackBarMsg:"请求异常,网络异常!"}
+        );
+  }
   loginCheck(){
     if(this.username.value === "") {
       this.setState({SnackBarMsg:"请输入用户名。"})
@@ -114,29 +134,13 @@ class Login extends Component {
 
     this.setState({isloginStatus:!this.state.isloginStatus})
     let params={
-      msgtype: "ACTION_USER_LOGIN",
-      username: this.username.value,
-      password: md5(this.password.value),
-      sign: md5(this.username.value+"sign"+this.password.value),
+      MsgType: "ACTION_USER_LOGIN",
+      UserName: this.username.value,
+      PassWord: md5(this.password.value),
+      Sign: md5(this.username.value+"sign"+md5(this.password.value)),
     }
-    ajax('/api',params).then((resp)=>{
-      if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000"){
-        this.props.userLoginIn()
-      }else{
-        this.setState(
-          { 
-            SnackBarMsg:"密码错误！请检查~",
-            isloginStatus:false
-          })
-      }
-    }).catch(function(error){
-      console.log(error)
-      this.setState(
-        { 
-          isloginStatus: !this.state.isloginStatus,
-          SnackBarMsg:"请求异常,网络异常!"}
-        );
-    })
+    ajax('/api',params).then(this.handleLoginSuccess.bind(this))
+                       .catch(this.handleLoginFailed.bind(this));
     
   }
   render(){

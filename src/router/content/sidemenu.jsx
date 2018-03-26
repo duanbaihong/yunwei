@@ -7,12 +7,17 @@ import {ListItemIcon, ListItemText } from 'material-ui/List';
 import InboxIcon from 'material-ui-icons/MoveToInbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
 import SendIcon from 'material-ui-icons/Send';
-import {Link} from 'react-router-dom';
-const drawerWidth = 200;
+import {withRouter} from 'react-router-dom';
+
+const drawerWidth = 210;
 const styles = theme => ({
+  drawer:{
+    
+  },
   drawerPaper: {
-    position: 'relative',
     width: drawerWidth,
+    height:"100%",
+    position: 'static',
   },
   toolbar: theme.mixins.toolbar,
   typflex: {
@@ -20,7 +25,8 @@ const styles = theme => ({
     padding:0,
   },
   menuItem: {
-    '&>a:focus': {
+    height:"100%",
+    '&:focus': {
       backgroundColor: theme.palette.primary.main,
       '& $primary, & $icon': {
         color: theme.palette.common.white,
@@ -34,18 +40,17 @@ class SideMenu extends Component {
     constructor(props) {
         super(props);
     }
-    handleClick(){
-      this.props.history.push('/content/packageinfo')
+    handleClickLink(url="/content/packageinfo"){
+      this.props.history.push(url)
     }
     render() {
       let {classes} = this.props
       return (
         <Drawer variant="permanent"
-            classes={{paper: classes.drawerPaper}} >
-          <div className={classes.toolbar} />
+            classes={{paper: classes.drawerPaper}} className={classes.drawer} >
           <MenuList>
           <MenuItem className={classes.menuItem} 
-                    component={(c)=><li><Link {...c} to={"/content/packageinfo"} /></li>} >
+                    onClick={this.handleClickLink.bind(this,'/content/packageinfo')} >
               <ListItemIcon className={classes.icon}>
                 <SendIcon />
               </ListItemIcon>
@@ -54,21 +59,21 @@ class SideMenu extends Component {
                 primary="套餐查询" />
             </MenuItem>
             <MenuItem className={classes.menuItem} 
-                      component={(c)=><li><Link {...c} to={"/content/ordermessage"} /></li>} >
+                      onClick={this.handleClickLink.bind(this,'/content/ordermessage')} >
               <ListItemIcon className={classes.icon}>
                 <DraftsIcon />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} inset primary="订购报文" />
             </MenuItem>
             <MenuItem className={classes.menuItem}
-                      component={(c)=><li><Link {...c} to={"/content/modulelogs"} /></li>} >
+                      onClick={this.handleClickLink.bind(this,'/content/modulelogs')}  >
               <ListItemIcon className={classes.icon}>
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} inset primary="模块日志" />
             </MenuItem>
             <MenuItem className={classes.menuItem}
-                      component={(c)=><li><Link {...c} to={"/content/operateresults"} /></li>} >
+                      onClick={this.handleClickLink.bind(this,'/content/operateresults')}>
               <ListItemIcon className={classes.icon}>
                 <InboxIcon />
               </ListItemIcon>
@@ -82,4 +87,4 @@ class SideMenu extends Component {
 SideMenu.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(SideMenu);
+export default withStyles(styles)(withRouter(SideMenu));

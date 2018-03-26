@@ -28,7 +28,7 @@ const store = createStore(
   reducers,{},
   applyMiddleware(...middleware)
 )
-
+// store.subscribe();
 class Yunwei extends Component {
   constructor(props){
     super(props);

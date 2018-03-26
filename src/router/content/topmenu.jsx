@@ -18,19 +18,15 @@ const styles = theme =>({
     paddingLeft:5,
   },
   typflex: {
-    flex:1,
     padding:0,
   }
 })
 class TopMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let {classes} = this.props
         return (
-          <AppBar position="absolute" className={classes.appBar}>
+          <AppBar position="static" className={classes.appBar}>
             <Toolbar className={classes.toolbartitle}>
               <IconButton  color="inherit"  aria-label="open drawer" >
                 <MenuIcon />
