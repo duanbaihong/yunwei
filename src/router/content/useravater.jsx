@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import md5 from 'md5';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -9,12 +10,17 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import {withRouter} from 'react-router-dom';
 import Button from 'material-ui/Button';
+import { bindActionCreators } from 'redux'
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
+
+import {userLoginOut} from '../../actions'
+
+import { ajax } from '../../commons/ajax'
 
 const styles = theme=>({
   avatarRoot:{
@@ -50,12 +56,23 @@ class UserAvater extends Component {
     this.setState({ opendialog: true });
     
   }
-  handleUserClose(){
-    this.setState({ opendialog: false });
+  handleExitSuccess(){
     this.props.userLoginOut()
   }
+  handleUserClose(){
+    this.setState({ opendialog: false });
+    let params={
+      MsgType: "ACTION_USER_LOGOUT",
+      Token: this.props.userInfo.token,
+      Sign: md5('ACTION_USER_LOGOUT'+this.props.userInfo.token),
+    }
+    console.log(this.props)
+    ajax('/api',params).then(this.handleExitSuccess.bind(this))
+                       .catch(this.handleExitSuccess.bind(this));
+    
+  }
   handleClose(url=""){
-    if(url!=="") this.props.history.push(url);
+    if(url!=="") this.props.history.replace(url);
     this.setState({ anchorEl: null,openmenu: false ,opendialog: false });
   }
   render() {
@@ -108,4 +125,15 @@ class UserAvater extends Component {
 UserAvater.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(withRouter(UserAvater));
+
+function mapStateToProps(state) {
+  return {
+    ...state.login,
+  }
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    userLoginOut: bindActionCreators(userLoginOut, dispatch),
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(withRouter(UserAvater)));

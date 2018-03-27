@@ -14,19 +14,19 @@ export const LoginReducer = (state = initialState , action={}) => {
         window.isLogin=true;
         return  Object.assign({}, state, {
           userAuthenticated:true,
-          userInfo: {...payload},
+          ...payload 
         });
       }else{
         return  Object.assign({}, state, {
-          userAuthenticated:true,
-          userInfo: {},
+          userAuthenticated:false,
+          userInfo: {}
         });
       }
     case 'ACTION_CHECK_USER_LOGIN':
       window.isLogin=true;
       return  Object.assign({}, state,{
         userAuthenticated:true,
-        userInfo: {...payload},
+        ...payload 
       });
     case 'ACTION_USER_LOGOUT':
       window.isLogin=false;
@@ -35,7 +35,6 @@ export const LoginReducer = (state = initialState , action={}) => {
         userInfo: {}
       });
     default: 
-      console.log(payload)
       return state;
   }
 }

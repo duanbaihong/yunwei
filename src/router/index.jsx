@@ -29,10 +29,10 @@ class YunweiRouter extends Component {
         Sign: md5("ACTION_CHECK_USER_LOGIN"+"SIGN"),
       }
       ajax('/api',params).then((resp)=>{
-        if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000"){
-          this.props.dispatch(this.props.userCheckLogin())
+        if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000" && resp.data.hasOwnProperty('userInfo')){
+          this.props.dispatch(this.props.userCheckLogin(resp.data))
         }else{
-          console.log('请求失败！');
+          console.log(resp.data.hasOwnProperty('resultMsg')?resp.data.resultMsg:'请求失败，或者用户未登陆。');
         }
       }).catch(function(error){
         console.log(error)

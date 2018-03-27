@@ -51,9 +51,7 @@ class Content extends Component {
     return (
     <div className={classes.root}>
       <div className={classes.topmenu}>
-        <TopMenu
-          userLoginOut={this.props.userLoginOut} 
-        />
+        <TopMenu />
       </div>
       <div className={classes.bottomcontent} >
         <SideMenu />

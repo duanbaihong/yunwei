@@ -23,10 +23,10 @@ app.use(session({
     name: 'yunwei.sid',   //这里的name值得是cookie的name，默认cookie的name是：connect.sid
     cookie: {maxAge: 30*60*1000 },  //即30分钟后session和相应的cookie失效过期
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
 }));
 
-app.use(myconnect(mysql,mysqloption,'single'));
+app.use(myconnect(mysql,mysqloption));
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());

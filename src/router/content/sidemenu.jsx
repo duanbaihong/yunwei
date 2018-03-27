@@ -18,6 +18,7 @@ const styles = theme => ({
     width: drawerWidth,
     height:"100%",
     position: 'static',
+    display:"block"
   },
   toolbar: theme.mixins.toolbar,
   typflex: {
@@ -41,7 +42,7 @@ class SideMenu extends Component {
         super(props);
     }
     handleClickLink(url="/content/packageinfo"){
-      this.props.history.push(url)
+      this.props.history.replace(url)
     }
     render() {
       let {classes} = this.props

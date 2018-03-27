@@ -5,9 +5,8 @@ module.exports={
 	mysqloption:{
 		host: config.mysql.host || "127.0.0.1",
 		user: config.mysql.user || "",
-		pass: config.mysql.pass || "",
+		password: config.mysql.pass || "",
 		port: config.mysql.port || "3306",
-		char: config.mysql.char || "utf8",
 		database: config.mysql.database || ""
 	},
 	redisoption:{
