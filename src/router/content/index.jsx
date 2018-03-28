@@ -11,6 +11,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     userLoginOut: bindActionCreators(userLoginOut, dispatch),
+    dispatch:dispatch
   }
 }
 

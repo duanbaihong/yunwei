@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import Snack from '../components/snackbar';
 import { ajax } from '../../commons/ajax'
-
+import md5 from 'md5';
 const styles = theme => ({
   root: theme.mixins.gutters({
     paddingTop: 16,
@@ -64,38 +64,43 @@ class Password extends Component {
     }
 
     this.setState({substatus: true,msg:''})
+    let opass=md5(this.oldpassword.value)
+    let npass=md5(this.newpassword.value)
+    let repass=md5(this.renewpassword.value)
     let params={
-      userToken: "test",
-      oldpassword: this.oldpassword.value,
-      newpassword: this.newpassword.value,
-      renewpassword: this.renewpassword.value
+      MsgType: "ACTION_CHANGE_PASSWORD",
+      Token: sessionStorage.token,
+      oldpassword: opass,
+      newpassword: npass,
+      renewpassword: repass,
+      Sign:md5(sessionStorage.token+opass+npass+repass)
     }
     ajax('/api',params).then((req,rsp,next)=>{
-      // error 11001 原密码错误！
-      // 11002 新密码不一致！
-      // 11003 新密码与旧密码一样。
       switch(req.data.resultCode){
         case '11001':
-          this.setState({msg:"原密码效验错误。",substatus:false});
           this.oldpassword.focus();
           break;
         case '11002':
-          this.setState({msg:"新密码不一致。"});
           this.oldpassword.focus();
           break;
         case '11003':
-          this.setState({msg:"新密码与旧密码一样，修改不成功！",substatus:false});
           this.oldpassword.focus();
           break;
+        case '22222' :
+          setTimeout(()=>this.props.userLoginOut(),1000)
+          break
         case '10000':
-          this.setState({msg:"密码修改成功！",substatus:false});
           this.oldpassword.value=""
           this.newpassword.value=""
           this.renewpassword.value=""
+          setTimeout(()=>this.props.userLoginOut(),1000)
           break;
         default:
-          this.setState({msg:"数据报文异常！",substatus:false});
+          this.setState({msg:req.data.resultMsg!==""?req.data.resultMsg:"数据报文异常！",substatus:false});
+          return false;
+          break;
       }
+      this.setState({msg:req.data.resultMsg,substatus:false})
 
     }).catch(error=>{
       this.setState({msg:"数据提交错误！或网络异常！",substatus:false});
@@ -103,6 +108,7 @@ class Password extends Component {
     })
   }
   render() {
+
     let {classes} =this.props;
     return (
       <Paper className={classes.rootPaper} >

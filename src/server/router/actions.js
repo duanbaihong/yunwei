@@ -20,7 +20,7 @@ function login(req,res,next) {
 					res.send({
 						resultCode: "10000",
 						resultMsg: errormsg['10000'],
-						userinfo:results[0]
+						userInfo:results[0]
 						})
 				}else{
 					res.send({
@@ -47,7 +47,6 @@ function checklogin(req,res,next) {
 }
 function loginout(req,res,next) {
 	// body..
-	console.log(req.session)
 	if (req.session.hasOwnProperty('token')){
 		delete req.session.token;
 		delete req.session.userinfo;
@@ -60,5 +59,43 @@ function loginout(req,res,next) {
 	}
 	
 }
+function changepass(req,res,next) {
+	// body..
+	console.log(req.session);
+	if (req.session.hasOwnProperty('token')){
+	  if(req.body.Sign!=md5(req.body.Token+req.body.oldpassword+req.body.newpassword+req.body.renewpassword)){
+	  	res.send({resultCode: "99998",resultMsg: errormsg['99998']});
+	  	return true;
+	  }
+	  if(req.body.oldpassword==req.body.newpassword){
+	  	res.send({resultCode: "11003",resultMsg: errormsg['11003']});
+	  	return true;
+	  }
+	  if(req.body.renewpassword!=req.body.newpassword){
+	  	res.send({resultCode: "11002",resultMsg: errormsg['11002']});
+	  	return true;
+	  }
+	  req.getConnection((err,conn)=>{
+	  	if(err){
+	  		next(err)
+	  	}
+  		let sql='update t_user_info set userpass="'+req.body.newpassword+'",token=md5(concat(md5(loginuser),"'+req.body.newpassword+'",saltpass)) where token="'+req.body.Token+'";'
+  		console.log(sql)
+	  	conn.query(sql,[],(err,results)=>{
+	  		 if(err){
+	  		 	res.send({resultCode: "11004",resultMsg: errormsg['11004']})
+	  		 	return true;
+	  		 }
+	  		 if(results){
+	  		 	res.send({resultCode: "10000",resultMsg: errormsg['11005']})
+	  		 }
+	  	})
+	  })
 
-module.exports={checklogin,login,loginout}
+	}else{
+		res.send({resultCode: "22222",resultMsg: errormsg['22222']});
+	}
+	
+}
+
+module.exports={checklogin,login,loginout,changepass}

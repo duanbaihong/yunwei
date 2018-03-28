@@ -20,10 +20,17 @@ class YunweiRouter extends Component {
     super(props);
   }
   componentDidMount() {
-    this.checkLogin()
+    if(window.isLogin ==undefined){
+      this.checkLogin()
+    }
+  }
+  componentWillMount() {
+    if(sessionStorage.token){
+      this.props.dispatch(this.props.userCheckLogin())
+    }
   }
   checkLogin(){
-    if(window.isLogin === undefined){
+    if(sessionStorage.token === undefined){
       let params={
         MsgType: "ACTION_CHECK_USER_LOGIN",
         Sign: md5("ACTION_CHECK_USER_LOGIN"+"SIGN"),

@@ -14,6 +14,8 @@ import TopMenu from './topmenu';
 import Password from './password';
 import UserInfo from './userinfo';
 import PackageInfo from './packageinfo';
+import OrderMessage from './ordermessage';
+import ModuleLogs from './modulelogs';
 
 const styles = theme => ({
   root: {
@@ -59,7 +61,7 @@ class Content extends Component {
           <Grid container >
               <Switch>
                 <Route path="/content/password" render={(props)=>(
-                    window.isLogin?<Password {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<Password userLoginOut={this.props.userLoginOut}   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/userinfo" render={(props)=>(
                     window.isLogin?<UserInfo {...props}  />:<Redirect to="/login" />
@@ -68,10 +70,10 @@ class Content extends Component {
                     window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/ordermessage" render={(props)=>(
-                    window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<OrderMessage {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/modulelogs" render={(props)=>(
-                    window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<ModuleLogs {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/operateresults" render={(props)=>(
                     window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />

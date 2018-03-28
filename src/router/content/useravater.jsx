@@ -95,7 +95,7 @@ class UserAvater extends Component {
               </MenuItem>
           <MenuItem onClick={this.handleClose.bind(this,'/content/password')}>修改密码</MenuItem>
           <Divider />
-          <MenuItem onClick={this.handleUserExit.bind(this)}>注销</MenuItem>
+          <MenuItem onClick={this.handleUserExit.bind(this)}>注销-{this.props.userInfo.loginuser}</MenuItem>
         </Menu>
         <Dialog
           open={this.state.opendialog}
@@ -106,7 +106,7 @@ class UserAvater extends Component {
           <DialogTitle id="alert-dialog-title">{"退出登陆"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              你确定要退出登陆吗？
+              你确定要退出用户[{this.props.userInfo.username}]登陆吗？
             </DialogContentText>
           </DialogContent>
           <DialogActions>
