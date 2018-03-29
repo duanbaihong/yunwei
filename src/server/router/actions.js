@@ -102,7 +102,7 @@ function changepass(req,res,next) {
 	
 }
 function querydevinfo(req,res,next){
-	// if (req.session.hasOwnProperty('token') && req.session.token == req.body.Token){
+	if (req.session.hasOwnProperty('token') && req.session.token == req.body.Token){
     loginurl=thirtyhttpoption.url+thirtyhttpoption.loginuri
     loginparams={
       username: thirtyhttpoption.username,
@@ -123,8 +123,8 @@ function querydevinfo(req,res,next){
         res.send(body)
       }
 		})
-	// }else{
-	// 	res.send({resultCode: "22222",resultMsg: errormsg['22222']});
-	// }	
+	}else{
+		res.send({resultCode: "22222",resultMsg: errormsg['22222']});
+	}	
 }
 module.exports={checklogin,login,loginout,changepass,querydevinfo}
