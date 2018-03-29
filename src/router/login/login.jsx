@@ -118,6 +118,11 @@ class Login extends Component {
           SnackBarMsg:"请求异常,网络异常!"}
         );
   }
+  handleEnterPress(e){
+    if(e.keyCode==13){
+      this.loginCheck();
+    }
+  }
   loginCheck(){
     if(this.username.value === "") {
       this.setState({SnackBarMsg:"请输入用户名。"})
@@ -168,6 +173,7 @@ class Login extends Component {
               fullWidth={true}
               autoFocus={true}
               inputRef={(c) => this.username = c}
+              onKeyDown={this.handleEnterPress.bind(this)}
             />
             <FormControl fullWidth className={classes.forms} required={true}>
               <InputLabel htmlFor="login_password">用户密码</InputLabel>
@@ -176,6 +182,7 @@ class Login extends Component {
                 inputRef={(c) => this.password = c}
                 type={showPassword ? 'text' : 'password'}
                 placeholder="请输入用户密码"
+                onKeyDown={this.handleEnterPress.bind(this)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

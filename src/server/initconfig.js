@@ -7,7 +7,8 @@ module.exports={
 		user: config.mysql.user || "",
 		password: config.mysql.pass || "",
 		port: config.mysql.port || "3306",
-		database: config.mysql.database || ""
+		database: config.mysql.database || "",
+		dateStrings: true ,
 	},
 	redisoption:{
 		host: config.redis.host || "127.0.0.1",

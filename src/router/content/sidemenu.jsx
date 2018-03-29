@@ -18,7 +18,11 @@ const styles = theme => ({
     width: drawerWidth,
     height:"100%",
     position: 'static',
-    display:"block"
+    display:"block",
+    transition: "all .5s",
+    [theme.breakpoints.down('sm')]:{
+      width: 65,
+    }
   },
   toolbar: theme.mixins.toolbar,
   typflex: {
@@ -35,7 +39,13 @@ const styles = theme => ({
     }
   },
   primary:{},
-  icon:{}
+  icon:{
+    transition: "all .5s",
+    [theme.breakpoints.down('sm')]:{
+      height:35,
+      width:35,
+    }
+  }
 });
 class SideMenu extends Component {
     constructor(props) {

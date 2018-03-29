@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
@@ -8,15 +8,40 @@ import Avatar from 'material-ui/Avatar';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
+import Fade from 'material-ui/transitions/Fade';
+import Zoom from 'material-ui/transitions/Zoom';
+import green from 'material-ui/colors/green';
 import back from '../../images/back.jpg';
-const styles = {
+const styles = theme=>({
   card: {
-    width: 360,
+    width: 400,
     margin:"0 auto",
-    marginTop: 50
+    marginTop: 50,
+    position: "relative",
   },
   media: {
-    height: 300,
+    height: 350,
+  },
+  topinfo:{
+    width: "100%",
+    position:"absolute",
+    boxSizing: "border-box",
+    backgroundColor: "rgba(218, 215, 215, 0.4117647058823529)",
+    paddingTop:5,
+    paddingBottom:5,
+    "&>div":{
+      marginTop:0,
+    }
+  },
+  toptitle:{
+    margin:2,
+    color:'#eae9e9'
+  },
+  greenAvatar: {
+    color: '#fff',
+    width:48,
+    height:48,
+    backgroundColor: green[500],
   },
   tabothalign: {
     width:90,
@@ -28,50 +53,67 @@ const styles = {
       width:"100%"
     }
   }
-};
+});
 
-function UserInfo(props) {
-  console.log(props)
-  const { classes } = props;
-  return (
-      <Card className={classes.card}>
-        <CardHeader
-            avatar={
-              <Avatar aria-label="Recipe" className={classes.avatar}>
-                U
-              </Avatar>
-            }
-            action={
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title="Shrimp and Chorizo Paella"
-            subheader="September 14, 2016"
-          />
+export class UserInfo extends Component {
+  constructor(props) {
+      super(props);
+      this.state={
+        display:false,
+        in:false
+          };
+    }
+  componentDidMount() {
+    this.setState({in:true})
+  }
+  handleChange(){
+    this.setState({display:!this.state.display});
+  }
+  render() {
+    const { classes,userInfo } = this.props;
+    return (
+    <Zoom timeout={500} in={this.state.in}>
+      <Card className={classes.card} onMouseOver={this.handleChange.bind(this)} onMouseOut={this.handleChange.bind(this)}>
+        <Fade timeout={600} in={this.state.display}>
+          <CardHeader
+              avatar={
+                <Avatar aria-label="用户" className={classes.greenAvatar}>
+                  {userInfo.username.substr(0,1)}
+                </Avatar>
+              }
+              className={classes.topinfo}
+              action={
+                  <IconButton  >
+                    <MoreVertIcon />
+                  </IconButton>
+              }
+              title={
+                <h3 className={classes.toptitle}>{userInfo.username+"-"+userInfo.loginuser}</h3>
+              }
+              subheader={<h4 className={classes.toptitle}>{userInfo.department}</h4>}
+            />
+          </Fade>
         <CardMedia
           className={classes.media}
           image={back}
-          title="Contemplative Reptile"
+          title={"点击修改图片"}
         />
         <CardContent>
           <Typography gutterBottom variant="display1">
-             {props.userInfo.username}-{props.userInfo.loginuser}
-          </Typography>
-          <Typography  >
-            <span className={classes.tabothalign}>部门<i></i></span><span style={{display:"inline-block"}}>{props.userInfo.department}</span>
+             {userInfo.username}-{userInfo.loginuser}
           </Typography>
           <Typography >
-            <span className={classes.tabothalign}>上次登陆IP<i></i></span>{props.userInfo.lastloginip}
+            <span className={classes.tabothalign}>上次登陆IP<i></i></span>{this.props.userInfo.lastloginip}
           </Typography>
           <Typography >
-            <span className={classes.tabothalign}>登陆时间<i></i></span>{props.userInfo.logintime}
+            <span className={classes.tabothalign}>登陆时间<i></i></span>{this.props.userInfo.logintime}
           </Typography>
         </CardContent>
        </Card>
-  );
+      </Zoom>
+    );
+  }
 }
-
 UserInfo.propTypes = {
   classes: PropTypes.object.isRequired,
 };

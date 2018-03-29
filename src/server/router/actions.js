@@ -8,12 +8,13 @@ function login(req,res,next) {
 			return next(err);
 		}else{
 			sign=md5(md5(req.body.UserName)+req.body.PassWord+"yunwei");
-			sql='select loginuser,username,token,department,lastloginip,logintime from t_user_info where token="'+sign+'";';
+			sql='select loginuser,username,token,department,createtime,lastloginip,logintime from t_user_info where token="'+sign+'";';
 
 			conn.query(sql,[],(err,results)=>{
 				if (err){
-					exit(err);
+					next(err);
 				}
+				console.log(results)
 				if(typeof(results) !== undefined && results.length==1){
 					req.session.token=results[0].token
 					req.session.userinfo=results[0]

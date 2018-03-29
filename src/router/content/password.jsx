@@ -8,6 +8,7 @@ import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 
 import Divider from 'material-ui/Divider';
+import Slide from 'material-ui/transitions/Slide';
 import Snack from '../components/snackbar';
 import { ajax } from '../../commons/ajax'
 import md5 from 'md5';
@@ -37,7 +38,8 @@ class Password extends Component {
       super(props);
       this.state={
         msg:"",
-        substatus: false
+        substatus: false,
+        in: false,
       }
   }
   handleSubmit(){
@@ -107,10 +109,14 @@ class Password extends Component {
       console.log(error)
     })
   }
+  componentDidMount() {
+    this.setState({in:true})
+  }
   render() {
 
     let {classes} =this.props;
     return (
+      <Slide direction="left" in={this.state.in} timeout={500}>
       <Paper className={classes.rootPaper} >
       <Grid container spacing={8} >
         <Grid container >
@@ -171,6 +177,7 @@ class Password extends Component {
 
         <Snack title={this.state.msg} vertical={"bottom"} />
       </Paper>
+      </Slide>
       );
   }
 }
