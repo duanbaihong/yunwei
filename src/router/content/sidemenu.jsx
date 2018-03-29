@@ -48,9 +48,6 @@ const styles = theme => ({
   }
 });
 class SideMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
     handleClickLink(url="/content/packageinfo"){
       this.props.history.replace(url)
     }

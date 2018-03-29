@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
@@ -100,7 +99,6 @@ class Password extends Component {
         default:
           this.setState({msg:req.data.resultMsg!==""?req.data.resultMsg:"数据报文异常！",substatus:false});
           return false;
-          break;
       }
       this.setState({msg:req.data.resultMsg,substatus:false})
 

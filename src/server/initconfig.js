@@ -15,5 +15,12 @@ module.exports={
 		port: config.redis.port || "6379",
 		pass: config.redis.pass || "",
 		db: config.redis.db || 0
+	},
+	thirtyhttpoption: {
+		url: config.thirtyhttp.url || "http://127.0.0.1:2223",
+		loginuri: config.thirtyhttp.loginuri || "/passport/login.do",
+		devqueryuri: config.thirtyhttp.devqueryuri ||"/admin/device/getDeviceListV1.do",
+		username: config.thirtyhttp.username || "zy_mzh",
+		password: config.thirtyhttp.password || "F7n-Cig-z6m-Phm"
 	}
 }

@@ -119,7 +119,7 @@ class Login extends Component {
         );
   }
   handleEnterPress(e){
-    if(e.keyCode==13){
+    if(e.keyCode===13){
       this.loginCheck();
     }
   }

@@ -5,18 +5,18 @@ var md5 = require('md5');
 
 var router = express.Router();
 var errormsg =  require('./msgtypes');
-var {login,checklogin,loginout,changepass} = require('./actions');
+var {login,checklogin,loginout,changepass,querydevinfo} = require('./actions');
 /* GET users listing. */
 
 let sendMsg=""
 function sessionHandle(req, res, next) {
   //请求session
-  if(!req.body.hasOwnProperty('MsgType') || !req.body.hasOwnProperty('Sign')){
-    sendMsg={resultCode: 99999,
-             resultMsg: errormsg['99999']}
-    res.send(sendMsg)
-    return true;
-  }
+  // if(!req.body.hasOwnProperty('MsgType') || !req.body.hasOwnProperty('Sign')){
+  //   sendMsg={resultCode: 99999,
+  //            resultMsg: errormsg['99999']}
+  //   res.send(sendMsg)
+  //   return true;
+  // }
   next();
 }
 router.post('/', sessionHandle,function(req, res, next) {
@@ -56,6 +56,16 @@ router.post('/', sessionHandle,function(req, res, next) {
         return true;
       }
       changepass(req,res,next);
+      break;
+    case 'ACTION_QUERY_PACKAGE_INFO':
+      
+      // if(req.body.Sign != md5(req.body.Token+req.body.oldpassword+req.body.newpassword+req.body.renewpassword)){
+      //   sendMsg={resultCode: 99998,
+      //          resultMsg: errormsg['99998']}
+      //   res.send(sendMsg)
+      //   return true;
+      // }
+      querydevinfo(req,res,next);
       break;
     default:
       sendMsg={resultCode: 99999,

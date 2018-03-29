@@ -16,11 +16,9 @@ import {userCheckLogin} from '../actions'
 import md5 from 'md5';
 
 class YunweiRouter extends Component {
-  constructor(props){
-    super(props);
-  }
+
   componentDidMount() {
-    if(window.isLogin ==undefined){
+    if(window.isLogin === undefined){
       this.checkLogin()
     }
   }
@@ -33,7 +31,7 @@ class YunweiRouter extends Component {
     if(sessionStorage.token === undefined){
       let params={
         MsgType: "ACTION_CHECK_USER_LOGIN",
-        Sign: md5("ACTION_CHECK_USER_LOGIN"+"SIGN"),
+        Sign: md5("ACTION_CHECK_USER_LOGINSIGN"),
       }
       ajax('/api',params).then((resp)=>{
         if(resp.status===200 && resp.statusText==="OK" && resp.data.resultCode==="10000" && resp.data.hasOwnProperty('userInfo')){

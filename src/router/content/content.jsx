@@ -1,6 +1,4 @@
 import React, { Component }  from 'react';
-import immutable from 'immutable';
-import Typography from 'material-ui/Typography';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
@@ -42,9 +40,6 @@ const styles = theme => ({
   toolbar: theme.mixins.toolbar
 });
 class Content extends Component {
-  constructor(props){
-    super(props);
-  }
   openReport(){
     this.props.history.push('/notfound')
   }
