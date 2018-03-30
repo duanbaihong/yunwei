@@ -1,23 +1,28 @@
 var md5 = require('md5');
 var request=require('request');
 var errormsg =  require('./msgtypes');
-var {thirtyhttpoption} =  require('../initconfig');
+var {thirtyhttpoption,hemumysqloption} =  require('../initconfig');
 
 function login(req,res,next) {
 	// body...
 	req.getConnection((err,conn)=>{
 		if(err){
-			return next(err);
+			return res.send({
+            resultCode: "12003",
+            resultMsg: errormsg['12003']
+            })
 		}else{
 			sign=md5(md5(req.body.UserName)+req.body.PassWord+"yunwei");
 			sql='select loginuser,username,token,department,createtime,lastloginip,logintime from t_user_info where token="'+sign+'";';
 			updatesql='update t_user_info set logintime="'+'",lastloginip="'+req._remoteAddress.split(':')
 			conn.query(sql,[],(err,results)=>{
 				if (err){
-					next(err);
+          return res.send({
+            resultCode: "12003",
+            resultMsg: errormsg['12003']
+            })
 				}
-				console.log(results)
-				if(typeof(results) !== undefined && results.length==1){
+				if(!err && typeof(results) !== undefined && results.length==1){
 					req.session.token=results[0].token
 					req.session.userinfo=results[0]
 					res.send({
@@ -25,7 +30,6 @@ function login(req,res,next) {
 						resultMsg: errormsg['10000'],
 						userInfo:results[0]
 						})
-					console.log(req)
 				}else{
 					res.send({
 						resultCode: "12001",
@@ -101,14 +105,22 @@ function changepass(req,res,next) {
 	}
 	
 }
+
 function querydevinfo(req,res,next){
 	if (req.session.hasOwnProperty('token') && req.session.token == req.body.Token){
+    queryparams={};
+    if(req.body.hasOwnProperty('phone')){
+      queryparams['email']=req.body.phone;
+    }else if(req.body.hasOwnProperty('macimei')){
+       queryparams['deviceId']=req.body.macimei;
+    }else{
+      return res.send({resultCode: "11006",resultMsg: errormsg['11006']});
+    }
     loginurl=thirtyhttpoption.url+thirtyhttpoption.loginuri
     loginparams={
       username: thirtyhttpoption.username,
       password: thirtyhttpoption.password
     }
-    console.log(loginparams)
     // 启用COOKIE
     request = request.defaults({jar: true});
     request.debug = true
@@ -116,15 +128,35 @@ function querydevinfo(req,res,next){
 		  if (!error && response.statusCode == 200) {
         data=JSON.parse(body);
 		    if(data.success){
-          res.send(data);
+          queryurl=thirtyhttpoption.url+thirtyhttpoption.devqueryuri
+          request.post(queryurl,{form:queryparams}, function (err, resp, rspdata) {
+            if (!err && resp.statusCode == 200) {
+              var respjsdata=JSON.parse(rspdata)
+              if(respjsdata.success){
+                var mysql      = require('mysql');
+                var connection = mysql.createConnection(hemumysqloption);
+                connection.connect((err)=>{ if(err) console.log(err) })
+
+                console.log(respjsdata.result.rows)
+                return res.send(respjsdata.result.rows);
+              }
+            }else{
+
+            }
+          });
+        }else{
+          console.log("登陆登虹管理平台失败！"+body);
         }
 		  }
-      if(response.statusCode=== 400){
+      if(!error && response.statusCode === 400){
         res.send(body)
       }
+      if(error) {console.log(error);return res.send({resultCode:"13001",resultMsg: errormsg['13001']})}
 		})
+
 	}else{
-		res.send({resultCode: "22222",resultMsg: errormsg['22222']});
+    console.log(req.session)
+		return res.send({resultCode: "22222",resultMsg: errormsg['22222']});
 	}	
 }
 module.exports={checklogin,login,loginout,changepass,querydevinfo}

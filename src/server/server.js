@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 app.use(session({
     secret: 'yunwei',
     name: 'yunwei.sid',   //这里的name值得是cookie的name，默认cookie的name是：connect.sid
-    cookie: {maxAge: 30*1000 },  //即30分钟后session和相应的cookie失效过期
+    cookie: {maxAge: 30*60*1000 },  //即30分钟后session和相应的cookie失效过期
     resave: false,
     saveUninitialized: false,
 }));

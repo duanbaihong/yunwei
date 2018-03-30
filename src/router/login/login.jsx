@@ -136,7 +136,7 @@ class Login extends Component {
       return false;
     }
 
-    this.setState({isloginStatus:!this.state.isloginStatus})
+    this.setState({isloginStatus:!this.state.isloginStatus,SnackBarMsg:"" })
     let params={
       MsgType: "ACTION_USER_LOGIN",
       UserName: this.username.value,

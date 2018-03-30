@@ -11,15 +11,12 @@ var {login,checklogin,loginout,changepass,querydevinfo} = require('./actions');
 let sendMsg=""
 function sessionHandle(req, res, next) {
   //请求session
-  // if(!req.body.hasOwnProperty('MsgType') || !req.body.hasOwnProperty('Sign')){
-  //   sendMsg={resultCode: 99999,
-  //            resultMsg: errormsg['99999']}
-  //   res.send(sendMsg)
-  //   return true;
-  // }
-  next();
-}
-router.post('/', sessionHandle,function(req, res, next) {
+  if(!req.body.hasOwnProperty('MsgType') || !req.body.hasOwnProperty('Sign')){
+    sendMsg={resultCode: 99999,
+             resultMsg: errormsg['99999']}
+    res.send(sendMsg)
+    return true;
+  }
   switch(req.body.MsgType){
     case 'ACTION_USER_LOGIN':
       if(req.body.Sign != md5('ACTION_USER_LOGIN'+md5(req.body.UserName)+req.body.PassWord)){
@@ -58,13 +55,17 @@ router.post('/', sessionHandle,function(req, res, next) {
       changepass(req,res,next);
       break;
     case 'ACTION_QUERY_PACKAGE_INFO':
-      
-      // if(req.body.Sign != md5(req.body.Token+req.body.oldpassword+req.body.newpassword+req.body.renewpassword)){
-      //   sendMsg={resultCode: 99998,
-      //          resultMsg: errormsg['99998']}
-      //   res.send(sendMsg)
-      //   return true;
-      // }
+      if(req.body.hasOwnProperty('phone') && req.body.phone!=""){
+        sign=md5("ACTION_QUERY_PACKAGE_INFO"+req.body.Token+req.body.phone);
+      }else if(req.body.hasOwnProperty('macimei') && req.body.macimei!=""){
+        sign=md5("ACTION_QUERY_PACKAGE_INFO"+req.body.Token+req.body.macimei);
+      }
+      if(req.body.Sign !=sign){
+        sendMsg={resultCode: 99998,
+               resultMsg: errormsg['99998']}
+        res.send(sendMsg)
+        return true;
+      }
       querydevinfo(req,res,next);
       break;
     default:
@@ -72,6 +73,10 @@ router.post('/', sessionHandle,function(req, res, next) {
                resultMsg: errormsg['99999']}
       res.send(sendMsg)
   }
+  next();
+}
+router.post('/', sessionHandle,function(req, res, next) {
+  
 });
 
 module.exports = router;

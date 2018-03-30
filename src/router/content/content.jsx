@@ -59,10 +59,10 @@ class Content extends Component {
                     window.isLogin?<Password userLoginOut={this.props.userLoginOut}   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/userinfo" render={(props)=>(
-                    window.isLogin?<UserInfo {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<UserInfo   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/packageinfo" render={(props)=>(
-                    window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<PackageInfo userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/ordermessage" render={(props)=>(
                     window.isLogin?<OrderMessage {...props}  />:<Redirect to="/login" />

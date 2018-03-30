@@ -10,6 +10,14 @@ module.exports={
 		database: config.mysql.database || "",
 		dateStrings: true ,
 	},
+	hemumysqloption:{
+		host: config.hemudb.host || "127.0.0.2",
+		user: config.hemudb.user || "",
+		password: config.hemudb.pass || "",
+		port: config.hemudb.port || "3306",
+		database: config.hemudb.database || "",
+		dateStrings: true,
+	},
 	redisoption:{
 		host: config.redis.host || "127.0.0.1",
 		port: config.redis.port || "6379",

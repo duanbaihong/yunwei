@@ -66,7 +66,6 @@ class UserAvater extends Component {
       Token: this.props.userInfo.token,
       Sign: md5('ACTION_USER_LOGOUT'+this.props.userInfo.token),
     }
-    console.log(this.props)
     ajax('/api',params).then(this.handleExitSuccess.bind(this))
                        .catch(this.handleExitSuccess.bind(this));
     
