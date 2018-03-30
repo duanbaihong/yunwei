@@ -6,6 +6,7 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
+import { CircularProgress } from 'material-ui/Progress';
 
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
@@ -13,6 +14,7 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import SearchIcon from 'material-ui-icons/Search';
 import Snack from '../components/snackbar';
+import green from 'material-ui/colors/green';
 import md5 from 'md5';
 
 import { ajax } from '../../commons/ajax'
@@ -21,6 +23,11 @@ const styles = theme => ({
     width: '100%',
     marginTop: 0,
     overflowX: 'auto',
+  },
+  wordshow:{
+    [theme.breakpoints.down('sm')]:{
+      display:"none"
+    }
   },
   table: {
     // minWidth: 700,
@@ -31,7 +38,11 @@ const styles = theme => ({
       }
     },
     "&>tbody>tr":{
-      height:35
+      height:35,
+      "&>td":{
+        color: "rgba(0, 0, 0, 0.66)",
+        fontSize: "0.94125rem"
+      }
     }
   },
   paper:{
@@ -39,7 +50,6 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]:{
       paddingLeft:10,
       marginTop:0,
-      marginLeft:10
     },
     [theme.breakpoints.down('xs')]:{
       paddingLeft:5,
@@ -59,7 +69,16 @@ const styles = theme => ({
     [theme.breakpoints.down('xs')]:{
       margin:8,
     },
-    float: "right"
+    float: "right",
+    position: "relative"
+  },
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -20,
+    marginLeft: -20,
   },
 });
 
@@ -73,6 +92,7 @@ class PackageInfo extends Component {
         age:"",
         age1:"",
         in: false,
+        loading: false,
       }
   }
   handleChange = event => {
@@ -133,6 +153,7 @@ class PackageInfo extends Component {
       params['macimei']= macimei.value
       params['Sign']= md5("ACTION_QUERY_PACKAGE_INFO"+sessionStorage.token+ macimei.value);
     }
+    this.setState({loading:true})
     console.log(params)
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
@@ -142,24 +163,26 @@ class PackageInfo extends Component {
         case "xxxxx":
           break;
         case "22222":
-          this.setState({msg:req.data.resultMsg});
+          this.setState({msg:req.data.resultMsg,loading:false});
           setTimeout(()=>{this.props.userLoginOut()}, 1000);
           break;
         default:
-          this.setState({msg:req.data.resultMsg});
+          this.setState({msg:req.data.resultMsg,loading:false});
       }
     }).catch(error=>{
-      this.setState({msg:"数据提交错误！或网络异常！"});
+      this.setState({msg:"数据提交错误！或网络异常！",loading:false});
       console.log(error)
     })
   }
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
+    console.log(this.state)
     return (
         <Grid container spacing={24}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
-              查询方式：
+            <span className={classes.wordshow}>查询方式：</span>
               <TextField
                 id="phone_imei"
                 label="手机号"
@@ -178,21 +201,24 @@ class PackageInfo extends Component {
                 margin="normal"
                 inputRef={(c) => this.macimei = c}
               />
-              <Button variant="raised" 
-                      color="secondary" 
-                      className={classes.search}
-                      onClick={this.handleQuery.bind(this)}>
-                <SearchIcon />
-                查询
-              </Button>
+              <div className={classes.search}>
+                <Button variant="raised" 
+                        color="secondary" 
+                        disabled={loading}
+                        onClick={this.handleQuery.bind(this)}>
+                  <SearchIcon />
+                  查询
+                </Button>
+                {loading && <CircularProgress size={40} className={classes.buttonProgress} />}
+              </div>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Table className={classes.table}>
                 <TableHead>
-                  <TableRow hover>
-                    <TableCell>运管套餐情况</TableCell>
+                  <TableRow >
+                    <TableCell >运管套餐情况</TableCell>
                     <TableCell numeric>
                         <FormControl className={classes.formControl} fullWidth={true}>
                           <Select

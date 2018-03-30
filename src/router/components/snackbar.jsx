@@ -14,7 +14,10 @@ const styles = theme=>({
     padding: "0px 8px 0px 8px",
     marginTop:5,
     marginBottom:10,
-    opacity:0.9
+    opacity:0.9,
+    [theme.breakpoints.down('sm')]:{
+      flexGrow:0
+    }
   },
   iconbutton:{
     width:36,
