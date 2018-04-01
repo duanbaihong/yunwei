@@ -6,16 +6,13 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl } from 'material-ui/Form';
 import Select from 'material-ui/Select';
-import { CircularProgress } from 'material-ui/Progress';
 
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button';
-import SearchIcon from 'material-ui-icons/Search';
 import Snack from '../components/snackbar';
 import green from 'material-ui/colors/green';
 import md5 from 'md5';
+import QueryText from './othercomponents/querytext';
 
 import { ajax } from '../../commons/ajax'
 const styles = theme => ({
@@ -23,6 +20,9 @@ const styles = theme => ({
     width: '100%',
     marginTop: 0,
     overflowX: 'auto',
+  },
+  rootdiv: {
+    width: '100%',
   },
   wordshow:{
     [theme.breakpoints.down('sm')]:{
@@ -92,7 +92,7 @@ class PackageInfo extends Component {
         age:"",
         age1:"",
         in: false,
-        loading: false,
+        loading:false,
       }
   }
   handleChange = event => {
@@ -109,52 +109,24 @@ class PackageInfo extends Component {
   handleOpen1 = () => {
     this.setState({ open1: true });
   };
-
-  handleQuery(){
-    let macimei=this.macimei
-    let phone=this.phone
-    if(macimei.value=== "" && phone.value===""){
-      this.setState({msg:"请输入用户手机号或设备MAC号或设备IMEI号"});
-      phone.focus();
-      return false;
-    }
-    if(macimei.value!==""){
-      if(!(macimei.value.length===12 || macimei.value.length===15)){
-        this.setState({msg:"请输入正确的设备MAC或IMEI位数。"});
-        macimei.focus()
-        return false;
-      }
-      if(!macimei.value.match(/^\w+$/g)){
-        this.setState({msg:"请输入合法的设备MAC或IMEI号。"});
-        macimei.focus()
-        return false;
-      }
-    }
-    if(phone.value!==""){
-      if(!(phone.value.length===11)){
-        this.setState({msg:"请输入正确位数的手机号码。"});
-        phone.focus()
-        return false;
-      }
-      if(!phone.value.match(/^1[3456789]\d+$/g)){
-        this.setState({msg:"请输入合法的手机号码。"});
-        phone.focus()
-        return false;
-      }
-    }
+  setStateMsg(msg){
+    this.setState(msg);
+  }
+  handleQuery(data){
+    let macimei=data.macimei
+    let phone=data.phone
+    console.log(data)
     let params={
       MsgType: "ACTION_QUERY_PACKAGE_INFO",
       Token: sessionStorage.token,
     }
-    if(phone.value!==""){
-      params['phone']= phone.value
-      params['Sign']= md5("ACTION_QUERY_PACKAGE_INFO"+sessionStorage.token+phone.value);
+    if(phone!=="" && phone!== undefined){
+      params['phone']= phone
+      params['Sign']= md5("ACTION_QUERY_PACKAGE_INFO"+sessionStorage.token+phone);
     }else{
-      params['macimei']= macimei.value
-      params['Sign']= md5("ACTION_QUERY_PACKAGE_INFO"+sessionStorage.token+ macimei.value);
+      params['macimei']= macimei
+      params['Sign']= md5("ACTION_QUERY_PACKAGE_INFO"+sessionStorage.token+ macimei);
     }
-    this.setState({loading:true})
-    console.log(params)
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
@@ -177,42 +149,13 @@ class PackageInfo extends Component {
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
-    console.log(this.state)
     return (
+      <div className={classes.rootdiv}>
+        <QueryText 
+            setmsg={this.setStateMsg.bind(this)} 
+            handleQuery={this.handleQuery.bind(this)}
+            loading={this.state.loading} />
         <Grid container spacing={24}>
-          <Grid item xs={12}>
-            <Paper className={classes.paper}>
-            <span className={classes.wordshow}>查询方式：</span>
-              <TextField
-                id="phone_imei"
-                label="手机号"
-                className={classes.textField}
-                type="text"
-                autoComplete="phone"
-                margin="normal"
-                inputRef={(c) => this.phone = c}
-              /> 
-              <TextField
-                id="password-input"
-                label="设备号MAC或IMEI号查询"
-                className={classes.textField}
-                type="text"
-                autoComplete="macimei"
-                margin="normal"
-                inputRef={(c) => this.macimei = c}
-              />
-              <div className={classes.search}>
-                <Button variant="raised" 
-                        color="secondary" 
-                        disabled={loading}
-                        onClick={this.handleQuery.bind(this)}>
-                  <SearchIcon />
-                  查询
-                </Button>
-                {loading && <CircularProgress size={40} className={classes.buttonProgress} />}
-              </div>
-            </Paper>
-          </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Table className={classes.table}>
@@ -367,6 +310,7 @@ class PackageInfo extends Component {
           </Grid>
             <Snack title={this.state.msg} vertical={"bottom"} />
         </Grid>
+      </div>
     );
   }
 }

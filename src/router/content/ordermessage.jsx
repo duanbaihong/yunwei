@@ -12,6 +12,7 @@ import Table, {
 import Paper from 'material-ui/Paper';
 
 import QueryText from './othercomponents/querytext';
+import Snack from '../components/snackbar';
 import EnhancedTableHead from './othercomponents/enhancedtableheader';
 import EnhancedTableToolbar from './othercomponents/enhancedtabletoolbar';
 
@@ -57,7 +58,8 @@ class PackageInfo extends React.Component {
       ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
       page: 0,
       rowsPerPage: 10,
-      loading: false,
+      msg: "",
+      loading:"",
     };
   }
 
@@ -107,8 +109,11 @@ class PackageInfo extends React.Component {
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
-  handleQuery(){
+  handleQuery(data){
 
+  }
+  setStateMsg(msg){
+    this.setState(msg);
   }
 
   render() {
@@ -118,7 +123,10 @@ class PackageInfo extends React.Component {
 
     return (
       <div className={classes.rootdiv}>
-        <QueryText loading={this.state.loading} handleQuery={this.handleQuery.bind(this)} />
+        <QueryText 
+            setmsg={this.setStateMsg.bind(this)} 
+            handleQuery={this.handleQuery.bind(this)}
+            loading={this.state.loading} />
         <Paper className={classes.root} >
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
@@ -177,6 +185,7 @@ class PackageInfo extends React.Component {
               </TableFooter>
             </Table>
           </div>
+          <Snack title={this.state.msg} vertical={"bottom"} />
         </Paper>
       </div>
     );

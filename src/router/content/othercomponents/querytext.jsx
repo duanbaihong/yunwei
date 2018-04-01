@@ -51,44 +51,46 @@ const styles = theme => ({
   },
 });
   class QueryText extends Component {
-  constructor(props) {
-      super(props);
-  }
   handleQuery(){
     let macimei=this.macimei
     let phone=this.phone
+    let data={};
     if(macimei.value=== "" && phone.value===""){
-      this.setState({msg:"请输入用户手机号或设备MAC号或设备IMEI号"});
+      this.props.setmsg({msg:"请输入用户手机号或设备MAC号或设备IMEI号"});
       phone.focus();
       return false;
     }
     if(macimei.value!==""){
       if(!(macimei.value.length===12 || macimei.value.length===15)){
-        this.setState({msg:"请输入正确的设备MAC或IMEI位数。"});
+        this.props.setmsg({msg:"请输入正确的设备MAC或IMEI位数。"});
         macimei.focus()
         return false;
       }
       if(!macimei.value.match(/^\w+$/g)){
-        this.setState({msg:"请输入合法的设备MAC或IMEI号。"});
+        this.props.setmsg({msg:"请输入合法的设备MAC或IMEI号。"});
         macimei.focus()
         return false;
       }
-    }
-    if(phone.value!==""){
+      data['macimei']=macimei.value;
+    } else if(phone.value!==""){
       if(!(phone.value.length===11)){
-        this.setState({msg:"请输入正确位数的手机号码。"});
+        this.props.setmsg({msg:"请输入正确位数的手机号码。"});
         phone.focus()
         return false;
       }
       if(!phone.value.match(/^1[3456789]\d+$/g)){
-        this.setState({msg:"请输入合法的手机号码。"});
+        this.props.setmsg({msg:"请输入合法的手机号码。"});
         phone.focus()
         return false;
       }
+      data['phone']=phone.value;
     }
+    this.props.setmsg({loading:true})
+    this.props.handleQuery(data);
   }
   render() {
-    const {classes,loading} = this.props;
+    const {classes} = this.props;
+    const {loading} = this.props;
     return (
       <Grid container spacing={24}>
         <Grid item xs={12}>
