@@ -61,7 +61,7 @@ const styles = theme => ({
       return false;
     }
     if(macimei.value!==""){
-      if(!(macimei.value.length===12 || macimei.value.length===15)){
+      if(!(macimei.value.length===12 || macimei.value.length===16)){
         this.props.setmsg({msg:"请输入正确的设备MAC或IMEI位数。"});
         macimei.focus()
         return false;
@@ -85,7 +85,7 @@ const styles = theme => ({
       }
       data['phone']=phone.value;
     }
-    this.props.setmsg({loading:true})
+    this.props.setmsg({loading:true,msg:''})
     this.props.handleQuery(data);
   }
   render() {

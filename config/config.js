@@ -11,7 +11,7 @@ module.exports = {
 		host: "127.0.0.1",
 		user: "plateform_query",
 		pass: "1Zj%R+HY$8$oiQ3V",
-		port: "3306",
+		port: "2224",
 		char: "utf8",
 		database: "platform"
 	},

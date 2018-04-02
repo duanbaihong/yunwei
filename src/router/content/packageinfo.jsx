@@ -90,9 +90,11 @@ class PackageInfo extends Component {
         open:false,
         open1:false,
         age:"",
-        age1:"",
+        age1:0,
         in: false,
         loading:false,
+        dhdata:{},
+        platdata:{},
       }
   }
   handleChange = event => {
@@ -130,7 +132,26 @@ class PackageInfo extends Component {
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
-
+          console.log(req.data)
+          if(req.data.hasOwnProperty('resultData') && req.data.resultData!==''){
+            var dhdata={}
+            var platdata={}
+            req.data.resultData.dhdata.map(n=>{
+              dhdata[n.deviceid.replace('xxxxS_','').toLowerCase()]=n
+            })
+            req.data.resultData.platdata.map(n=>{
+              platdata[n.cam_sn.toLowerCase()]=n
+            })
+            let curstate={
+                  dhdata:dhdata,
+                  platdata:platdata,
+                  loading:false,
+                  age1:Object.keys(dhdata)[0]};
+            if(Object.keys(dhdata).length===0){
+              curstate['msg']="没有找登虹数据！"
+            }
+            this.setState(curstate)
+          }
           break;
         case "xxxxx":
           break;
@@ -149,14 +170,89 @@ class PackageInfo extends Component {
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
-    return (
-      <div className={classes.rootdiv}>
-        <QueryText 
-            setmsg={this.setStateMsg.bind(this)} 
-            handleQuery={this.handleQuery.bind(this)}
-            loading={this.state.loading} />
-        <Grid container spacing={24}>
-          <Grid item xs={12} sm={6}>
+    const dhtable=(JSON.stringify(this.state.dhdata)!=='{}'?(<Grid item xs={12} sm={6}>
+              <Paper className={classes.root}>
+                <Table className={classes.table}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>登虹套餐情况</TableCell>
+                      <TableCell numeric>
+                          <FormControl fullWidth={true}>
+                            <Select
+                              open={this.state.open1}
+                              onClose={this.handleClose}
+                              onOpen={this.handleOpen1}
+                              value={this.state.age1}
+                              onChange={this.handleChange}
+                              inputProps={{
+                                name: 'age1',
+                                id: 'controlled-open-select1',
+                              }}
+                            >{
+                              Object.keys(this.state.dhdata).map(n=>{
+                                return (<MenuItem key={n} value={n}>{n}</MenuItem>)
+                              })}
+                            </Select>
+                          </FormControl>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                        <TableRow hover>
+                          <TableCell>设备MAC</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].deviceid}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备IMEI号</TableCell>
+                          <TableCell numeric>{111}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备名称</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].devicename}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备状态</TableCell>
+                          <TableCell numeric>
+                            {this.state.dhdata[this.state.age1].deviceStatus==0?'离线':(this.state.dhdata[this.state.age1].deviceStatus==1?'在线':'')}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>云存储机房</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].region}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>APP版本号</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].cameraAppVersion}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>固件版本号</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].firmwareVersion}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>绑定手机号</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].mobile}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备绑定时间</TableCell>
+                          <TableCell numeric>{(new Date(parseInt(this.state.dhdata[this.state.age1].registertime,10)*1000).toLocaleString())}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>套餐编码/名称</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].servicename}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>套餐生效时间</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].starttime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].starttime,10)*1000).toLocaleString()):""}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>套餐失效时间</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).toLocaleString()):""}</TableCell>
+                        </TableRow>
+                  </TableBody>
+                </Table>
+              </Paper>
+            </Grid>):"");
+    const plattable=(JSON.stringify(this.state.platdata)!=='{}'?(<Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Table className={classes.table}>
                 <TableHead>
@@ -168,16 +264,16 @@ class PackageInfo extends Component {
                             open={this.state.open}
                             onClose={this.handleClose}
                             onOpen={this.handleOpen}
-                            value={this.state.age}
+                            value={this.state.age1}
                             onChange={this.handleChange}
                             inputProps={{
-                              name: 'age',
+                              name: 'age1',
                               id: 'controlled-open-select',
                             }}
                           >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                          {  Object.keys(this.state.platdata).map(n=>{
+                                return (<MenuItem key={n} value={n}>{n}</MenuItem>)
+                              })}
                           </Select>
                         </FormControl>
                     </TableCell>
@@ -186,129 +282,69 @@ class PackageInfo extends Component {
                 <TableBody>
                   <TableRow hover>
                     <TableCell>设备MAC</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_sn}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备IMEI号</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_imei}</TableCell>
+                  </TableRow>
+                  <TableRow hover>
+                    <TableCell>设备名称</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_name}</TableCell>
+                  </TableRow>
+                  <TableRow hover>
+                    <TableCell>设备状态</TableCell>
+                    <TableCell numeric>
+                      {this.state.platdata[this.state.age1].online==0?'离线':(this.state.platdata[this.state.age1].online==1?'在线':'')}
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备型号</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_model}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>APP版本号</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].app_version}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>固件版本号</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_version}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>绑定手机号</TableCell>
-                    <TableCell numeric>{111}</TableCell>
-                  </TableRow>
-                  <TableRow hover>
-                    <TableCell>设备绑定时间</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].phone_num}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐编码/名称</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].name}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐订购时间</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).toLocaleString()):""}
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐生效时间</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].effective_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].effective_time,10)*1000).toLocaleString()):""}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐失效时间</TableCell>
-                    <TableCell numeric>{111}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].failure_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].failure_time,10)*1000).toLocaleString()):""}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Paper className={classes.root}>
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>登虹套餐情况</TableCell>
-                    <TableCell numeric>
-                        <FormControl fullWidth={true}>
-                          <Select
-                            open={this.state.open1}
-                            onClose={this.handleClose}
-                            onOpen={this.handleOpen1}
-                            value={this.state.age1}
-                            onChange={this.handleChange}
-                            inputProps={{
-                              name: 'age1',
-                              id: 'controlled-open-select1',
-                            }}
-                          >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                          </Select>
-                        </FormControl>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                      <TableRow hover>
-                        <TableCell>设备MAC</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>设备IMEI号</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>设备型号</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>APP版本号</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>固件版本号</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>绑定手机号</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>设备绑定时间</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>套餐编码/名称</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>套餐订购时间</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>套餐生效时间</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                      <TableRow hover>
-                        <TableCell>套餐失效时间</TableCell>
-                        <TableCell numeric>{111}</TableCell>
-                      </TableRow>
-                </TableBody>
-              </Table>
-            </Paper>
-          </Grid>
-            <Snack title={this.state.msg} vertical={"bottom"} />
+          </Grid>):"")
+    return (
+      <div className={classes.rootdiv}>
+        <QueryText 
+            setmsg={this.setStateMsg.bind(this)} 
+            handleQuery={this.handleQuery.bind(this)}
+            loading={this.state.loading} />
+        <Grid container spacing={24}>
+          {plattable}
+          {dhtable}
+          <Snack title={this.state.msg} vertical={"bottom"} />
         </Grid>
       </div>
     );
