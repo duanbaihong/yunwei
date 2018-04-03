@@ -15,7 +15,9 @@ import QueryText from './othercomponents/querytext';
 import Snack from '../components/snackbar';
 import EnhancedTableHead from './othercomponents/enhancedtableheader';
 import EnhancedTableToolbar from './othercomponents/enhancedtabletoolbar';
+import md5 from 'md5';
 
+import { ajax } from '../../commons/ajax'
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
   counter += 1;
@@ -110,6 +112,26 @@ class PackageInfo extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   handleQuery(data){
+    console.log(data)
+    
+    let macimei=data.macimei
+    let phone=data.phone
+    let params={
+      MsgType: "ACTION_QUERY_BUYREPORTS_INFO",
+      Token: sessionStorage.token,
+    }
+    if(phone!=="" && phone!== undefined){
+      params['phone']= phone
+      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+phone);
+    }else{
+      params['macimei']= macimei
+      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ macimei);
+    }
+    ajax('/api',params).then((req,rsp,next)=>{
+
+    }).catch(()=>{
+
+    })
 
   }
   setStateMsg(msg){
@@ -126,7 +148,9 @@ class PackageInfo extends React.Component {
         <QueryText 
             setmsg={this.setStateMsg.bind(this)} 
             handleQuery={this.handleQuery.bind(this)}
-            loading={this.state.loading} />
+            loading={this.state.loading} 
+            disSearial={true}
+            />
         <Paper className={classes.root} >
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>

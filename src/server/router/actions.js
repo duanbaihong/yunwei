@@ -2,6 +2,9 @@ var md5 = require('md5');
 var request=require('request');
 var errormsg =  require('./msgtypes');
 var {thirtyhttpoption,hemumysqloption} =  require('../initconfig');
+request.debug = true
+
+request = request.defaults({jar: true})
 
 function login(req,res,next) {
   // body...
@@ -106,8 +109,16 @@ function changepass(req,res,next) {
   
 }
 
-function asyncRequest(url,body){
-
+function posturl(url,params){
+  return new Promise((resolve, reject)=>{
+    request.post(url,{form:params}, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        resolve(JSON.parse(body))
+      }else{
+        reject(body)
+      }
+    })
+  })
 }
 
 function querydevinfo(req,res,next){
@@ -128,15 +139,9 @@ function querydevinfo(req,res,next){
     }else{
       return res.send({resultCode: "11006",resultMsg: errormsg['11006']});
     }
-    loginurl=thirtyhttpoption.url+thirtyhttpoption.loginuri
-    loginparams={
-                username: thirtyhttpoption.username,
-                password: thirtyhttpoption.password
-                }
     // 启用COOKIE
     // new Promise
-    request = request.defaults({jar: true});
-    request.debug = true
+    let resultData={dh1data:[]}
     test=new Promise((resolve, reject)=>{
       var mysql      = require('mysql');
       var connection = mysql.createConnection(hemumysqloption);
@@ -150,19 +155,22 @@ function querydevinfo(req,res,next){
                    a.`cam_model`,\
                    a.`cam_version`,\
                    a.`app_version`,\
+                   h.access_region region,\
                    f.phone_num,\
                    c.name,\
                    b.`package_code`,\
+                   ifnull(e.`bind_time`,"") bind_time,\
                    ifnull(b.`create_time`,"") create_time,\
                    ifnull(b.`effective_time`,"") effective_time,\
                    ifnull(b.`failure_time`,"") failure_time,\
                    a.`description`\
-            FROM t_camera_info a\
+            FROM t_camera_info a \
             LEFT JOIN t_order_table b ON cam_sn=b.dev_sn AND (b.failure_time is null or b.failure_time >=unix_timestamp(curdate()))\
             LEFT JOIN t_package_info c ON b.`package_code`=c.`code`\
             LEFT JOIN t_sys_area d ON a.`cam_area_code`=d.`area_code`\
             LEFT JOIN t_user_camera_relation e on a.cam_sn=e.cam_sn \
-            LEFT JOIN t_user_info f on e.user_id=f.user_id ';
+            LEFT JOIN t_user_info f on e.user_id=f.user_id \
+            LEFT JOIN t_mac_storage_relation h on h.cam_mac=a.cam_sn ';
       sql=sql.replace(/\s+/g,' ')+where;
       console.log(sql);
       connection.query(sql,(err,rows)=>{
@@ -178,25 +186,52 @@ function querydevinfo(req,res,next){
       })
     })      
     test.then((platdata)=>{
-      request.post(loginurl,{form:loginparams}, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            data=JSON.parse(body);
-          if(data.success){
-            queryurl=thirtyhttpoption.url+thirtyhttpoption.devqueryuri
-            request.post(queryurl,{form:queryparams}, function (err, resp, rspdata) {
-              if (!err && resp.statusCode == 200) {
-                var respjsdata=JSON.parse(rspdata)
-                if(respjsdata.success){
-                  return res.send({resultCode:"10000",resultData:{dhdata:respjsdata.result.rows,
-                                                                  platdata: platdata}});
-                }
+      // 异步登陆
+      resultData['platdata']=platdata;
+      if(!req.session.isdhlogin){
+        loginurl=thirtyhttpoption.url+thirtyhttpoption.loginuri
+        loginparams={
+              username: thirtyhttpoption.username,
+              password: thirtyhttpoption.password
               }
-            });
-          }else{
-            resolve(body)
+        return posturl(loginurl,loginparams);
+      }
+    }).then((data)=>{
+      if(data){
+        req.session.isdhlogin=true;
+      }
+      queryurl=thirtyhttpoption.url+thirtyhttpoption.devqueryuri
+      return posturl(queryurl,queryparams);
+    }).then((data)=>{
+      if(data && data.success){
+        resultData['dhdata']=data.result.rows;
+        devqueryconfiguri=thirtyhttpoption.url+thirtyhttpoption.devqueryconfiguri
+        promiseAll=data.result.rows.map((n)=>{
+          params={
+            deviceId: n.deviceid,
+            productKey: n.productKey,
+            userId: n.uid
           }
-        }
-      })
+          return posturl(devqueryconfiguri,params)
+        })
+        return  Promise.all(promiseAll)
+      }else{
+        req.session.isdhlogin=false;
+      }
+    }).then((data)=>{
+      if(data){
+        var parseString = require('xml2js').parseString;
+        data.map((n)=>{
+          parseString(n.result.context,(err,result)=>{
+            let tmpdata={};
+            tmpdata['mac']=result.profile.general[0].macAddress[0]._
+            tmpdata['imei']=result.profile.general[0].deviceId[0]._
+            tmpdata['devtype']=result.profile.general[0].deviceType[0]
+            resultData['dh1data'].push(tmpdata)
+          })     
+        })     
+      }
+      return res.send({resultCode:"10000",resultData:resultData});
     }).catch((error)=>{
       console.log(error);
       return res.send({resultCode:"13001",resultMsg: errormsg['13001']});
@@ -206,4 +241,15 @@ function querydevinfo(req,res,next){
     return res.send({resultCode: "22222",resultMsg: errormsg['22222']});
   } 
 }
-module.exports={checklogin,login,loginout,changepass,querydevinfo}
+/**
+ * [querybuyreportinfo description]
+ * @param  {[type]}   req  [description]
+ * @param  {[type]}   res  [description]
+ * @param  {Function} next [description]
+ * @return {[type]}        [description]
+ */
+querybuyreportinfo(req,res,next){
+
+}
+
+module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo}

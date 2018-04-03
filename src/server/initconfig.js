@@ -28,6 +28,7 @@ module.exports={
 		url: config.thirtyhttp.url || "http://127.0.0.1:2223",
 		loginuri: config.thirtyhttp.loginuri || "/passport/login.do",
 		devqueryuri: config.thirtyhttp.devqueryuri ||"/admin/device/getDeviceListV1.do",
+		devqueryconfiguri: config.thirtyhttp.devqueryconfiguri ||"/admin/device/getDeviceConfig.do",
 		username: config.thirtyhttp.username || "zy_mzh",
 		password: config.thirtyhttp.password || "F7n-Cig-z6m-Phm"
 	}

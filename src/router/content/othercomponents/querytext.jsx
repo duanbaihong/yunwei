@@ -54,6 +54,7 @@ const styles = theme => ({
   handleQuery(){
     let macimei=this.macimei
     let phone=this.phone
+    let orderno=this.orderno
     let data={};
     if(macimei.value=== "" && phone.value===""){
       this.props.setmsg({msg:"请输入用户手机号或设备MAC号或设备IMEI号"});
@@ -85,6 +86,14 @@ const styles = theme => ({
       }
       data['phone']=phone.value;
     }
+    if(orderno.value!==""){
+      if(!orderno.value.match(/^\w+$/g)){
+          this.props.setmsg({msg:"请输入合法的订单号。"});
+          orderno.focus()
+          return false;
+        }
+        data['orderno']=orderno.value;
+    }
     this.props.setmsg({loading:true,msg:''})
     this.props.handleQuery(data);
   }
@@ -113,7 +122,16 @@ const styles = theme => ({
               autoComplete="macimei"
               margin="normal"
               inputRef={(c) => this.macimei = c}
-            />
+            /> 
+            {this.props.disSearial?(<TextField
+              id="orderno-input"
+              label="订单号"
+              className={classes.textField}
+              type="text"
+              autoComplete="orderno"
+              margin="normal"
+              inputRef={(c) => this.orderno = c}
+            />):""}
             <div className={classes.search}>
               <Button variant="raised" 
                       color="secondary" 

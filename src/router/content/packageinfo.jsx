@@ -132,12 +132,20 @@ class PackageInfo extends Component {
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
-          console.log(req.data)
+          // console.log(req.data)
           if(req.data.hasOwnProperty('resultData') && req.data.resultData!==''){
-            var dhdata={}
-            var platdata={}
+            let dhdata={}
+            let dh1data={}
+            let platdata={}
+
+            req.data.resultData.dh1data.map(n=>{
+              dh1data[n.mac.toLowerCase()]=n
+            })
             req.data.resultData.dhdata.map(n=>{
-              dhdata[n.deviceid.replace('xxxxS_','').toLowerCase()]=n
+              let tmpmac=n.deviceid.replace('xxxxS_','').toLowerCase();
+              dhdata[tmpmac]=n
+              dhdata[tmpmac]['imei']=dh1data[tmpmac].imei
+              dhdata[tmpmac]['devtype']=dh1data[tmpmac].devtype
             })
             req.data.resultData.platdata.map(n=>{
               platdata[n.cam_sn.toLowerCase()]=n
@@ -204,7 +212,7 @@ class PackageInfo extends Component {
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备IMEI号</TableCell>
-                          <TableCell numeric>{111}</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].imei||"暂无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备名称</TableCell>
@@ -215,6 +223,10 @@ class PackageInfo extends Component {
                           <TableCell numeric>
                             {this.state.dhdata[this.state.age1].deviceStatus==0?'离线':(this.state.dhdata[this.state.age1].deviceStatus==1?'在线':'')}
                           </TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备型号</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].devtype||"暂无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>云存储机房</TableCell>
@@ -303,6 +315,10 @@ class PackageInfo extends Component {
                     <TableCell numeric>{this.state.platdata[this.state.age1].cam_model}</TableCell>
                   </TableRow>
                   <TableRow hover>
+                    <TableCell>云存储机房</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].region}</TableCell>
+                  </TableRow>
+                  <TableRow hover>
                     <TableCell>APP版本号</TableCell>
                     <TableCell numeric>{this.state.platdata[this.state.age1].app_version}</TableCell>
                   </TableRow>
@@ -315,13 +331,12 @@ class PackageInfo extends Component {
                     <TableCell numeric>{this.state.platdata[this.state.age1].phone_num}</TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <TableCell>套餐编码/名称</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].name}</TableCell>
+                    <TableCell>设备绑定时间</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].bind_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].bind_time,10)*1000).toLocaleString()):""}</TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <TableCell>套餐订购时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).toLocaleString()):""}
-                    </TableCell>
+                    <TableCell>套餐编码/名称</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].name}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐生效时间</TableCell>
@@ -330,6 +345,16 @@ class PackageInfo extends Component {
                   <TableRow hover>
                     <TableCell>套餐失效时间</TableCell>
                     <TableCell numeric>{this.state.platdata[this.state.age1].failure_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].failure_time,10)*1000).toLocaleString()):""}</TableCell>
+                  </TableRow>
+                  <TableRow hover>
+                    <TableCell>套餐订购时间</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).toLocaleString()):""}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover>
+                    <TableCell>设备渠道</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].area_name}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>

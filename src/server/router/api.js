@@ -5,7 +5,7 @@ var md5 = require('md5');
 
 var router = express.Router();
 var errormsg =  require('./msgtypes');
-var {login,checklogin,loginout,changepass,querydevinfo} = require('./actions');
+var {login,checklogin,loginout,changepass,querydevinfo,querybuyreportinfo} = require('./actions');
 /* GET users listing. */
 
 let sendMsg=""
@@ -67,6 +67,20 @@ function sessionHandle(req, res, next) {
         return true;
       }
       querydevinfo(req,res,next);
+      break;
+    case 'ACTION_QUERY_BUYREPORTS_INFO':
+      if(req.body.hasOwnProperty('phone') && req.body.phone!=""){
+        sign=md5("ACTION_QUERY_BUYREPORTS_INFO"+req.body.Token+req.body.phone);
+      }else if(req.body.hasOwnProperty('macimei') && req.body.macimei!=""){
+        sign=md5("ACTION_QUERY_BUYREPORTS_INFO"+req.body.Token+req.body.macimei);
+      }
+      if(req.body.Sign !=sign){
+        sendMsg={resultCode: 99998,
+               resultMsg: errormsg['99998']}
+        res.send(sendMsg)
+        return true;
+      }
+      querybuyreportinfo(req,res,next);
       break;
     default:
       sendMsg={resultCode: 99999,

@@ -25,6 +25,7 @@ module.exports = {
 		url: "http://127.0.0.1:2223",
 		loginuri: "/passport/login.do",
 		devqueryuri: "/admin/device/getDeviceListV1.do",
+		devqueryconfiguri: "/admin/device/getDeviceConfig.do",
 		username: "zy_mzh",
 		password: "F7n-Cig-z6m-Phm"
 	},
