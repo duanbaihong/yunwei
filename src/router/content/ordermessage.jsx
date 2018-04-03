@@ -24,8 +24,6 @@ function createData(name, calories, fat, carbs, protein) {
   return { id: counter, name, calories, fat, carbs, protein };
 }
 
-
-
 const styles = theme => ({
   rootdiv: {
     width: '100%',
@@ -113,9 +111,10 @@ class PackageInfo extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   handleQuery(data){
     console.log(data)
-    
+
     let macimei=data.macimei
     let phone=data.phone
+    let orderno=data.orderno
     let params={
       MsgType: "ACTION_QUERY_BUYREPORTS_INFO",
       Token: sessionStorage.token,
@@ -123,9 +122,12 @@ class PackageInfo extends React.Component {
     if(phone!=="" && phone!== undefined){
       params['phone']= phone
       params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+phone);
-    }else{
+    }else if(macimei!=="" && macimei!== undefined){
       params['macimei']= macimei
       params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ macimei);
+    }else{
+      params['orderno']= orderno
+      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ orderno);
     }
     ajax('/api',params).then((req,rsp,next)=>{
 

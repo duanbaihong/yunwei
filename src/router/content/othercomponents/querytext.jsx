@@ -56,8 +56,8 @@ const styles = theme => ({
     let phone=this.phone
     let orderno=this.orderno
     let data={};
-    if(macimei.value=== "" && phone.value===""){
-      this.props.setmsg({msg:"请输入用户手机号或设备MAC号或设备IMEI号"});
+    if(macimei.value=== "" && phone.value==="" && (orderno===undefined || orderno.value==="")){
+      this.props.setmsg({msg:"请输入用户手机号或设备MAC号或设备IMEI号"+(orderno?",或订单号!":"")});
       phone.focus();
       return false;
     }
@@ -86,7 +86,7 @@ const styles = theme => ({
       }
       data['phone']=phone.value;
     }
-    if(orderno.value!==""){
+    if(orderno!== undefined && orderno.value!==""){
       if(!orderno.value.match(/^\w+$/g)){
           this.props.setmsg({msg:"请输入合法的订单号。"});
           orderno.focus()

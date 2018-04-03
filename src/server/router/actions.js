@@ -72,7 +72,6 @@ function loginout(req,res,next) {
 }
 function changepass(req,res,next) {
   // body..
-  console.log(req.session);
   if (req.session.hasOwnProperty('token') && req.session.token == req.body.Token){
     if(req.body.Sign!=md5(req.body.Token+req.body.oldpassword+req.body.newpassword+req.body.renewpassword)){
       res.send({resultCode: "99998",resultMsg: errormsg['99998']});
@@ -237,7 +236,6 @@ function querydevinfo(req,res,next){
       return res.send({resultCode:"13001",resultMsg: errormsg['13001']});
     });
   }else{
-    console.log(req.session)
     return res.send({resultCode: "22222",resultMsg: errormsg['22222']});
   } 
 }
@@ -248,8 +246,9 @@ function querydevinfo(req,res,next){
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-querybuyreportinfo(req,res,next){
 
+function querybuyreportinfo(req,res,next){
+  console.log(req)
 }
 
 module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo}
