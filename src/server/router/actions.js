@@ -141,7 +141,7 @@ function querydevinfo(req,res,next){
     // 启用COOKIE
     // new Promise
     let resultData={dh1data:[]}
-    test=new Promise((resolve, reject)=>{
+    devQuery=new Promise((resolve, reject)=>{
       var mysql      = require('mysql');
       var connection = mysql.createConnection(hemumysqloption);
       connection.connect((err)=>{ if(err) console.log(err) })
@@ -184,7 +184,7 @@ function querydevinfo(req,res,next){
         }
       })
     })      
-    test.then((platdata)=>{
+    devQuery.then((platdata)=>{
       // 异步登陆
       resultData['platdata']=platdata;
       if(!req.session.isdhlogin){
@@ -221,11 +221,11 @@ function querydevinfo(req,res,next){
       if(data){
         var parseString = require('xml2js').parseString;
         data.map((n)=>{
-          parseString(n.result.context,(err,result)=>{
+          parseString(n.result.context,{explicitArray : false},(err,result)=>{
             let tmpdata={};
-            tmpdata['mac']=result.profile.general[0].macAddress[0]._
-            tmpdata['imei']=result.profile.general[0].deviceId[0]._
-            tmpdata['devtype']=result.profile.general[0].deviceType[0]
+            tmpdata['mac']=result.profile.general.macAddress._
+            tmpdata['imei']=result.profile.general.deviceId._
+            tmpdata['devtype']=result.profile.general.deviceType
             resultData['dh1data'].push(tmpdata)
           })     
         })     
@@ -248,7 +248,48 @@ function querydevinfo(req,res,next){
  */
 
 function querybuyreportinfo(req,res,next){
-  console.log(req)
+  if (req.session.hasOwnProperty('userinfo') && req.session.hasOwnProperty('token') ){
+    let where="where "
+    if(req.body.hasOwnProperty('orderno')){
+      where+='order_serial_number like "%'+req.body.orderno+'%"'
+    }else if(req.body.hasOwnProperty('phone')){
+      where+='message_body like "%'+req.body.phone+'%"'
+    }else if(req.body.hasOwnProperty('macimei')){
+      where+='message_body like "%'+req.body.macimei+'%"'
+    }else{
+      return res.send({resultCode:"99997",resultMsg: errormsg['99997']})
+    }
+    pkgReportQuery=new Promise((resolve, reject)=>{
+      var mysql      = require('mysql');
+      var connection = mysql.createConnection(hemumysqloption);
+      connection.connect((err)=>{ if(err) console.log(err) })
+      sql='SELECT order_serial_number serialnumber,\
+                   message_body msgbody,\
+                   handle_result_desc result,\
+                   verify_result verifyresult,\
+                   `time`\
+            FROM t_boss_data_log_table\
+            '+where+' \
+            ORDER BY TIME DESC LIMIT 0,40';
+      sql=sql.replace(/\s+/g,' ');
+      console.log(sql);
+      connection.query(sql,(err,rows)=>{
+        if(!err){
+          if(rows.length>0){
+            resolve(rows)
+          }else{
+             return res.send({resultCode:"12004",resultMsg:errormsg['12004']});
+          }
+        }else{
+          return res.send({resultCode:"12002",resultMsg:errormsg['12002']});
+        }
+      })
+    }).then((data)=>{
+      res.send({resultCode:"10000",resultData:{reports: data}})
+    })
+  }else{
+    return res.send({resultCode: "22222",resultMsg: errormsg['22222']});
+  }
 }
 
 module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo}

@@ -65,7 +65,7 @@ class Content extends Component {
                     window.isLogin?<PackageInfo userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/ordermessage" render={(props)=>(
-                    window.isLogin?<OrderMessage {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<OrderMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/modulelogs" render={(props)=>(
                     window.isLogin?<ModuleLogs {...props}  />:<Redirect to="/login" />

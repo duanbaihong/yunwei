@@ -9,13 +9,25 @@ import Table, {
   TablePagination,
   TableRow,
 } from 'material-ui/Table';
+
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
+
 import Paper from 'material-ui/Paper';
+import Button from 'material-ui/Button';
 
 import QueryText from './othercomponents/querytext';
 import Snack from '../components/snackbar';
 import EnhancedTableHead from './othercomponents/enhancedtableheader';
 import EnhancedTableToolbar from './othercomponents/enhancedtabletoolbar';
 import md5 from 'md5';
+import { parseString } from 'xml2js';
+import { CircularProgress } from 'material-ui/Progress';
+import Zoom from 'material-ui/transitions/Zoom';
 
 import { ajax } from '../../commons/ajax'
 let counter = 0;
@@ -33,13 +45,35 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
   },
   table: {
-    minWidth: 800,
+    minWidth: 1000,
+  },
+  tabletr:{
+    height:40,
+    "&>td:last-child":{
+      padding:0,
+      textAlign:"center"
+      },
+    "&>td:first-child":{
+      padding:0,
+      textAlign:"center"
+      }
   },
   tableWrapper: {
     overflowX: 'auto',
   },
+  dialogtitle:{
+    padding:10
+  },
+  dialogContent:{
+    padding:"0px 5px"
+  },
+  dialogActions:{
+    padding:"0px 5px"
+  }
 });
-
+function Transition(props) {
+  return <Zoom timeout={700} {...props} />;
+}
 class PackageInfo extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -47,19 +81,13 @@ class PackageInfo extends React.Component {
     this.state = {
       order: 'asc',
       orderBy: 'calories',
-      selected: [],
-      data: [
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('KitKat', 518, 26.0, 65, 7.0),
-        createData('Lollipop', 392, 0.2, 98, 0.0),
-        createData('Marshmallow', 318, 0, 81, 2.0),
-        createData('Nougat', 360, 19.0, 9, 37.0),
-        createData('Oreo', 437, 18.0, 63, 4.0),
-      ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
+      data: [].sort((a, b) => (a.time < b.time ? -1 : 1)),
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 6,
       msg: "",
-      loading:"",
+      loading:false,
+      modelopen:false,
+      messages:''
     };
   }
 
@@ -80,35 +108,22 @@ class PackageInfo extends React.Component {
   };
 
   handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    this.setState({ selected: newSelected });
+   
   };
 
   handleChangePage = (event, page) => {
     this.setState({ page });
   };
-
+  handleModalClose
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
   };
-
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  handleModalClose(){
+    this.setState({modelopen:false})
+  }
+  handleModalOpen(msg){
+    this.setState({modelopen:true,messages:msg})
+  }
   handleQuery(data){
     console.log(data)
 
@@ -129,10 +144,63 @@ class PackageInfo extends React.Component {
       params['orderno']= orderno
       params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ orderno);
     }
+    this.setState({data:[]})
     ajax('/api',params).then((req,rsp,next)=>{
-
+      switch(req.data.resultCode){
+        case "10000":
+          // console.log(req.data)
+          if(req.data.hasOwnProperty('resultData') && req.data.resultData!==''){
+            let dhdata=[]
+            try {
+              req.data.resultData.reports.forEach((n)=>{
+                parseString(n.msgbody,{explicitArray : false},(err,result)=>{
+                  if(!err){
+                    let devmac=""
+                    if(result.OwnPlatForm.Content.BizProcReq.hasOwnProperty('DeviceInfo')){
+                      devmac=result.OwnPlatForm.Content.BizProcReq.DeviceInfo.DevMac;
+                    }
+                    dhdata.push(
+                      { time:n.time,
+                        devMac:devmac,
+                        phoneNum:result.OwnPlatForm.Content.BizProcReq.IDValue||"",
+                        oprCode:result.OwnPlatForm.Content.BizProcReq.OprCode||"",
+                        oprSrc:result.OwnPlatForm.OprSrc||"",
+                        verifyresult:n.verifyresult,
+                        result:n.result,
+                        messages:n.msgbody
+                      })
+                  }else{
+                    result=JSON.parse(n.msgbody)
+                    dhdata.push({
+                        time:n.time,
+                        devMac:result.DevMac,
+                        phoneNum:result.phoneNum,
+                        oprCode:result.OprCode,
+                        oprSrc:result.funCode,
+                        verifyresult:n.verifyresult,
+                        result:n.result,
+                        messages:JSON.stringify(result,null,4)
+                    })
+                  }
+                })
+              })
+            }catch(err){
+              console.log("解析报文，存在失败情况 ！请检查！")
+            }
+            this.setState({loading:false,msg:"",data:dhdata})
+          }else{
+             this.setState({loading:false,msg:"",data:[]})
+          }
+          break;
+        case "22222":
+          this.setState({msg:req.data.resultMsg,loading:false});
+          setTimeout(()=>{this.props.userLoginOut()}, 1000);
+          break;
+        default:
+          this.setState({msg:req.data.resultMsg,loading:false});
+      }
     }).catch(()=>{
-
+      console.log('')
     })
 
   }
@@ -142,8 +210,9 @@ class PackageInfo extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    let index=0;
 
     return (
       <div className={classes.rootdiv}>
@@ -154,11 +223,10 @@ class PackageInfo extends React.Component {
             disSearial={true}
             />
         <Paper className={classes.root} >
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <EnhancedTableToolbar />
           <div className={classes.tableWrapper}>
             <Table className={classes.table}>
               <EnhancedTableHead
-                numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={this.handleRequestSort}
@@ -166,35 +234,45 @@ class PackageInfo extends React.Component {
               />
               <TableBody>
                 {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-                  const isSelected = this.isSelected(n.id);
                   return (
                     <TableRow
                       hover
-                      // onClick={event => this.handleClick(event, n.id)}
-                      // role="checkbox"
-                      // aria-checked={isSelected}
+                      onClick={event => this.handleClick(event, n.id)}
                       tabIndex={-1}
                       key={n.id}
-                      selected={isSelected}
+                      className={classes.tabletr}
                     >
-                      <TableCell >{n.name}</TableCell>
-                      <TableCell numeric>{n.calories}</TableCell>
-                      <TableCell numeric>{n.fat}</TableCell>
-                      <TableCell numeric>{n.carbs}</TableCell>
-                      <TableCell numeric>{n.protein}</TableCell>
+                      <TableCell padding="none" >{index++}</TableCell>
+                      <TableCell padding="none">{new Date(parseInt(n.time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")}</TableCell>
+                      <TableCell >{n.phoneNum}</TableCell>
+                      <TableCell >{n.devMac}</TableCell>
+                      <TableCell >{n.carbs}</TableCell>
+                      <TableCell >{n.verifyresult==="0"?"解析成功":"解析失败"}</TableCell>
+                      <TableCell >{n.result}</TableCell>
+                      <TableCell numeric>
+                        <Button 
+                          variant="flat"  
+                          size="small" 
+                          color="primary"
+                          onClick={this.handleModalOpen.bind(this,n.messages)}>
+                          详细报文
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: 48 * emptyRows }}>
-                    <TableCell colSpan={6} />
+                  <TableRow style={{ height: 40 * emptyRows }}>
+                    <TableCell colSpan={8} style={{textAlign:"center"}}>
+                      {this.state.loading && <CircularProgress size={100} />}
+                    </TableCell>
                   </TableRow>
                 )}
               </TableBody>
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    colSpan={6}
+                    colSpan={8}
                     count={data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
@@ -204,6 +282,8 @@ class PackageInfo extends React.Component {
                     nextIconButtonProps={{
                       'aria-label': '下一页',
                     }}
+                    rowsPerPageOptions={[6,12]}
+                    labelRowsPerPage={"每页显示："}
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   />
@@ -213,6 +293,27 @@ class PackageInfo extends React.Component {
           </div>
           <Snack title={this.state.msg} vertical={"bottom"} />
         </Paper>
+        <Dialog
+          open={this.state.modelopen}
+          transition={Transition}
+          keepMounted
+          onClose={this.handleModalClose.bind(this)}
+          aria-labelledby="form-dialog-title" >
+          <DialogTitle id="form-dialog-title" className={classes.dialogtitle}>详细报文</DialogTitle>
+          <DialogContent className={classes.dialogContent}>
+            <pre style={{ backgroundColor: "#1f1e1e",
+                          color: "#a0a0a0",
+                          padding: 10,
+                          margin:0}}>
+              {this.state.messages}
+            </pre>           
+          </DialogContent>
+          <DialogActions className={classes.dialogActions} >
+            <Button onClick={this.handleModalClose.bind(this)} color="primary">
+              关闭
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

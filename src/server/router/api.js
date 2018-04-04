@@ -73,6 +73,8 @@ function sessionHandle(req, res, next) {
         sign=md5("ACTION_QUERY_BUYREPORTS_INFO"+req.body.Token+req.body.phone);
       }else if(req.body.hasOwnProperty('macimei') && req.body.macimei!=""){
         sign=md5("ACTION_QUERY_BUYREPORTS_INFO"+req.body.Token+req.body.macimei);
+      }else if(req.body.hasOwnProperty('orderno') && req.body.orderno!=""){
+        sign=md5("ACTION_QUERY_BUYREPORTS_INFO"+req.body.Token+req.body.orderno);
       }
       if(req.body.Sign !=sign){
         sendMsg={resultCode: 99998,

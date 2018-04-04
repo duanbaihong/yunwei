@@ -138,16 +138,16 @@ class PackageInfo extends Component {
             let dh1data={}
             let platdata={}
 
-            req.data.resultData.dh1data.map(n=>{
-              dh1data[n.mac.toLowerCase()]=n
+            req.data.resultData.dh1data.forEach(n=>{
+              dh1data[n.mac.toLowerCase()]=n;
             })
-            req.data.resultData.dhdata.map(n=>{
+            req.data.resultData.dhdata.forEach(n=>{
               let tmpmac=n.deviceid.replace('xxxxS_','').toLowerCase();
               dhdata[tmpmac]=n
               dhdata[tmpmac]['imei']=dh1data[tmpmac].imei
               dhdata[tmpmac]['devtype']=dh1data[tmpmac].devtype
             })
-            req.data.resultData.platdata.map(n=>{
+            req.data.resultData.platdata.forEach(n=>{
               platdata[n.cam_sn.toLowerCase()]=n
             })
             let curstate={
@@ -160,8 +160,6 @@ class PackageInfo extends Component {
             }
             this.setState(curstate)
           }
-          break;
-        case "xxxxx":
           break;
         case "22222":
           this.setState({msg:req.data.resultMsg,loading:false});
@@ -221,7 +219,7 @@ class PackageInfo extends Component {
                         <TableRow hover>
                           <TableCell>设备状态</TableCell>
                           <TableCell numeric>
-                            {this.state.dhdata[this.state.age1].deviceStatus==0?'离线':(this.state.dhdata[this.state.age1].deviceStatus==1?'在线':'')}
+                            {this.state.dhdata[this.state.age1].deviceStatus==="0"?'离线':(this.state.dhdata[this.state.age1].deviceStatus==="1"?'在线':'')}
                           </TableCell>
                         </TableRow>
                         <TableRow hover>
@@ -246,19 +244,19 @@ class PackageInfo extends Component {
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备绑定时间</TableCell>
-                          <TableCell numeric>{(new Date(parseInt(this.state.dhdata[this.state.age1].registertime,10)*1000).toLocaleString())}</TableCell>
+                          <TableCell numeric>{(new Date(parseInt(this.state.dhdata[this.state.age1].registertime,10)*1000).Format("yyyy-MM-dd hh:mm:ss"))}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐编码/名称</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].servicename}</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].servicename||"无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐生效时间</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].starttime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].starttime,10)*1000).toLocaleString()):""}</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].starttime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].starttime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐失效时间</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).toLocaleString()):""}</TableCell>
+                          <TableCell numeric>{this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
                         </TableRow>
                   </TableBody>
                 </Table>
@@ -307,7 +305,7 @@ class PackageInfo extends Component {
                   <TableRow hover>
                     <TableCell>设备状态</TableCell>
                     <TableCell numeric>
-                      {this.state.platdata[this.state.age1].online==0?'离线':(this.state.platdata[this.state.age1].online==1?'在线':'')}
+                      {this.state.platdata[this.state.age1].online==="0"?'离线':(this.state.platdata[this.state.age1].online==="1"?'在线':'')}
                     </TableCell>
                   </TableRow>
                   <TableRow hover>
@@ -332,23 +330,23 @@ class PackageInfo extends Component {
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备绑定时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].bind_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].bind_time,10)*1000).toLocaleString()):""}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].bind_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].bind_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):""}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐编码/名称</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].name}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].name||"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐生效时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].effective_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].effective_time,10)*1000).toLocaleString()):""}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].effective_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].effective_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐失效时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].failure_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].failure_time,10)*1000).toLocaleString()):""}</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].failure_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].failure_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐订购时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).toLocaleString()):""}
+                    <TableCell numeric>{this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}
                     </TableCell>
                   </TableRow>
                   <TableRow hover>
@@ -365,7 +363,7 @@ class PackageInfo extends Component {
         <QueryText 
             setmsg={this.setStateMsg.bind(this)} 
             handleQuery={this.handleQuery.bind(this)}
-            loading={this.state.loading} />
+            loading={loading} />
         <Grid container spacing={24}>
           {plattable}
           {dhtable}

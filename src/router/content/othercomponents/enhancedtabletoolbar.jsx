@@ -5,13 +5,13 @@ import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import DeleteIcon from 'material-ui-icons/Delete';
 import FilterListIcon from 'material-ui-icons/FilterList';
 import { lighten } from 'material-ui/styles/colorManipulator';
 import classNames from 'classnames';
 const toolbarStyles = theme => ({
   root: {
     paddingRight: theme.spacing.unit,
+    minHeight:40,
   },
   highlight:
     theme.palette.type === 'light'
@@ -35,38 +35,21 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
+  const { classes } = props;
 
   return (
     <Toolbar
-      className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
+      className={classNames(classes.root)} >
       <div className={classes.title}>
-        {numSelected > 0 ? (
-          <Typography color="inherit" variant="subheading">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography variant="title">订购报文查询</Typography>
-        )}
+          <Typography variant="title">订购报文明细</Typography>
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+        <Tooltip title="Filter list">
+          <IconButton aria-label="Filter list">
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
       </div>
     </Toolbar>
   );
@@ -74,7 +57,6 @@ let EnhancedTableToolbar = props => {
 
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
 };
 
 export default withStyles(toolbarStyles)(EnhancedTableToolbar);
