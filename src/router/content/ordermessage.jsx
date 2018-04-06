@@ -49,12 +49,15 @@ const styles = theme => ({
   },
   tabletr:{
     height:40,
+    "&>td":{
+      padding:5,
+    },
     "&>td:last-child":{
-      padding:0,
+      padding:1,
       textAlign:"center"
       },
     "&>td:first-child":{
-      padding:0,
+      padding:1,
       textAlign:"center"
       }
   },
@@ -151,8 +154,9 @@ class PackageInfo extends React.Component {
           // console.log(req.data)
           if(req.data.hasOwnProperty('resultData') && req.data.resultData!==''){
             let dhdata=[]
-            try {
               req.data.resultData.reports.forEach((n)=>{
+                console.log(typeof n.msgbody)
+                
                 parseString(n.msgbody,{explicitArray : false},(err,result)=>{
                   if(!err){
                     let devmac=""
@@ -170,23 +174,38 @@ class PackageInfo extends React.Component {
                         messages:n.msgbody
                       })
                   }else{
-                    result=JSON.parse(n.msgbody)
-                    dhdata.push({
-                        time:n.time,
-                        devMac:result.DevMac,
-                        phoneNum:result.phoneNum,
-                        oprCode:result.OprCode,
-                        oprSrc:result.funCode,
-                        verifyresult:n.verifyresult,
-                        result:n.result,
-                        messages:JSON.stringify(result,null,4)
-                    })
+                    try {
+                      result=JSON.parse(n.msgbody)
+                      dhdata.push({
+                          time:n.time,
+                          devMac:result.devMac,
+                          phoneNum:result.phoneNum,
+                          oprCode:result.oprCode,
+                          oprSrc:result.funCode,
+                          verifyresult:n.verifyresult,
+                          result:n.result,
+                          messages:JSON.stringify(result,null,4)
+                      })
+                    }catch(err){
+                      if(n.msgbody.match("REQ|")){
+                        let tmpres=n.msgbody.split("|");
+                        dhdata.push({
+                                time:n.time,
+                                devMac:tmpres[4],
+                                phoneNum:tmpres[3]||"",
+                                oprCode:tmpres[0],
+                                oprSrc:"",
+                                verifyresult:n.verifyresult,
+                                result:n.result,
+                                messages:n.msgbody
+                        })
+                      }else{
+                        console.log("解析报文，存在失败情况 ！请检查！"+err)
+                      }
+                    }
                   }
                 })
               })
-            }catch(err){
-              console.log("解析报文，存在失败情况 ！请检查！")
-            }
             this.setState({loading:false,msg:"",data:dhdata})
           }else{
              this.setState({loading:false,msg:"",data:[]})
@@ -213,7 +232,16 @@ class PackageInfo extends React.Component {
     const { data, order, orderBy, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     let index=0;
-
+    const pkgType={
+      MSG_PACKAGE_ORDER_REQ:"套餐订购",
+      MSG_PACKAGE_UNSUBSCRIBE_REQ:"未知",
+      MSG_DEVSN_CHANGE_REQ:"设备变更",
+      MSG_PACKAGE_CHANGE_REQ:"套餐变更",
+      "01":"套餐订购",
+      "04":"套餐订购",
+      "05":"套餐暂停",
+      "06":"套餐退订",
+    }
     return (
       <div className={classes.rootdiv}>
         <QueryText 
@@ -246,8 +274,9 @@ class PackageInfo extends React.Component {
                       <TableCell padding="none">{new Date(parseInt(n.time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")}</TableCell>
                       <TableCell >{n.phoneNum}</TableCell>
                       <TableCell >{n.devMac}</TableCell>
+                      <TableCell >{pkgType.hasOwnProperty(n.oprCode)?pkgType[n.oprCode]:""}</TableCell>
                       <TableCell >{n.carbs}</TableCell>
-                      <TableCell >{n.verifyresult==="0"?"解析成功":"解析失败"}</TableCell>
+                      <TableCell >{n.verifyresult==="0"?"成功":"解析失败"}</TableCell>
                       <TableCell >{n.result}</TableCell>
                       <TableCell numeric>
                         <Button 
@@ -263,7 +292,7 @@ class PackageInfo extends React.Component {
                 })}
                 {emptyRows > 0 && (
                   <TableRow style={{ height: 40 * emptyRows }}>
-                    <TableCell colSpan={8} style={{textAlign:"center"}}>
+                    <TableCell colSpan={9} style={{textAlign:"center"}}>
                       {this.state.loading && <CircularProgress size={100} />}
                     </TableCell>
                   </TableRow>
@@ -272,7 +301,7 @@ class PackageInfo extends React.Component {
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    colSpan={8}
+                    colSpan={9}
                     count={data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
@@ -297,13 +326,17 @@ class PackageInfo extends React.Component {
           open={this.state.modelopen}
           transition={Transition}
           keepMounted
+          maxWidth={"md"}
           onClose={this.handleModalClose.bind(this)}
-          aria-labelledby="form-dialog-title" >
+          aria-labelledby="form-dialog-title"
+           >
           <DialogTitle id="form-dialog-title" className={classes.dialogtitle}>详细报文</DialogTitle>
           <DialogContent className={classes.dialogContent}>
             <pre style={{ backgroundColor: "#1f1e1e",
                           color: "#a0a0a0",
                           padding: 10,
+                          lineHeight:1.7,
+                          borderRadius:3,
                           margin:0}}>
               {this.state.messages}
             </pre>           
