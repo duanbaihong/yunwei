@@ -31,7 +31,13 @@ const styles = theme => ({
   },
   menuItem: {
     height:"100%",
-    '&:focus': {
+  },
+  menuactive:{
+    backgroundColor: theme.palette.primary.main,
+    '& $primary, & $icon': {
+      color: theme.palette.common.white,
+    },
+    "&:hover":{
       backgroundColor: theme.palette.primary.main,
       '& $primary, & $icon': {
         color: theme.palette.common.white,
@@ -48,7 +54,14 @@ const styles = theme => ({
   }
 });
 class SideMenu extends Component {
-    handleClickLink(url="/content/packageinfo"){
+    constructor(props){
+      super(props);
+      this.state={
+        activemenu:0
+      }
+    }
+    handleClickLink(url="/content/packageinfo",actmenu=1){
+      this.setState({activemenu:actmenu})
       this.props.history.replace(url)
     }
     render() {
@@ -56,9 +69,9 @@ class SideMenu extends Component {
       return (
         <Drawer variant="permanent"
             classes={{paper: classes.drawerPaper}} className={classes.drawer} >
-          <MenuList>
-          <MenuItem className={classes.menuItem} 
-                    onClick={this.handleClickLink.bind(this,'/content/packageinfo')} >
+          <MenuList className={classes.menuItem}>
+          <MenuItem className={this.state.activemenu===1?classes.menuactive:""} 
+                    onClick={this.handleClickLink.bind(this,'/content/packageinfo',1)} >
               <ListItemIcon className={classes.icon}>
                 <SendIcon />
               </ListItemIcon>
@@ -66,22 +79,22 @@ class SideMenu extends Component {
                 inset 
                 primary="套餐查询" />
             </MenuItem>
-            <MenuItem className={classes.menuItem} 
-                      onClick={this.handleClickLink.bind(this,'/content/ordermessage')} >
+            <MenuItem className={this.state.activemenu===2?classes.menuactive:""} 
+                      onClick={this.handleClickLink.bind(this,'/content/ordermessage',2)} >
               <ListItemIcon className={classes.icon}>
                 <DraftsIcon />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} inset primary="订购报文" />
             </MenuItem>
-            <MenuItem className={classes.menuItem}
-                      onClick={this.handleClickLink.bind(this,'/content/modulelogs')}  >
+            <MenuItem className={this.state.activemenu===3?classes.menuactive:""} 
+                      onClick={this.handleClickLink.bind(this,'/content/modulelogs',3)}  >
               <ListItemIcon className={classes.icon}>
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} inset primary="模块日志" />
             </MenuItem>
-            <MenuItem className={classes.menuItem}
-                      onClick={this.handleClickLink.bind(this,'/content/operateresults')}>
+            <MenuItem className={this.state.activemenu===4?classes.menuactive:""} 
+                      onClick={this.handleClickLink.bind(this,'/content/operateresults',4)}>
               <ListItemIcon className={classes.icon}>
                 <InboxIcon />
               </ListItemIcon>

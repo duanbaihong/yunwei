@@ -16,7 +16,7 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
-
+import Tooltip from 'material-ui/Tooltip';
 import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 
@@ -169,6 +169,7 @@ class PackageInfo extends React.Component {
                         phoneNum:result.OwnPlatForm.Content.BizProcReq.IDValue||"",
                         oprCode:result.OwnPlatForm.Content.BizProcReq.OprCode||"",
                         oprSrc:result.OwnPlatForm.OprSrc||"",
+                        bossCode:result.OwnPlatForm.Content.BizProcReq.BossCode||"",
                         verifyresult:n.verifyresult,
                         result:n.result,
                         messages:n.msgbody
@@ -182,6 +183,7 @@ class PackageInfo extends React.Component {
                           phoneNum:result.phoneNum,
                           oprCode:result.oprCode,
                           oprSrc:result.funCode,
+                          bossCode:""||"",
                           verifyresult:n.verifyresult,
                           result:n.result,
                           messages:JSON.stringify(result,null,4)
@@ -195,6 +197,7 @@ class PackageInfo extends React.Component {
                                 phoneNum:tmpres[3]||"",
                                 oprCode:tmpres[0],
                                 oprSrc:"",
+                                bossCode:tmpres[2]||"",
                                 verifyresult:n.verifyresult,
                                 result:n.result,
                                 messages:n.msgbody
@@ -242,6 +245,44 @@ class PackageInfo extends React.Component {
       "05":"套餐暂停",
       "06":"套餐退订",
     }
+    const area={
+      "471":"内蒙古",
+      "100":"北京",
+      "220":"天津",
+      "531":"山东省",
+      "311":"河北省",
+      "351":"山西省",
+      "551":"安徽省",
+      "210":"上海",
+      "250":"江苏省",
+      "571":"浙江省",
+      "591":"福建省",
+      "898":"海南省",
+      "200":"广东省",
+      "771":"广西自治区",
+      "971":"青海省",
+      "270":"湖北省",
+      "731":"湖南省",
+      "791":"江西省",
+      "371":"河南省",
+      "891":"西藏自治区",
+      "280":"四川省",
+      "230":"重庆",
+      "290":"陕西省",
+      "851":"贵州省",
+      "871":"云南省",
+      "931":"甘肃省",
+      "951":"宁夏自治区",
+      "991":"新疆自治区",
+      "431":"吉林省",
+      "240":"辽宁省",
+      "451":"黑龙江省",
+      "7777":"互联网渠道",
+      "8888":"自有渠道",
+      "6666":"省渠道",
+      "9191":"铁通",
+      "7000":"一级家开"
+      }
     return (
       <div className={classes.rootdiv}>
         <QueryText 
@@ -274,10 +315,15 @@ class PackageInfo extends React.Component {
                       <TableCell padding="none">{new Date(parseInt(n.time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")}</TableCell>
                       <TableCell >{n.phoneNum}</TableCell>
                       <TableCell >{n.devMac}</TableCell>
+                      <TableCell >{area.hasOwnProperty(n.bossCode)?area[n.bossCode]:""}</TableCell>
                       <TableCell >{pkgType.hasOwnProperty(n.oprCode)?pkgType[n.oprCode]:""}</TableCell>
                       <TableCell >{n.carbs}</TableCell>
                       <TableCell >{n.verifyresult==="0"?"成功":"解析失败"}</TableCell>
-                      <TableCell >{n.result}</TableCell>
+                      <TableCell >
+                        <Tooltip title={n.result}>
+                          <div style={{maxWidth:200,overflow: "hidden"}}>{n.result}</div>
+                        </Tooltip>
+                      </TableCell>
                       <TableCell numeric>
                         <Button 
                           variant="flat"  
@@ -292,7 +338,7 @@ class PackageInfo extends React.Component {
                 })}
                 {emptyRows > 0 && (
                   <TableRow style={{ height: 40 * emptyRows }}>
-                    <TableCell colSpan={9} style={{textAlign:"center"}}>
+                    <TableCell colSpan={10} style={{textAlign:"center"}}>
                       {this.state.loading && <CircularProgress size={100} />}
                     </TableCell>
                   </TableRow>
@@ -301,7 +347,7 @@ class PackageInfo extends React.Component {
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    colSpan={9}
+                    colSpan={10}
                     count={data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}

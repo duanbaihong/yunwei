@@ -51,6 +51,7 @@ class EnhancedTableHead extends React.Component {
           <TableCell >报文时间</TableCell>
           <TableCell >订购手机号</TableCell>
           <TableCell >设备MAC/IMEI</TableCell>
+          <TableCell >报文渠道</TableCell>
           <TableCell >报文类型</TableCell>
           <TableCell >订购来源</TableCell>
           <TableCell >解析结果</TableCell>
