@@ -50,7 +50,7 @@ const styles = theme => ({
   tabletr:{
     height:40,
     "&>td":{
-      padding:5,
+      padding:3,
     },
     "&>td:last-child":{
       padding:1,
@@ -183,7 +183,7 @@ class PackageInfo extends React.Component {
                           phoneNum:result.phoneNum,
                           oprCode:result.oprCode,
                           oprSrc:result.funCode,
-                          bossCode:""||"",
+                          bossCode:result.area||"",
                           verifyresult:n.verifyresult,
                           result:n.result,
                           messages:JSON.stringify(result,null,4)
@@ -281,7 +281,43 @@ class PackageInfo extends React.Component {
       "8888":"自有渠道",
       "6666":"省渠道",
       "9191":"铁通",
-      "7000":"一级家开"
+      "7000":"一级家开",
+      "36":"内蒙古",
+      "32":"北京",
+      "33":"天津",
+      "46":"山东省",
+      "34":"河北省",
+      "35":"山西省",
+      "43":"安徽省",
+      "40":"上海",
+      "41":"江苏省",
+      "42":"浙江省",
+      "44":"福建省",
+      "51":"海南省",
+      "50":"广东省",
+      "52":"广西自治区",
+      "59":"青海省",
+      "48":"湖北省",
+      "49":"湖南省",
+      "45":"江西省",
+      "47":"河南省",
+      "62":"西藏自治区",
+      "54":"四川省",
+      "53":"重庆",
+      "57":"陕西省",
+      "55":"贵州省",
+      "56":"云南省",
+      "58":"甘肃省",
+      "60":"宁夏自治区",
+      "61":"新疆自治区",
+      "38":"吉林省",
+      "37":"辽宁省",
+      "39":"黑龙江省",
+      "77":"互联网渠道",
+      "88":"自有渠道",
+      "66":"省渠道",
+      "91":"铁通",
+      "110":"一级家开"
       }
     return (
       <div className={classes.rootdiv}>
