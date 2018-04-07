@@ -27,6 +27,11 @@ const toolbarStyles = theme => ({
     textAlign:"center",
     width: 35
   },
+  labelsort:{
+    "&>svg":{
+      margin:0
+    }
+  },
   lastth:{
     padding:1,
     textAlign:"center",
@@ -48,14 +53,78 @@ class EnhancedTableHead extends React.Component {
       <TableHead >
         <TableRow className={classes.thead}>
           <TableCell className={classes.firstth} >#</TableCell>
-          <TableCell >报文时间</TableCell>
-          <TableCell >订购手机号</TableCell>
-          <TableCell >设备MAC/IMEI</TableCell>
-          <TableCell >报文渠道</TableCell>
-          <TableCell >报文类型</TableCell>
-          <TableCell >订购来源</TableCell>
-          <TableCell >解析结果</TableCell>
-          <TableCell >处理结果</TableCell>
+          <TableCell >
+            <TableSortLabel 
+              active={orderBy === "time"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('time')}>
+              报文时间
+            </TableSortLabel>
+          </TableCell>
+          <TableCell >
+            <TableSortLabel 
+              active={orderBy === "phoneNum"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('phoneNum')}>
+                订购手机号
+            </TableSortLabel>
+          </TableCell>
+          <TableCell >
+            <TableSortLabel 
+              active={orderBy === "devMac"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('devMac')}>
+                设备MAC/IMEI
+            </TableSortLabel>
+          </TableCell>
+          <TableCell>
+            <TableSortLabel 
+              active={orderBy === "bossCode"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('bossCode')}>
+                报文渠道
+            </TableSortLabel>
+          </TableCell>
+          <TableCell >
+            <TableSortLabel 
+              active={orderBy === "oprCode"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('oprCode')}>
+                报文类型
+            </TableSortLabel>
+          </TableCell>
+          <TableCell >
+            <TableSortLabel 
+              active={orderBy === "oprCode"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('oprCode')}>
+                订购来源
+            </TableSortLabel>
+          </TableCell>
+          <TableCell>
+            <TableSortLabel 
+              active={orderBy === "verifyresult"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('verifyresult')}>
+                解析结果
+            </TableSortLabel>
+          </TableCell>
+          <TableCell >
+            <TableSortLabel 
+              active={orderBy === "result"}
+              direction={order}
+              className={classes.labelsort}
+              onClick={this.createSortHandler('result')}>
+                处理结果
+            </TableSortLabel>
+          </TableCell>
           <TableCell className={classes.lastth}>详细报文</TableCell>
               
         </TableRow>
