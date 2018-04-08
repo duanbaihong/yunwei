@@ -222,17 +222,22 @@ function querydevinfo(req,res,next){
         var parseString = require('xml2js').parseString;
         data.map((n)=>{
           parseString(n.result.context,{explicitArray : false},(err,result)=>{
-            let tmpdata={};
-            tmpdata['mac']=result.profile.general.macAddress._
-            tmpdata['imei']=result.profile.general.deviceId._
-            tmpdata['devtype']=result.profile.general.deviceType
-            resultData['dh1data'].push(tmpdata)
+            if(!err && result !==null){
+              let tmpdata={};
+              tmpdata['mac']=result.profile.general.macAddress._
+              tmpdata['imei']=result.profile.general.deviceId._
+              tmpdata['devtype']=result.profile.general.deviceType
+              resultData['dh1data'].push(tmpdata)
+            }else{
+              return res.send({resultCode:"13003",resultMsg:errormsg['13003']});
+            }
           })     
         })     
       }
       return res.send({resultCode:"10000",resultData:resultData});
     }).catch((error)=>{
       console.log(error);
+      req.session.isdhlogin=false;
       return res.send({resultCode:"13001",resultMsg: errormsg['13001']});
     });
   }else{

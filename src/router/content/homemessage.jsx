@@ -71,7 +71,7 @@ const styles = theme => ({
 function Transition(props) {
   return <Zoom {...props} key={"test"} timeout={500}/>;
 }
-class OrderMessage extends React.Component {
+class HomeMessage extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -102,6 +102,10 @@ class OrderMessage extends React.Component {
         : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1));
 
     this.setState({ data, order, orderBy });
+  };
+
+  handleClick = (event, id) => {
+   
   };
 
   handleChangePage = (event, page) => {
@@ -336,6 +340,7 @@ class OrderMessage extends React.Component {
                   return (
                     <TableRow
                       hover
+                      onClick={event => this.handleClick(event, n.id)}
                       tabIndex={-1}
                       key={index}
                       className={classes.tabletr}
@@ -427,8 +432,8 @@ class OrderMessage extends React.Component {
   }
 }
 
-OrderMessage.propTypes = {
+HomeMessage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(OrderMessage);
+export default withStyles(styles)(HomeMessage);

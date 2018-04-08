@@ -1503,10 +1503,6 @@ cli-width@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.2.0.tgz#ff19ede8a9a5e579324147b0c11f0fbcbabed639"
 
-clipboard-copy@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/clipboard-copy/-/clipboard-copy-2.0.0.tgz#663abcd8be9c641de6e92a2eb9afef6e0afa727e"
-
 cliui@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
@@ -2203,6 +2199,10 @@ dotenv-expand@4.2.0:
 dotenv@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
+
+downshift@^1.31.3:
+  version "1.31.3"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.31.3.tgz#09743d904de8cd18d6f22d2075c943b898aa0ef0"
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -4607,16 +4607,15 @@ material-ui-icons@^1.0.0-beta.36:
   dependencies:
     recompose "^0.26.0"
 
-material-ui@^1.0.0-beta.39:
-  version "1.0.0-beta.39"
-  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.39.tgz#54697f0620bf1dc833d2b0046c981fd8beabedeb"
+material-ui@^1.0.0-beta.41:
+  version "1.0.0-beta.41"
+  resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-1.0.0-beta.41.tgz#0869bed008caa10003ab20ea726476b560c23160"
   dependencies:
     "@types/jss" "^9.3.0"
     "@types/react-transition-group" "^2.0.6"
     babel-runtime "^6.26.0"
     brcast "^3.0.1"
     classnames "^2.2.5"
-    clipboard-copy "^2.0.0"
     deepmerge "^2.0.1"
     dom-helpers "^3.2.1"
     hoist-non-react-statics "^2.5.0"

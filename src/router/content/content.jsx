@@ -13,6 +13,8 @@ import Password from './password';
 import UserInfo from './userinfo';
 import PackageInfo from './packageinfo';
 import OrderMessage from './ordermessage';
+import HomeMessage from './homemessage';
+import AnalogMessage from './analogmessage';
 import ModuleLogs from './modulelogs';
 
 const styles = theme => ({
@@ -67,11 +69,17 @@ class Content extends Component {
                 <Route path="/content/ordermessage" render={(props)=>(
                     window.isLogin?<OrderMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
+                <Route path="/content/homemessage" render={(props)=>(
+                    window.isLogin?<HomeMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
+                  )} />
                 <Route path="/content/modulelogs" render={(props)=>(
                     window.isLogin?<ModuleLogs {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/operateresults" render={(props)=>(
                     window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
+                  )} />
+                <Route path="/content/analogmessage" render={(props)=>(
+                    window.isLogin?<AnalogMessage {...props}  />:<Redirect to="/login" />
                   )} />
               </Switch>
           </Grid>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Tooltip from 'material-ui/Tooltip';
 import PropTypes from 'prop-types';
 import {
   TableCell,
@@ -8,7 +7,6 @@ import {
   TableSortLabel,
 } from 'material-ui/Table';
 import { withStyles } from 'material-ui/styles';
-import { lighten } from 'material-ui/styles/colorManipulator';
 
 const toolbarStyles = theme => ({
   thead: {
@@ -100,10 +98,10 @@ class EnhancedTableHead extends React.Component {
           </TableCell>
           <TableCell >
             <TableSortLabel 
-              active={orderBy === "oprCode"}
+              active={orderBy === "oprSrc"}
               direction={order}
               className={classes.labelsort}
-              onClick={this.createSortHandler('oprCode')}>
+              onClick={this.createSortHandler('oprSrc')}>
                 订购来源
             </TableSortLabel>
           </TableCell>

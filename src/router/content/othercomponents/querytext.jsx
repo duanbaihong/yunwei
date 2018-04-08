@@ -62,7 +62,7 @@ const styles = theme => ({
       return false;
     }
     if(macimei.value!==""){
-      if(!(macimei.value.length===12 || macimei.value.length===16)){
+      if(!(macimei.value.length===12 || macimei.value.length>=15)){
         this.props.setmsg({msg:"请输入正确的设备MAC或IMEI位数。"});
         macimei.focus()
         return false;
