@@ -60,7 +60,7 @@ const styles = theme => ({
     listStyleType: 'none',
   },
   buttonSubmit:{
-    marginTop:120
+    marginTop:110
   },
   item:{
     padding:5,
@@ -132,6 +132,7 @@ class SelectUrl extends React.Component {
     return (
       <TextField
         fullWidth
+        label="请输入URL地址，或者选择URL"
         InputProps={{
           inputRef: (c)=>{this.address=c},
           classes: {
@@ -148,7 +149,6 @@ class SelectUrl extends React.Component {
 
     return (
       <div className={classes.container}>
-      请输入URL地址，或者选择URL
       <Autosuggest
         theme={{
           suggestionsContainerOpen: classes.suggestionsContainerOpen,
