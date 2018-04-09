@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import keycode from 'keycode';
-import Downshift from 'downshift';
-import { withStyles } from 'material-ui/styles';
+import Autosuggest from 'react-autosuggest';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { MenuItem } from 'material-ui/Menu';
-import Chip from 'material-ui/Chip';
-
+import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
 const suggestions = [
-  {label: "一级家开",url: "http://192.168.20.16:8017/fcha/auth/fch/queryOrderDetails"},
+  {label: "一级家开查询",url: "http://192.168.20.16:8017/fcha/auth/fch/queryOrderDetails"},
   {label: "一级家开",url: "http://192.168.20.16:8017/fcha/auth/fch/normalRequestHandler"},
   {label: "云南BOSS",url: "http://192.168.20.16:8017/bossagent/auth/yn/normalRequestHandler"},
   {label: "山西BOSS",url: "http://192.168.20.16:8017/bossagent/auth/sx/normalRequestHandler"},
@@ -24,129 +22,165 @@ const suggestions = [
   {label: "广州BOSS",url: "http://192.168.20.16:8017/bossagent/auth/gz/normalRequestHandler"},
   {label: "广西BOSS",url: "http://192.168.20.16:8017/bossagent/auth/gx/normalRequestHandler"},
   {label: "安徽BOSS",url: "http://192.168.20.16:8017/bossagent/auth/ah/normalRequestHandler"},
+  {label: "ELK日志查询",url: "http://192.168.111.66:9200/"},
 ];
 
-function renderInput(inputProps) {
-  const { InputProps, classes, ref, ...other } = inputProps;
-
-  return (
-    <TextField
-      InputProps={{
-        inputRef: ref,
-        classes: {
-          root: classes.inputRoot,
-        },
-        ...InputProps,
-      }}
-      {...other}
-    />
-  );
+function getSuggestionValue(suggestion) {
+  return suggestion.url;
 }
-
-function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
-  const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-
-  return (
-    <MenuItem
-      {...itemProps}
-      key={suggestion.label}
-      selected={isHighlighted}
-      component="div"
-      style={{
-        fontWeight: isSelected ? 500 : 400,
-        paddingTop:5,
-        paddingBottom:5
-      }}
-    >
-      {suggestion.label+"("+suggestion.url+")"}
-    </MenuItem>
-  );
-}
-renderSuggestion.propTypes = {
-  highlightedIndex: PropTypes.number,
-  index: PropTypes.number,
-  itemProps: PropTypes.object,
-  selectedItem: PropTypes.string,
-  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
-};
 
 function getSuggestions(inputValue) {
-  let count = 0;
-
   return suggestions.filter(suggestion => {
     const keep =
       (!inputValue || suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 || suggestion.url.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) 
-
-    if (keep) {
-      count += 1;
-    }
-
     return keep;
   });
 }
+
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    height: 70,
-    padding:10
-  },
   container: {
     flexGrow: 1,
     position: 'relative',
+    height: 221,
+    padding:10
   },
-  paper: {
+  suggestionsContainerOpen: {
     position: 'absolute',
     zIndex: 1,
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
-    maxHeight:250,
-    overflow:"auto"
   },
-  chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+  suggestion: {
+    display: 'block',
   },
-  inputRoot: {
-    flexWrap: 'wrap',
+  suggestionsList: {
+    margin: 0,
+    padding: 0,
+    listStyleType: 'none',
   },
+  buttonSubmit:{
+    marginTop:120
+  },
+  item:{
+    padding:5,
+  },
+  paper:{
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    position: "absolute",
+    marginTop: 8,
+    maxHeight:300,
+    overflow:"auto",
+}
 });
 
-function SelectUrl(props) {
-  const { classes } = props;
+class SelectUrl extends React.Component {
+  state = {
+    value: '',
+    suggestions: [],
+  };
+  renderSuggestion(suggestion, { isHighlighted }) {
+    return (
+      <MenuItem 
+        className={this.props.classes.item}
+        selected={isHighlighted} 
+        component="div">
+        {suggestion.label+"-["+suggestion.url+']'}
+      </MenuItem>
+    );
+  }
+  renderSuggestionsContainer(options) {
+    const { containerProps, children } = options;
 
-  return (
-    <div className={classes.root}>
-      <Downshift>
-        {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
-          <div className={classes.container}>
-            请输入URL地址，或者选择URL
-            {renderInput({
-              fullWidth: true,
-              classes,
-              InputProps: getInputProps({
-                placeholder: '请输入URL地址，或者选择URL',
-                id: 'selecturl',
-              }),
-            })}
-            {isOpen ? (
-              <Paper className={classes.paper} square>
-                {getSuggestions(inputValue).map((suggestion, index) =>
-                  renderSuggestion({
-                    suggestion,
-                    index,
-                    itemProps: getItemProps({ item: suggestion.url }),
-                    highlightedIndex,
-                    selectedItem,
-                  }),
-                )}
-              </Paper>
-            ) : null}
-          </div>
-        )}
-      </Downshift>
+    return (
+      <Paper {...containerProps} className={this.props.classes.paper} >
+        {children}
+      </Paper>
+    );
+  }
+  handleSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: getSuggestions(value),
+    });
+  };
+
+  handleSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: [],
+    });
+  };
+
+  handleChange = (event, { newValue }) => {
+    this.setState({
+      value: newValue,
+    });
+  };
+
+  handleSubmit(){
+    if(this.address.value===""){
+      this.address.focus();
+      this.props.handleSetStatus({msg:"请输入URL地址，或者选择URL"})
+      return false;
+    }
+    this.props.handleQuery(this.address.value);
+  }
+  renderInput(inputProps) {
+    const { classes, ref, ...other } = inputProps;
+
+    return (
+      <TextField
+        fullWidth
+        InputProps={{
+          inputRef: (c)=>{this.address=c},
+          classes: {
+            input: classes.input,
+          },
+          ...other,
+        }}
+      />
+    );
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.container}>
+      请输入URL地址，或者选择URL
+      <Autosuggest
+        theme={{
+          suggestionsContainerOpen: classes.suggestionsContainerOpen,
+          suggestionsList: classes.suggestionsList,
+          suggestion: classes.suggestion,
+        }}
+        renderInputComponent={this.renderInput.bind(this)}
+        suggestions={this.state.suggestions}
+        onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+        renderSuggestionsContainer={this.renderSuggestionsContainer.bind(this)}
+        focusInputOnSuggestionClick={false}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestion={this.renderSuggestion.bind(this)}
+        inputProps={{
+          classes,
+          placeholder: '请输入URL地址，或者选择URL',
+          value: this.state.value,
+          onChange: this.handleChange,
+        }}
+      />
+      <Button
+          className={classes.buttonSubmit}
+          fullWidth={true}
+          color={"primary"}
+          disabled={this.props.loading}
+          variant={"raised"} 
+          size={"medium"}
+          onClick={this.handleSubmit.bind(this)}>提交报文</Button>
     </div>
-  );
+    );
+  }
 }
 
 SelectUrl.propTypes = {

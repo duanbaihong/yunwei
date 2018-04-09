@@ -224,9 +224,9 @@ function querydevinfo(req,res,next){
           parseString(n.result.context,{explicitArray : false},(err,result)=>{
             if(!err && result !==null){
               let tmpdata={};
-              tmpdata['mac']=result.profile.general.macAddress._
-              tmpdata['imei']=result.profile.general.deviceId._
-              tmpdata['devtype']=result.profile.general.deviceType
+              tmpdata['mac']=result.profile.general.macAddress._||""
+              tmpdata['imei']=result.profile.general.deviceId._||""
+              tmpdata['devtype']=result.profile.general.deviceType||""
               resultData['dh1data'].push(tmpdata)
             }else{
               return res.send({resultCode:"13003",resultMsg:errormsg['13003']});
@@ -256,7 +256,7 @@ function querybuyreportinfo(req,res,next){
   if (req.session.hasOwnProperty('userinfo') && req.session.hasOwnProperty('token') ){
     let where="where "
     if(req.body.hasOwnProperty('orderno')){
-      where+='order_serial_number like "%'+req.body.orderno+'%"'
+      where+='message_body like "%'+req.body.orderno+'%"'
     }else if(req.body.hasOwnProperty('phone')){
       where+='message_body like "%'+req.body.phone+'%"'
     }else if(req.body.hasOwnProperty('macimei')){
@@ -268,7 +268,7 @@ function querybuyreportinfo(req,res,next){
       var mysql      = require('mysql');
       var connection = mysql.createConnection(hemumysqloption);
       connection.connect((err)=>{ if(err) console.log(err) })
-      sql='SELECT order_serial_number serialnumber,\
+      basesql='SELECT order_serial_number serialnumber,\
                    message_body msgbody,\
                    handle_result_desc result,\
                    verify_result verifyresult,\
@@ -276,7 +276,20 @@ function querybuyreportinfo(req,res,next){
             FROM t_boss_data_log_table\
             '+where+' \
             ORDER BY TIME DESC LIMIT 0,40';
-      sql=sql.replace(/\s+/g,' ');
+      homesql='SELECT order_serial_number serialnumber,\
+                   message_body msgbody,\
+                   handle_result_desc result,\
+                   verify_result verifyresult,\
+                   `time`,\
+                   `log_type` logtype \
+            FROM t_fch_data_log_table\
+            '+where+' \
+            ORDER BY TIME DESC LIMIT 0,40';
+      if(req.body.hasOwnProperty('Type') && req.body.Type==='homeopen'){
+        sql=homesql.replace(/\s+/g,' ');
+      }else{
+        sql=basesql.replace(/\s+/g,' ');
+      }
       console.log(sql);
       connection.query(sql,(err,rows)=>{
         if(!err){

@@ -41,7 +41,7 @@ let EnhancedTableToolbar = props => {
     <Toolbar
       className={classNames(classes.root)} >
       <div className={classes.title}>
-          <Typography variant="title">订购报文明细</Typography>
+          <Typography variant="title">{props.titlemsg}</Typography>
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>

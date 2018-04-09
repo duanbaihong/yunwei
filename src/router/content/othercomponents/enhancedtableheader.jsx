@@ -75,7 +75,7 @@ class EnhancedTableHead extends React.Component {
               direction={order}
               className={classes.labelsort}
               onClick={this.createSortHandler('devMac')}>
-                设备MAC/IMEI
+                {this.props.homeopen?"订单号":"设备MAC/IMEI"}
             </TableSortLabel>
           </TableCell>
           <TableCell>

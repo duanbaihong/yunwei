@@ -144,8 +144,8 @@ class PackageInfo extends Component {
             req.data.resultData.dhdata.forEach(n=>{
               let tmpmac=n.deviceid.replace('xxxxS_','').toLowerCase();
               dhdata[tmpmac]=n
-              dhdata[tmpmac]['imei']=dh1data[tmpmac].imei
-              dhdata[tmpmac]['devtype']=dh1data[tmpmac].devtype
+              dhdata[tmpmac]['imei']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].imei:""
+              dhdata[tmpmac]['devtype']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].devtype:""
             })
             req.data.resultData.platdata.forEach(n=>{
               platdata[n.cam_sn.toLowerCase()]=n

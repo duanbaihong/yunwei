@@ -5,14 +5,12 @@ import Divider from 'material-ui/Divider';
 import { MenuItem,MenuList } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import {ListItemIcon, ListItemText } from 'material-ui/List';
-import InboxIcon from 'material-ui-icons/MoveToInbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
 import Healing from 'material-ui-icons/Healing';
 import Cast from 'material-ui-icons/Cast';
 import Camera from 'material-ui-icons/Camera';
 import PieChart from 'material-ui-icons/PieChart';
 import Report from 'material-ui-icons/Report';
-import SendIcon from 'material-ui-icons/Send';
 import {withRouter} from 'react-router-dom';
 
 const drawerWidth = 210;
@@ -98,22 +96,22 @@ class SideMenu extends Component {
               <ListItemText classes={{ primary: classes.primary }} inset primary="家开报文" />
             </MenuItem>
             <Divider />
-            <MenuItem className={this.state.activemenu===6?classes.menuactive:""} 
-                      onClick={this.handleClickLink.bind(this,'/content/analogmessage',6)}>
+            <MenuItem className={this.state.activemenu===4?classes.menuactive:""} 
+                      onClick={this.handleClickLink.bind(this,'/content/analogmessage',4)}>
               <ListItemIcon className={classes.icon}>
                 <Report />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} inset primary="模拟报文" />
             </MenuItem>
-            <MenuItem className={this.state.activemenu===4?classes.menuactive:""} 
-                      onClick={this.handleClickLink.bind(this,'/content/modulelogs',4)}  >
+            <MenuItem className={this.state.activemenu===5?classes.menuactive:""} 
+                      onClick={this.handleClickLink.bind(this,'/content/modulelogs',5)}  >
               <ListItemIcon className={classes.icon}>
                 <Cast />
               </ListItemIcon>
               <ListItemText classes={{ primary: classes.primary }} inset primary="模块日志" />
             </MenuItem>
-            <MenuItem className={this.state.activemenu===5?classes.menuactive:""} 
-                      onClick={this.handleClickLink.bind(this,'/content/operateresults',5)}>
+            <MenuItem className={this.state.activemenu===6?classes.menuactive:""} 
+                      onClick={this.handleClickLink.bind(this,'/content/operateresults',6)}>
               <ListItemIcon className={classes.icon}>
                 <Camera />
               </ListItemIcon>

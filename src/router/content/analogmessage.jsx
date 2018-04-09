@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
 
 
@@ -17,14 +16,13 @@ import Paper from 'material-ui/Paper';
 import Select from 'material-ui/Select';
 import TextField from 'material-ui/TextField';
 import {InputLabel} from 'material-ui/Input';
-import Button from 'material-ui/Button';
+
 import InputAdornment from 'material-ui/Input';
 import MenuItem from 'material-ui/Menu/MenuItem';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 
 import Snack from '../components/snackbar';
 import SelectUrl from '../components/selecturl';
-import EnhancedTableToolbar from './othercomponents/enhancedtabletoolbar';
 import md5 from 'md5';
 import { parseString,Builder } from 'xml2js';
 import { CircularProgress } from 'material-ui/Progress';
@@ -48,8 +46,8 @@ const styles = theme => ({
     resize:"none",
     border: "1px solid #00000059",
     outline:"none",
-    backgroundColor:"#f1dda524",
-    boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
+    backgroundColor:"#f1dda517",
+    boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.03), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
 
   },
   context:{
@@ -59,9 +57,6 @@ const styles = theme => ({
   title:{
     padding:10,
     paddingLeft:20,
-  },
-  buttonSubmit:{
-    marginTop:20
   },
   margin: {
     margin: theme.spacing.unit,
@@ -79,25 +74,23 @@ class HomeMessage extends React.Component {
     this.state = {
       urlvalue: '',
       msg:'',
-      currency:''
+      currency:'',
+      loading:false
     };
   }
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
+  handleSetStatus(msg){
+    this.setState(msg)
+  }
   handleQuery(data){
-    let macimei=data.macimei
-    let phone=data.phone
-    let orderno=data.orderno
+    if(this.refs.messages.value===""){
+      this.refs.messages.focus();
+      this.handleSetStatus({msg:"请输入报文内容。"})
+      return false;
+    }
     let params={
       MsgType: "ACTION_QUERY_BUYREPORTS_INFO",
       Token: sessionStorage.token,
     }
-    
-
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
@@ -105,22 +98,18 @@ class HomeMessage extends React.Component {
          
           break;
         case "22222":
-          this.setState({msg:req.data.resultMsg,loading:false});
+          this.handleSetStatus({msg:req.data.resultMsg,loading:false});
           setTimeout(()=>{this.props.userLoginOut()}, 1000);
           break;
         default:
-          this.setState({msg:req.data.resultMsg,loading:false});
+          this.handleSetStatus({msg:req.data.resultMsg,loading:false});
       }
     }).catch(()=>{
       console.log('')
     })
 
   }
-  setStateMsg(msg){
-    this.setState(msg);
-  }
   
-
   render() { 
     let {classes}=this.props   
     const currencies = [
@@ -148,8 +137,9 @@ class HomeMessage extends React.Component {
         </Paper>
         <Paper className={classes.context} >
           <Grid container spacing={8}>
-            <Grid item md={8} sm={7} xs={7}>
+            <Grid item md={7} sm={7} xs={7}>
                 <textarea 
+                  ref={"messages"}
                   className={classes.messages}
                   aria-invalid="false" 
                   aria-required="false" 
@@ -158,17 +148,12 @@ class HomeMessage extends React.Component {
                   rows="15"
                   type="text"></textarea>
             </Grid>
-            <Grid item md={4} sm={5} xs={5}>
+            <Grid item md={5} sm={5} xs={5}>
               <Paper className={classes.paper}>
-                <SelectUrl  />     
-                <Divider />
+                <SelectUrl loading={this.state.loading} 
+                handleQuery={this.handleQuery.bind(this)}
+                handleSetStatus={this.handleSetStatus.bind(this)}/>   
               </Paper>
-                <Button
-                  className={classes.buttonSubmit}
-                  fullWidth={true}
-                  color={"primary"}
-                  variant={"raised"} 
-                  size={"medium"}>提交</Button>
             </Grid>
           </Grid>
         </Paper>

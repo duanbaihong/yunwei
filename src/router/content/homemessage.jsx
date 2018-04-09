@@ -24,7 +24,6 @@ import Snack from '../components/snackbar';
 import EnhancedTableHead from './othercomponents/enhancedtableheader';
 import EnhancedTableToolbar from './othercomponents/enhancedtabletoolbar';
 import md5 from 'md5';
-import { parseString,Builder } from 'xml2js';
 import { CircularProgress } from 'material-ui/Progress';
 import Zoom from 'material-ui/transitions/Zoom';
 
@@ -71,13 +70,12 @@ const styles = theme => ({
 function Transition(props) {
   return <Zoom {...props} key={"test"} timeout={500}/>;
 }
-class HomeMessage extends React.Component {
+class OrderMessage extends React.Component {
   constructor(props, context) {
     super(props, context);
-
     this.state = {
       order: 'asc',
-      orderBy: 'calories',
+      orderBy: 'time',
       data: [].sort((a, b) => (a.time < b.time ? -1 : 1)),
       page: 0,
       rowsPerPage: 6,
@@ -104,10 +102,6 @@ class HomeMessage extends React.Component {
     this.setState({ data, order, orderBy });
   };
 
-  handleClick = (event, id) => {
-   
-  };
-
   handleChangePage = (event, page) => {
     this.setState({ page });
   };
@@ -128,17 +122,20 @@ class HomeMessage extends React.Component {
     let params={
       MsgType: "ACTION_QUERY_BUYREPORTS_INFO",
       Token: sessionStorage.token,
+      Type: 'homeopen'
     }
     if(phone!=="" && phone!== undefined){
       params['phone']= phone
-      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+phone);
     }else if(macimei!=="" && macimei!== undefined){
       params['macimei']= macimei
-      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ macimei);
     }else{
       params['orderno']= orderno
-      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ orderno);
     }
+    let tmpSign=""
+    Object.keys(params).sort().forEach((n)=>{
+      tmpSign+=params[n]
+    })
+    params['Sign']=md5(tmpSign);
     this.setState({data:[]})
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
@@ -146,59 +143,26 @@ class HomeMessage extends React.Component {
           // console.log(req.data)
           if(req.data.hasOwnProperty('resultData') && req.data.resultData!==''){
             let dhdata=[]
-              req.data.resultData.reports.forEach((n)=>{
-                parseString(n.msgbody,{explicitArray : false},(err,result)=>{
-                  if(!err){
-                    let devmac=""
-                    if(result.OwnPlatForm.Content.BizProcReq.hasOwnProperty('DeviceInfo')){
-                      devmac=result.OwnPlatForm.Content.BizProcReq.DeviceInfo.DevMac;
-                    }
-                    dhdata.push(
-                      { time:n.time,
-                        devMac:devmac,
-                        phoneNum:result.OwnPlatForm.Content.BizProcReq.IDValue||"",
-                        oprCode:result.OwnPlatForm.Content.BizProcReq.OprCode||"",
-                        oprSrc:result.OwnPlatForm.OprSrc||"",
-                        bossCode:result.OwnPlatForm.Content.BizProcReq.BossCode||"",
-                        verifyresult:n.verifyresult,
-                        result:n.result,
-                        messages:new Builder().buildObject(result)
-                      })
-                  }else{
-                    try {
-                      result=JSON.parse(n.msgbody)
-                      dhdata.push({
-                          time:n.time,
-                          devMac:result.devMac,
-                          phoneNum:result.phoneNum,
-                          oprCode:result.oprCode,
-                          oprSrc:result.funCode,
-                          bossCode:result.area||"",
-                          verifyresult:n.verifyresult,
-                          result:n.result,
-                          messages:JSON.stringify(result,null,4)
-                      })
-                    }catch(err){
-                      if(n.msgbody.match("REQ|")){
-                        let tmpres=n.msgbody.split("|");
-                        dhdata.push({
-                                time:n.time,
-                                devMac:tmpres[4],
-                                phoneNum:tmpres[3]||"",
-                                oprCode:tmpres[0],
-                                oprSrc:"",
-                                bossCode:tmpres[2]||"",
-                                verifyresult:n.verifyresult,
-                                result:n.result,
-                                messages:n.msgbody
-                        })
-                      }else{
-                        console.log("解析报文，存在失败情况 ！请检查！"+err)
-                      }
-                    }
-                  }
+            req.data.resultData.reports.forEach((n)=>{
+              try {
+                let result=JSON.parse(n.msgbody)
+                console.log(n)
+                dhdata.push({
+                    time:n.time,
+                    devMac:result.orderId,
+                    phoneNum:result.idValue,
+                    oprCode:result.orderType,
+                    oprSrc:n.logtype,
+                    bossCode:result.hasOwnProperty('extendInfo')?result.extendInfo[0].infoValue:"",
+                    verifyresult:n.verifyresult+"",
+                    result:n.result,
+                    messages:JSON.stringify(result,null,4)
                 })
-              })
+              }catch(err){
+                  console.log("解析报文，存在失败情况 ！请检查！"+err)
+              }
+            })
+            console.log(dhdata)
             this.setState({loading:false,msg:"",data:dhdata})
           }else{
              this.setState({loading:false,msg:"",data:[]})
@@ -226,22 +190,12 @@ class HomeMessage extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     let index=0;
     const pkgType={
-      MSG_PACKAGE_ORDER_REQ:"套餐订购",
-      MSG_PACKAGE_UNSUBSCRIBE_REQ:"未知",
-      MSG_DEVSN_CHANGE_REQ:"设备变更",
-      MSG_PACKAGE_CHANGE_REQ:"套餐变更",
-      "01":"套餐开通",
-      "03":"套餐退订",
-      "05":"套餐暂停",
-      "06":"套餐恢复",
-      "07":"套餐变更",
-      "08":"设备MAC变更",
-      "11":"开通检查",
-      "13":"退订检查",
-      "15":"套餐暂停检查",
-      "16":"套餐恢复检查",
-      "17":"套餐变更检查",
-      "18":"设备MAC变更检查", 
+      "04":"用户暂停",
+      "05":"用户恢复",
+      "06":"用户开通",
+      "07":"用户退订",
+      "12":"用户退订且销号",
+      "13":"换号",
     }
     const area={
       "471":"内蒙古",
@@ -326,7 +280,7 @@ class HomeMessage extends React.Component {
             disSearial={true}
             />
         <Paper className={classes.root} >
-          <EnhancedTableToolbar />
+          <EnhancedTableToolbar titlemsg={"家开订购报文明细"} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table}>
               <EnhancedTableHead
@@ -334,13 +288,13 @@ class HomeMessage extends React.Component {
                 orderBy={orderBy}
                 onRequestSort={this.handleRequestSort}
                 rowCount={data.length}
+                homeopen={true}
               />
               <TableBody>
                 {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
                       tabIndex={-1}
                       key={index}
                       className={classes.tabletr}
@@ -351,8 +305,8 @@ class HomeMessage extends React.Component {
                       <TableCell >{n.devMac}</TableCell>
                       <TableCell >{area.hasOwnProperty(n.bossCode)?area[n.bossCode]:""}</TableCell>
                       <TableCell >{pkgType.hasOwnProperty(n.oprCode)?pkgType[n.oprCode]:""}</TableCell>
-                      <TableCell >{n.oprSrc==="01"?"BOSS正向":(n.oprSrc==="09"?"APP反向":"")}</TableCell>
-                      <TableCell >{n.verifyresult==="0"?"成功":"解析失败"}</TableCell>
+                      <TableCell >{n.oprSrc==="0"?"正向订购":(n.oprSrc==="1"?"反向订购":"")}</TableCell>
+                      <TableCell >{n.verifyresult==="0"?"成功":"解析失败["+n.verifyresult+"]"}</TableCell>
                       <TableCell >
                         <Tooltip title={n.result}>
                           <div style={{maxWidth:200,overflow: "hidden"}}>{n.result}</div>
@@ -432,8 +386,8 @@ class HomeMessage extends React.Component {
   }
 }
 
-HomeMessage.propTypes = {
+OrderMessage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(HomeMessage);
+export default withStyles(styles)(OrderMessage);

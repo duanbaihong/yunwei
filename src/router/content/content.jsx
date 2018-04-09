@@ -70,7 +70,7 @@ class Content extends Component {
                     window.isLogin?<OrderMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/homemessage" render={(props)=>(
-                    window.isLogin?<HomeMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
+                    window.isLogin?<HomeMessage {...props} userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/modulelogs" render={(props)=>(
                     window.isLogin?<ModuleLogs {...props}  />:<Redirect to="/login" />

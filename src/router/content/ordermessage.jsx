@@ -74,10 +74,9 @@ function Transition(props) {
 class OrderMessage extends React.Component {
   constructor(props, context) {
     super(props, context);
-
     this.state = {
       order: 'asc',
-      orderBy: 'calories',
+      orderBy: 'time',
       data: [].sort((a, b) => (a.time < b.time ? -1 : 1)),
       page: 0,
       rowsPerPage: 6,
@@ -124,17 +123,19 @@ class OrderMessage extends React.Component {
     let params={
       MsgType: "ACTION_QUERY_BUYREPORTS_INFO",
       Token: sessionStorage.token,
-    }
+    }    
     if(phone!=="" && phone!== undefined){
       params['phone']= phone
-      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+phone);
     }else if(macimei!=="" && macimei!== undefined){
       params['macimei']= macimei
-      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ macimei);
     }else{
       params['orderno']= orderno
-      params['Sign']= md5("ACTION_QUERY_BUYREPORTS_INFO"+sessionStorage.token+ orderno);
     }
+    let tmpSign=""
+    Object.keys(params).sort().forEach((n)=>{
+      tmpSign+=params[n]
+    })
+    params['Sign']=md5(tmpSign);
     this.setState({data:[]})
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
@@ -165,9 +166,9 @@ class OrderMessage extends React.Component {
                       result=JSON.parse(n.msgbody)
                       dhdata.push({
                           time:n.time,
-                          devMac:result.devMac,
-                          phoneNum:result.phoneNum,
-                          oprCode:result.oprCode,
+                          devMac:params['Type']==='homeopen'?result.idValue:result.devMac,
+                          phoneNum:params['Type']==='homeopen'?result.idValue:result.phoneNum,
+                          oprCode:params['Type']==='homeopen'?result.orderType:result.oprCode,
                           oprSrc:result.funCode,
                           bossCode:result.area||"",
                           verifyresult:n.verifyresult,
@@ -322,7 +323,7 @@ class OrderMessage extends React.Component {
             disSearial={true}
             />
         <Paper className={classes.root} >
-          <EnhancedTableToolbar />
+          <EnhancedTableToolbar titlemsg={this.props.hasOwnProperty('match')?"家开订购报文明细":"订购报文明细"} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table}>
               <EnhancedTableHead
@@ -347,7 +348,7 @@ class OrderMessage extends React.Component {
                       <TableCell >{area.hasOwnProperty(n.bossCode)?area[n.bossCode]:""}</TableCell>
                       <TableCell >{pkgType.hasOwnProperty(n.oprCode)?pkgType[n.oprCode]:""}</TableCell>
                       <TableCell >{n.oprSrc==="01"?"BOSS正向":(n.oprSrc==="09"?"APP反向":"")}</TableCell>
-                      <TableCell >{n.verifyresult==="0"?"成功":"解析失败"}</TableCell>
+                      <TableCell >{n.verifyresult==="0"?"成功":"解析失败["+n.verifyresult+"]"}</TableCell>
                       <TableCell >
                         <Tooltip title={n.result}>
                           <div style={{maxWidth:200,overflow: "hidden"}}>{n.result}</div>
