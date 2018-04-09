@@ -43,6 +43,13 @@ function login(req,res,next) {
     }
   })
 }
+/**
+ * [checklogin description]
+ * @param  {[type]}   req  [description]
+ * @param  {[type]}   res  [description]
+ * @param  {Function} next [description]
+ * @return {[type]}        [description]
+ */
 function checklogin(req,res,next) {
   // body..
   if (req.session.hasOwnProperty('userinfo') && req.session.hasOwnProperty('token') ){
@@ -70,6 +77,13 @@ function loginout(req,res,next) {
   }
   
 }
+/**
+ * [changepass description]
+ * @param  {[type]}   req  [description]
+ * @param  {[type]}   res  [description]
+ * @param  {Function} next [description]
+ * @return {[type]}        [description]
+ */
 function changepass(req,res,next) {
   // body..
   if (req.session.hasOwnProperty('token') && req.session.token == req.body.Token){
@@ -107,19 +121,41 @@ function changepass(req,res,next) {
   }
   
 }
-
-function posturl(url,params){
+/**
+ * [posturl description]
+ * @param  {[type]} url    [description]
+ * @param  {[type]} params [description]
+ * @return {[type]}        [description]
+ */
+function posturl(url,params,method="POST"){
   return new Promise((resolve, reject)=>{
-    request.post(url,{form:params}, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        resolve(JSON.parse(body))
-      }else{
-        reject(body)
-      }
-    })
+    if(method==="POST"){
+      request.post(url,{form:params}, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          resolve(JSON.parse(body))
+        }else{
+          reject(body)
+        }
+      })
+    }else{
+      request.get(url,{form:params}, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          resolve(JSON.parse(body))
+        }else{
+          reject(body)
+        }
+      })
+    }
   })
 }
 
+/**
+ * [querydevinfo description]
+ * @param  {[type]}   req  [description]
+ * @param  {[type]}   res  [description]
+ * @param  {Function} next [description]
+ * @return {[type]}        [description]
+ */
 function querydevinfo(req,res,next){
   if (req.session.hasOwnProperty('token') && req.session.token == req.body.Token){
     queryparams={};
@@ -310,4 +346,27 @@ function querybuyreportinfo(req,res,next){
   }
 }
 
-module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo}
+/**
+ * [proxyurl description]
+ * @param  {[type]}   req  [description]
+ * @param  {[type]}   res  [description]
+ * @param  {Function} next [description]
+ * @return {[type]}        [description]
+ */
+function proxyurl(req,res,next) {
+  // body...
+   if (req.session.hasOwnProperty('userinfo') && req.session.hasOwnProperty('token') ){
+    posturl(req.body.ProxyUrl,req.body.Params).then((data)=>{
+      console.log(data)
+      res.send({
+        resultCode: "10000",
+        resultData: data
+        });
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }else{
+    res.send({resultCode: "22222",resultMsg:errormsg['22222']});
+  }
+}
+module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo,proxyurl}

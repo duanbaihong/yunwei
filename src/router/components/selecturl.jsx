@@ -6,6 +6,9 @@ import Paper from 'material-ui/Paper';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
+import Radio, { RadioGroup } from 'material-ui/Radio';
+import { FormLabel, FormControlLabel } from 'material-ui/Form';
+
 const suggestions = [
   {label: "一级家开查询",url: "http://192.168.20.16:8017/fcha/auth/fch/queryOrderDetails"},
   {label: "一级家开",url: "http://192.168.20.16:8017/fcha/auth/fch/normalRequestHandler"},
@@ -60,7 +63,7 @@ const styles = theme => ({
     listStyleType: 'none',
   },
   buttonSubmit:{
-    marginTop:110
+    marginTop:80
   },
   item:{
     padding:5,
@@ -70,9 +73,10 @@ const styles = theme => ({
     right: 0,
     zIndex: 1,
     position: "absolute",
-    marginTop: 8,
+    margin: 10,
     maxHeight:300,
     overflow:"auto",
+
 }
 });
 
@@ -115,6 +119,11 @@ class SelectUrl extends React.Component {
   handleChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
+    });
+  };
+  handleChange1 = key => (event, value) => {
+    this.setState({
+      [key]: value,
     });
   };
 
@@ -170,6 +179,16 @@ class SelectUrl extends React.Component {
           onChange: this.handleChange,
         }}
       />
+      <RadioGroup
+        row
+        aria-label="transformOriginHorizontal"
+        name="transformOriginHorizontal"
+        value={this.state.transformOriginHorizontal}
+        onChange={this.handleChange1('transformOriginHorizontal')}
+      >
+        <FormControlLabel value="POST" control={<Radio checked />} label="POST" />
+        <FormControlLabel value="GET" control={<Radio />} label="GET" />
+      </RadioGroup>   
       <Button
           className={classes.buttonSubmit}
           fullWidth={true}

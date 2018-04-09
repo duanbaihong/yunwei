@@ -79,7 +79,7 @@ class Content extends Component {
                     window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/analogmessage" render={(props)=>(
-                    window.isLogin?<AnalogMessage {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<AnalogMessage {...props} userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
               </Switch>
           </Grid>

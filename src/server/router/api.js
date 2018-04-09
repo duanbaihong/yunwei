@@ -10,7 +10,8 @@ var {login,
   checklogin,
   changepass,
   querydevinfo,
-  querybuyreportinfo} = require('./actions');
+  querybuyreportinfo,
+  proxyurl} = require('./actions');
 /* GET users listing. */
 
 let sendMsg=""
@@ -100,18 +101,30 @@ function sessionHandle(req, res, next) {
       }
       break;
     case 'ACTION_SEND_MESSAGE_REQ':
-      if(req.body.hasOwnProperty('phone') && req.body.phone!=""){
-        sign=md5("ACTION_QUERY_PACKAGE_INFO"+req.body.Token+req.body.phone);
-      }else if(req.body.hasOwnProperty('macimei') && req.body.macimei!=""){
-        sign=md5("ACTION_QUERY_PACKAGE_INFO"+req.body.Token+req.body.macimei);
-      }
-      if(req.body.Sign !=sign){
-        sendMsg={resultCode: 99998,
-               resultMsg: errormsg['99998']}
+      if(((req.body.hasOwnProperty('Params') && req.body.Params!="")
+        || (req.body.hasOwnProperty('ProxyUrl') && req.body.ProxyUrl!="") 
+        || (req.body.hasOwnProperty('Token') && req.body.Token!=""))
+        && req.body.hasOwnProperty('Sign'))
+      {
+        let oldSign=req.body.Sign;
+        delete req.body.Sign;
+        let tmpSign="",newSign="";
+        Object.keys(req.body).sort().map((n)=>{
+          tmpSign+=req.body[n];
+        })
+        newSign=md5(tmpSign)
+        if(oldSign !=newSign){
+          sendMsg={resultCode: 99998,
+                 resultMsg: errormsg['99998']}
+          res.send(sendMsg)
+          return true;
+        }
+        proxyurl(req,res,next);
+      }else{
+        sendMsg={resultCode: 99999,
+                 resultMsg: errormsg['99999']}
         res.send(sendMsg)
-        return true;
       }
-      querydevinfo(req,res,next);
       break;
     default:
       sendMsg={resultCode: 99999,

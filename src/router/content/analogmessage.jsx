@@ -40,6 +40,7 @@ const styles = theme => ({
   },
   messages:{
     width:"100%",
+    height:"100%",
     boxSizing: "border-box",
     padding:8,
     borderRadius:4,
@@ -61,6 +62,9 @@ const styles = theme => ({
   margin: {
     margin: theme.spacing.unit,
   },
+  paper:{
+    height:"100%"
+  },
   textField: {
     flexBasis: 200,
   }
@@ -81,6 +85,11 @@ class HomeMessage extends React.Component {
   handleSetStatus(msg){
     this.setState(msg)
   }
+  handleChange = key => (event, value) => {
+    this.setState({
+      [key]: value,
+    });
+  };
   handleQuery(data){
     if(this.refs.messages.value===""){
       this.refs.messages.focus();
@@ -88,9 +97,17 @@ class HomeMessage extends React.Component {
       return false;
     }
     let params={
-      MsgType: "ACTION_QUERY_BUYREPORTS_INFO",
+      MsgType: "ACTION_SEND_MESSAGE_REQ",
+      Params: this.refs.messages.value,
+      ProxyUrl: data,
       Token: sessionStorage.token,
     }
+    let tmpSign=""
+    Object.keys(params).sort().forEach((n)=>{
+      tmpSign+=params[n]
+    })
+    params['Sign']=md5(tmpSign);
+    console.log(params)
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
@@ -137,7 +154,7 @@ class HomeMessage extends React.Component {
         </Paper>
         <Paper className={classes.context} >
           <Grid container spacing={8}>
-            <Grid item md={7} sm={7} xs={7}>
+            <Grid item md={7} sm={7} xs={12}>
                 <textarea 
                   ref={"messages"}
                   className={classes.messages}
@@ -148,11 +165,11 @@ class HomeMessage extends React.Component {
                   rows="15"
                   type="text"></textarea>
             </Grid>
-            <Grid item md={5} sm={5} xs={5}>
+            <Grid item md={5} sm={5} xs={12}>
               <Paper className={classes.paper}>
                 <SelectUrl loading={this.state.loading} 
                 handleQuery={this.handleQuery.bind(this)}
-                handleSetStatus={this.handleSetStatus.bind(this)}/>   
+                handleSetStatus={this.handleSetStatus.bind(this)} />
               </Paper>
             </Grid>
           </Grid>
