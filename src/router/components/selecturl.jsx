@@ -7,10 +7,14 @@ import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Radio, { RadioGroup } from 'material-ui/Radio';
-import { FormControl,FormLabel, FormControlLabel } from 'material-ui/Form';
+import { FormControl, FormControlLabel } from 'material-ui/Form';
 import Zoom from 'material-ui/transitions/Zoom';
 import Select from 'material-ui/Select';
+import green from 'material-ui/colors/green';
+import { CircularProgress } from 'material-ui/Progress';
+
 const suggestions = [
+  {label: "elk",url: "http://127.0.0.1:9200/_template"},
   {label: "一级家开查询",url: "http://192.168.20.16:8017/fcha/auth/fch/queryOrderDetails"},
   {label: "一级家开",url: "http://192.168.20.16:8017/fcha/auth/fch/normalRequestHandler"},
   {label: "云南BOSS",url: "http://192.168.20.16:8017/bossagent/auth/yn/normalRequestHandler"},
@@ -64,17 +68,14 @@ const styles = theme => ({
     listStyleType: 'none',
   },
   buttonSubmit:{
-    marginTop:80
-  },
-  item:{
-    padding:5,
+    marginTop:60
   },
   paper:{
     left: 0,
     right: 0,
     zIndex: 1,
     position: "absolute",
-    margin: 10,
+    margin: "3px 10px",
     maxHeight:300,
     overflow:"auto",
   },
@@ -82,16 +83,30 @@ const styles = theme => ({
     marginTop:8,
   },
   input:{
-    fontSize: "0.4rem",
+    fontSize: "0.8rem",
     height:15
   },
   itemmenu:{
     padding:"2px 10px",
     fontSize:"0.5rem"
   },
+  itemmenu1:{
+    padding:"2px 10px",
+    fontSize:"0.7rem"
+  },
+  label:{
+    fontSize:"0.7rem",
+  },
   radio:{
     width:40,
-  }
+  },
+  buttonProgress: {
+    color: green[300],
+    position: 'absolute',
+    left: '50%',
+    marginTop:59,
+    marginLeft: -19,
+  },
 });
 
 class SelectUrl extends React.Component {
@@ -104,7 +119,7 @@ class SelectUrl extends React.Component {
   renderSuggestion(suggestion, { isHighlighted }) {
     return (
       <MenuItem 
-        className={this.props.classes.item}
+        className={this.props.classes.itemmenu1}
         selected={isHighlighted} 
         component="div">
         {suggestion.label+"-["+suggestion.url+']'}
@@ -220,8 +235,8 @@ class SelectUrl extends React.Component {
         value={this.state.transformOriginHorizontal}
         onChange={this.handleChange1('transformOriginHorizontal')}
       >
-        <FormControlLabel value="GET" control={<Radio className={classes.radio} checked={this.state.optionValue==="GET"} onChange={this.handleChange2.bind(this,"GET")} />} label="GET" />
-        <FormControlLabel value="POST" control={<Radio className={classes.radio} checked={this.state.optionValue==="POST"} onChange={this.handleChange2.bind(this,"POST")} />} label="POST" />
+        <FormControlLabel className={classes.label} value="GET" control={<Radio className={classes.radio} checked={this.state.optionValue==="GET"} onChange={this.handleChange2.bind(this,"GET")} />} label="GET" />
+        <FormControlLabel className={classes.label}  value="POST" control={<Radio className={classes.radio} checked={this.state.optionValue==="POST"} onChange={this.handleChange2.bind(this,"POST")} />} label="POST" />
         {this.state.optionValue==="POST"?(<Zoom in={true}><FormControl className={classes.formControl}>
           <Select
               value={this.state.bodytype}
@@ -249,6 +264,7 @@ class SelectUrl extends React.Component {
           variant={"raised"} 
           size={"medium"}
           onClick={this.handleSubmit.bind(this)}>提交报文</Button>
+      {this.props.loading && <CircularProgress size={38} className={classes.buttonProgress} />}
     </div>
     );
   }

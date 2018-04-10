@@ -399,12 +399,22 @@ function querybuyreportinfo(req,res,next){
 function proxyurl(req,res,next) {
   // body...
   options={
-
+    url:req.body.ProxyUrl,
+    method: req.body.hasOwnProperty('Method')?req.body.Method:"GET",
   }
+  if(req.body.hasOwnProperty('Header')){
+    options['headers']=req.body.Header
+  }
+  console.log(req.body)
+  console.log(options)
   proxy=new Promise((resolve, reject)=>{
     request(options, function (error, response, body) {
       if (!error) {
-        resolve(JSON.parse(body))
+        try{
+          resolve(JSON.parse(body))
+        }catch(e){
+          resolve(body)
+        }
       }else{
         reject(body)
       }

@@ -2,33 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
-
-// import Dialog, {
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-// } from 'material-ui/Dialog';
-import Tooltip from 'material-ui/Tooltip';
 import Grid from 'material-ui/Grid';
-import Divider from 'material-ui/Divider';
 import Typography from 'material-ui/Typography';
 import Paper from 'material-ui/Paper';
-import Select from 'material-ui/Select';
-import TextField from 'material-ui/TextField';
-import {InputLabel} from 'material-ui/Input';
-
-import InputAdornment from 'material-ui/Input';
-import MenuItem from 'material-ui/Menu/MenuItem';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-
 import Snack from '../components/snackbar';
 import SelectUrl from '../components/selecturl';
 import md5 from 'md5';
 import { parseString,Builder } from 'xml2js';
-import { CircularProgress } from 'material-ui/Progress';
-import Zoom from 'material-ui/transitions/Zoom';
-import AccountCircle from 'material-ui-icons/AccountCircle';
-
+// import Zoom from 'material-ui/transitions/Zoom';
+import { LinearProgress } from 'material-ui/Progress';
 import { ajax } from '../../commons/ajax'
 
 const styles = theme => ({
@@ -49,7 +31,6 @@ const styles = theme => ({
     outline:"none",
     backgroundColor:"#f1dda517",
     boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.03), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
-
   },
   context:{
     marginTop:10,
@@ -69,9 +50,6 @@ const styles = theme => ({
     flexBasis: 200,
   }
 });
-function Transition(props) {
-  return <Zoom {...props} key={"test"} timeout={500}/>;
-}
 class HomeMessage extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -79,7 +57,9 @@ class HomeMessage extends React.Component {
       urlvalue: '',
       msg:'',
       currency:'',
-      loading:false
+      loading:false,
+      returndata:"",
+      completed:0
     };
   }
   handleSetStatus(msg){
@@ -91,7 +71,7 @@ class HomeMessage extends React.Component {
     });
   };
   handleQuery(data){
-    if(this.refs.messages.value===""){
+    if(this.refs.messages.value==="" && data.Method!=="GET"){
       this.refs.messages.focus();
       this.handleSetStatus({msg:"请输入报文内容。"})
       return false;
@@ -110,10 +90,12 @@ class HomeMessage extends React.Component {
     })
     params['Sign']=md5(tmpSign);
     console.log(params)
+    this.setState({loading:true,msg:""})
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
           // console.log(req.data)
+          this.setState({loading:false,returndata:req.data.resultData})
          
           break;
         case "22222":
@@ -128,7 +110,15 @@ class HomeMessage extends React.Component {
     })
 
   }
-  
+  progress = () => {
+    const { completed } = this.state;
+    if (completed === 100) {
+      this.setState({ completed: 0 });
+    } else {
+      const diff = Math.random() * 10;
+      this.setState({ completed: Math.min(completed + diff, 100) });
+    }
+  }
   render() { 
     let {classes}=this.props   
     return (
@@ -136,6 +126,7 @@ class HomeMessage extends React.Component {
         <Paper>
           <Typography variant="title" className={classes.title}>模拟报文发送</Typography>
         </Paper>
+        <LinearProgress color="secondary" variant="determinate" value={this.state.completed} />
         <Paper className={classes.context} >
           <Grid container spacing={8}>
             <Grid item md={7} sm={7} xs={12}>
@@ -160,7 +151,7 @@ class HomeMessage extends React.Component {
         </Paper>
         <Paper className={classes.context} >
           <pre>
-          返回内容
+          {JSON.stringify(this.state.returndata,null,5)||"返回内容"}
           </pre>
         </Paper>
         <Snack title={this.state.msg} vertical={"bottom"} />
