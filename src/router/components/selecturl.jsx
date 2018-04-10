@@ -7,8 +7,9 @@ import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import Button from 'material-ui/Button';
 import Radio, { RadioGroup } from 'material-ui/Radio';
-import { FormLabel, FormControlLabel } from 'material-ui/Form';
-
+import { FormControl,FormLabel, FormControlLabel } from 'material-ui/Form';
+import Zoom from 'material-ui/transitions/Zoom';
+import Select from 'material-ui/Select';
 const suggestions = [
   {label: "一级家开查询",url: "http://192.168.20.16:8017/fcha/auth/fch/queryOrderDetails"},
   {label: "一级家开",url: "http://192.168.20.16:8017/fcha/auth/fch/normalRequestHandler"},
@@ -76,14 +77,29 @@ const styles = theme => ({
     margin: 10,
     maxHeight:300,
     overflow:"auto",
-
-}
+  },
+  formControl:{
+    marginTop:8,
+  },
+  input:{
+    fontSize: "0.4rem",
+    height:15
+  },
+  itemmenu:{
+    padding:"2px 10px",
+    fontSize:"0.5rem"
+  },
+  radio:{
+    width:40,
+  }
 });
 
 class SelectUrl extends React.Component {
   state = {
     value: '',
     suggestions: [],
+    optionValue:"GET",
+    bodytype: "text"
   };
   renderSuggestion(suggestion, { isHighlighted }) {
     return (
@@ -126,14 +142,22 @@ class SelectUrl extends React.Component {
       [key]: value,
     });
   };
-
+  handleChange2(value="POST"){
+    this.setState({
+      optionValue:value
+    })
+  }
   handleSubmit(){
     if(this.address.value===""){
       this.address.focus();
       this.props.handleSetStatus({msg:"请输入URL地址，或者选择URL"})
       return false;
     }
-    this.props.handleQuery(this.address.value);
+    let subval={ProxyUrl:this.address.value,Method:this.state.optionValue};
+    if(this.state.optionValue==="POST"){
+      subval['Header']={"Content-Type":this.state.bodytype}
+    }
+    this.props.handleQuery(subval);
   }
   renderInput(inputProps) {
     const { classes, ref, ...other } = inputProps;
@@ -152,10 +176,20 @@ class SelectUrl extends React.Component {
       />
     );
   }
-
+  handleSelectChange(e){
+    this.setState({bodytype:e.target.value})
+  }
   render() {
     const { classes } = this.props;
-
+    const menu=[
+        {id:1,name: "TEXT" ,val:"text"},
+        {id:2,name: "TEXT(text/plain)" ,val:"text/plain"},
+        {id:3,name: "JSON(application/json)" ,val:"application/json"},
+        {id:4,name: "XML(application/xml)" ,val:"application/xml"},
+        {id:5,name: "javascript(application/javascript)" ,val:"application/javascript"},
+        {id:6,name: "XML(text/xml)" ,val:"text/xml"},
+        {id:7,name: "HTML(text/html)" ,val:"text/html"},
+      ]
     return (
       <div className={classes.container}>
       <Autosuggest
@@ -186,8 +220,26 @@ class SelectUrl extends React.Component {
         value={this.state.transformOriginHorizontal}
         onChange={this.handleChange1('transformOriginHorizontal')}
       >
-        <FormControlLabel value="POST" control={<Radio checked />} label="POST" />
-        <FormControlLabel value="GET" control={<Radio />} label="GET" />
+        <FormControlLabel value="GET" control={<Radio className={classes.radio} checked={this.state.optionValue==="GET"} onChange={this.handleChange2.bind(this,"GET")} />} label="GET" />
+        <FormControlLabel value="POST" control={<Radio className={classes.radio} checked={this.state.optionValue==="POST"} onChange={this.handleChange2.bind(this,"POST")} />} label="POST" />
+        {this.state.optionValue==="POST"?(<Zoom in={true}><FormControl className={classes.formControl}>
+          <Select
+              value={this.state.bodytype}
+              onChange={this.handleSelectChange.bind(this)}
+              className={classes.select}
+              inputProps={{
+                name: 'bodytype',
+                id: 'bodytype',
+                className: classes.input
+              }}
+            >
+              {menu.map((n)=>{
+                return <MenuItem key={n.id} value={n.val} className={classes.itemmenu} >
+                        {n.name}
+                      </MenuItem>
+              })}             
+            </Select>
+          </FormControl></Zoom>):""}
       </RadioGroup>   
       <Button
           className={classes.buttonSubmit}

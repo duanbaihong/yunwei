@@ -15,8 +15,25 @@ var {login,
 /* GET users listing. */
 
 let sendMsg=""
+function handleLoginCheck(req,res,next){
+
+next()
+}
+function logincheck(req,res,next){
+  if (!req.session.hasOwnProperty('userinfo') && !req.session.hasOwnProperty('token') ){
+    if(req.body.MsgType !== "ACTION_USER_LOGIN" && req.body.MsgType !== "ACTION_CHECK_USER_LOGIN"){
+      return res.send({resultCode: "22222",resultMsg:errormsg['22222']});
+    }
+  }else{
+    if(req.body.MsgType !== "ACTION_USER_LOGIN" && !req.body.MsgType !== "ACTION_CHECK_USER_LOGIN" && req.session.token !== req.body.Token){
+      return res.send({resultCode: "22222",resultMsg:errormsg['22222']});
+    }
+  }
+  next()
+}
 function sessionHandle(req, res, next) {
   //请求session
+  console.log(req.body.hasOwnProperty('MsgType'))
   if(!req.body.hasOwnProperty('MsgType') || !req.body.hasOwnProperty('Sign')){
     sendMsg={resultCode: 99999,
              resultMsg: errormsg['99999']}
@@ -133,7 +150,7 @@ function sessionHandle(req, res, next) {
   }
   next();
 }
-router.post('/', sessionHandle,function(req, res, next) {
+router.post('/', logincheck,sessionHandle,function(req, res, next) {
   
 });
 

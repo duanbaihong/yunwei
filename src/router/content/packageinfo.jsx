@@ -150,6 +150,7 @@ class PackageInfo extends Component {
             req.data.resultData.platdata.forEach(n=>{
               platdata[n.cam_sn.toLowerCase()]=n
             })
+            console.log(platdata)
             let curstate={
                   dhdata:dhdata,
                   platdata:platdata,
@@ -206,57 +207,57 @@ class PackageInfo extends Component {
                   <TableBody>
                         <TableRow hover>
                           <TableCell>设备MAC</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].deviceid}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].deviceid:"无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备IMEI号</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].imei||"暂无"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].imei:"暂无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备名称</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].devicename}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].devicename:"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备状态</TableCell>
                           <TableCell numeric>
-                            {this.state.dhdata[this.state.age1].deviceStatus==="0"?'离线':(this.state.dhdata[this.state.age1].deviceStatus==="1"?'在线':'')}
+                            {this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].deviceStatus==="0"?'离线':(this.state.dhdata[this.state.age1].deviceStatus==="1"?'在线':'')):""}
                           </TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备型号</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].devtype||"暂无"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].devtype:"暂无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>云存储机房</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].region}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].region:"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>APP版本号</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].cameraAppVersion}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].cameraAppVersion:"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>固件版本号</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].firmwareVersion}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].firmwareVersion:"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>绑定手机号</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].mobile}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].mobile:"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备绑定时间</TableCell>
-                          <TableCell numeric>{(new Date(parseInt(this.state.dhdata[this.state.age1].registertime,10)*1000).Format("yyyy-MM-dd hh:mm:ss"))}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(new Date(parseInt(this.state.dhdata[this.state.age1].registertime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐编码/名称</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].servicename||"无"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].servicename:"无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐生效时间</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].starttime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].starttime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].starttime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].starttime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐失效时间</TableCell>
-                          <TableCell numeric>{this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):""}</TableCell>
                         </TableRow>
                   </TableBody>
                 </Table>
@@ -292,66 +293,66 @@ class PackageInfo extends Component {
                 <TableBody>
                   <TableRow hover>
                     <TableCell>设备MAC</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_sn}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_sn:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备IMEI号</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_imei}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_imei:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备名称</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_name}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_name:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备状态</TableCell>
                     <TableCell numeric>
-                      {this.state.platdata[this.state.age1].online==="0"?'离线':(this.state.platdata[this.state.age1].online==="1"?'在线':'')}
+                      {this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].online==="0"?'离线':(this.state.platdata[this.state.age1].online==="1"?'在线':'')):"-"}
                     </TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备型号</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_model}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_model:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>云存储机房</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].region}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].region:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>APP版本号</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].app_version}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].app_version:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>固件版本号</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].cam_version}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_version:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>绑定手机号</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].phone_num}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].phone_num:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备绑定时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].bind_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].bind_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):""}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].bind_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].bind_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐编码/名称</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].name||"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].name:"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐生效时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].effective_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].effective_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].effective_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].effective_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐失效时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].failure_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].failure_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].failure_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].failure_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐订购时间</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"}
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}
                     </TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备渠道</TableCell>
-                    <TableCell numeric>{this.state.platdata[this.state.age1].area_name}
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].area_name:""}
                     </TableCell>
                   </TableRow>
                 </TableBody>

@@ -99,8 +99,10 @@ class HomeMessage extends React.Component {
     let params={
       MsgType: "ACTION_SEND_MESSAGE_REQ",
       Params: this.refs.messages.value,
-      ProxyUrl: data,
       Token: sessionStorage.token,
+    }
+    if(typeof data === 'object'){
+      params=Object.assign(params,data)
     }
     let tmpSign=""
     Object.keys(params).sort().forEach((n)=>{
@@ -129,24 +131,6 @@ class HomeMessage extends React.Component {
   
   render() { 
     let {classes}=this.props   
-    const currencies = [
-        {
-          value: 'USD',
-          label: '$',
-        },
-        {
-          value: 'EUR',
-          label: '€',
-        },
-        {
-          value: 'BTC',
-          label: '฿',
-        },
-        {
-          value: 'JPY',
-          label: '¥',
-        },
-      ];
     return (
       <div className={classes.root}>
         <Paper>
