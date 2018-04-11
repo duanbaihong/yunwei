@@ -33,7 +33,6 @@ function logincheck(req,res,next){
 }
 function sessionHandle(req, res, next) {
   //请求session
-  console.log(req.body.hasOwnProperty('MsgType'))
   if(!req.body.hasOwnProperty('MsgType') || !req.body.hasOwnProperty('Sign')){
     sendMsg={resultCode: 99999,
              resultMsg: errormsg['99999']}

@@ -80,7 +80,7 @@ const styles = theme => ({
     overflow:"auto",
   },
   formControl:{
-    marginTop:8,
+    marginTop:1,
   },
   input:{
     fontSize: "0.8rem",
@@ -96,9 +96,17 @@ const styles = theme => ({
   },
   label:{
     fontSize:"0.7rem",
+    height:32,
+    marginLeft:-8,
+    marginRight:10,
   },
   radio:{
-    width:40,
+    width:30,
+    height:30,
+    fontSize:18,
+    "&>span>svg":{
+      fontSize:18
+    }
   },
   buttonProgress: {
     color: green[300],
@@ -198,10 +206,10 @@ class SelectUrl extends React.Component {
     const { classes } = this.props;
     const menu=[
         {id:1,name: "TEXT" ,val:"text"},
-        {id:2,name: "TEXT(text/plain)" ,val:"text/plain"},
-        {id:3,name: "JSON(application/json)" ,val:"application/json"},
-        {id:4,name: "XML(application/xml)" ,val:"application/xml"},
-        {id:5,name: "javascript(application/javascript)" ,val:"application/javascript"},
+        {id:2,name: "XML(application/xml)" ,val:"application/xml"},
+        {id:3,name: "javascript(application/javascript)" ,val:"application/javascript"},
+        {id:4,name: "JSON(application/json)" ,val:"application/json"},
+        {id:5,name: "TEXT(text/plain)" ,val:"text/plain"},
         {id:6,name: "XML(text/xml)" ,val:"text/xml"},
         {id:7,name: "HTML(text/html)" ,val:"text/html"},
       ]

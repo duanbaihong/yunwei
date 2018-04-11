@@ -11,6 +11,7 @@ import { withStyles } from 'material-ui/styles';
 import {withRouter} from 'react-router-dom';
 import Button from 'material-ui/Button';
 import { bindActionCreators } from 'redux'
+import Tooltip from 'material-ui/Tooltip';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -80,10 +81,12 @@ class UserAvater extends Component {
 
     return (
       <div className={classes.avatarRoot}>
-        <Avatar alt="用户"
-                src={back}
-                onClick={this.handleOpenUserMenu.bind(this)}
-                className={classNames(classes.avatar, classes.bigAvatar)} />
+        <Tooltip title={this.props.userInfo.loginuser}>
+          <Avatar alt="用户"
+                  src={back}
+                  onClick={this.handleOpenUserMenu.bind(this)}
+                  className={classNames(classes.avatar, classes.bigAvatar)} />
+        </Tooltip>
         <Menu anchorEl={anchorEl} 
           anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
           transformOrigin={{ vertical: 'top', horizontal: 'right'}}

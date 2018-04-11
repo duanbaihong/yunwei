@@ -89,14 +89,11 @@ class HomeMessage extends React.Component {
       tmpSign+=params[n]
     })
     params['Sign']=md5(tmpSign);
-    console.log(params)
     this.setState({loading:true,msg:""})
     ajax('/api',params).then((req,rsp,next)=>{
       switch(req.data.resultCode){
         case "10000":
-          // console.log(req.data)
           this.setState({loading:false,returndata:req.data.resultData})
-         
           break;
         case "22222":
           this.handleSetStatus({msg:req.data.resultMsg,loading:false});
@@ -126,7 +123,7 @@ class HomeMessage extends React.Component {
         <Paper>
           <Typography variant="title" className={classes.title}>模拟报文发送</Typography>
         </Paper>
-        <LinearProgress color="secondary" variant="determinate" value={this.state.completed} />
+        {this.state.completed>0 && this.state.completed<100?<LinearProgress color="secondary" variant="determinate" value={this.state.completed} />:""}
         <Paper className={classes.context} >
           <Grid container spacing={8}>
             <Grid item md={7} sm={7} xs={12}>
@@ -150,8 +147,8 @@ class HomeMessage extends React.Component {
           </Grid>
         </Paper>
         <Paper className={classes.context} >
-          <pre>
-          {JSON.stringify(this.state.returndata,null,5)||"返回内容"}
+          <pre style={{overflow:"auto"}}>
+          {(typeof(this.state.returndata)==='object'?JSON.stringify(this.state.returndata,null,5):this.state.returndata)||"返回内容"}
           </pre>
         </Paper>
         <Snack title={this.state.msg} vertical={"bottom"} />

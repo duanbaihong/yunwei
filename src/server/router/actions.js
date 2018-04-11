@@ -26,6 +26,12 @@ function login(req,res,next) {
             })
         }
         if(!err && typeof(results) !== undefined && results.length==1){
+          updatesql='update t_user_info set lastloginip="'+(req.headers['x-forwarded-for'] ||  
+              req.connection.remoteAddress ||  
+              req.socket.remoteAddress ||  
+              req.connection.socket.remoteAddress)+'",logintime="'+new Date().toLocaleString()+'" where token="'+sign+'";'
+          console.log(updatesql)
+          conn.query(updatesql)
           req.session.token=results[0].token
           req.session.userinfo=results[0]
           res.send({
@@ -397,16 +403,18 @@ function querybuyreportinfo(req,res,next){
  * @return {[type]}        [description]
  */
 function proxyurl(req,res,next) {
-  // body...
+  // body...  
   options={
     url:req.body.ProxyUrl,
     method: req.body.hasOwnProperty('Method')?req.body.Method:"GET",
   }
   if(req.body.hasOwnProperty('Header')){
+    req.body.Header['Content-Type']=req.body.Header['Content-Type']+"; charset=utf-8";
     options['headers']=req.body.Header
   }
-  console.log(req.body)
-  console.log(options)
+  if(req.body.hasOwnProperty('Params') && req.body.Params!==""){
+    options['body']=req.body.Params
+  }
   proxy=new Promise((resolve, reject)=>{
     request(options, function (error, response, body) {
       if (!error) {
@@ -416,18 +424,21 @@ function proxyurl(req,res,next) {
           resolve(body)
         }
       }else{
-        reject(body)
+        reject(error)
       }
     })
   });
   proxy.then((data)=>{
-    console.log(data)
     res.send({
           resultCode: "10000",
           resultData: data
           });
   }).catch((err)=>{
     console.log(err)
+     res.send({
+          resultCode: "10000",
+          resultData: err
+          });
   })
 }
 module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo,proxyurl}
