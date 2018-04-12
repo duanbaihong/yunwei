@@ -9,10 +9,12 @@ import Select from 'material-ui/Select';
 
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
+import Zoom from 'material-ui/transitions/Zoom';
 import Snack from '../components/snackbar';
 import green from 'material-ui/colors/green';
 import md5 from 'md5';
 import QueryText from './othercomponents/querytext';
+import Slide from 'material-ui/transitions/Slide';
 
 import { ajax } from '../../commons/ajax'
 const styles = theme => ({
@@ -92,6 +94,7 @@ class PackageInfo extends Component {
         age:"",
         age1:0,
         in: false,
+        in1: true,
         loading:false,
         dhdata:{},
         platdata:{},
@@ -117,7 +120,6 @@ class PackageInfo extends Component {
   handleQuery(data){
     let macimei=data.macimei
     let phone=data.phone
-    console.log(data)
     let params={
       MsgType: "ACTION_QUERY_PACKAGE_INFO",
       Token: sessionStorage.token,
@@ -146,16 +148,18 @@ class PackageInfo extends Component {
               dhdata[tmpmac]=n
               dhdata[tmpmac]['imei']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].imei:""
               dhdata[tmpmac]['devtype']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].devtype:""
+              dhdata[tmpmac]['ip']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].ip:""
+              dhdata[tmpmac]['wifi']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].wifi:""
+              dhdata[tmpmac]['privateIp']=dh1data.hasOwnProperty(tmpmac)?dh1data[tmpmac].privateIp:""
             })
             req.data.resultData.platdata.forEach(n=>{
               platdata[n.cam_sn.toLowerCase()]=n
             })
-            console.log(platdata)
             let curstate={
                   dhdata:dhdata,
                   platdata:platdata,
                   loading:false,
-                  age1:Object.keys(dhdata)[0]};
+                  age1:Object.keys(platdata)[0]};
             if(Object.keys(dhdata).length===0){
               curstate['msg']="没有找登虹数据！"
             }
@@ -177,12 +181,14 @@ class PackageInfo extends Component {
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
-    const dhtable=(JSON.stringify(this.state.dhdata)!=='{}'?(<Grid item xs={12} sm={6}>
+    const dhtable=(JSON.stringify(this.state.dhdata)!=='{}'?(
+          <Zoom in={true} style={{ transitionDelay:  300  }}>
+            <Grid item xs={12} sm={6}>
               <Paper className={classes.root}>
                 <Table className={classes.table}>
                   <TableHead>
                     <TableRow>
-                      <TableCell>登虹套餐情况</TableCell>
+                      <TableCell>登虹设备情况</TableCell>
                       <TableCell numeric>
                           <FormControl fullWidth={true}>
                             <Select
@@ -211,7 +217,7 @@ class PackageInfo extends Component {
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备IMEI号</TableCell>
-                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].imei:"暂无"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].imei||"暂无"):"暂无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备名称</TableCell>
@@ -220,12 +226,12 @@ class PackageInfo extends Component {
                         <TableRow hover>
                           <TableCell>设备状态</TableCell>
                           <TableCell numeric>
-                            {this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].deviceStatus==="0"?'离线':(this.state.dhdata[this.state.age1].deviceStatus==="1"?'在线':'')):""}
+                            {this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].onlineStatus==="0"?'离线':(this.state.dhdata[this.state.age1].onlineStatus==="1"?'在线':'-')):"-"}
                           </TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>设备型号</TableCell>
-                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].devtype:"暂无"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].devtype||"-":"-"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>云存储机房</TableCell>
@@ -249,7 +255,7 @@ class PackageInfo extends Component {
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐编码/名称</TableCell>
-                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].servicename:"无"}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].servicename||"-"):"无"}</TableCell>
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐生效时间</TableCell>
@@ -257,18 +263,37 @@ class PackageInfo extends Component {
                         </TableRow>
                         <TableRow hover>
                           <TableCell>套餐失效时间</TableCell>
-                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):""}</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].endtime!==""?(new Date(parseInt(this.state.dhdata[this.state.age1].endtime,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备WIFI名称</TableCell>
+                          <TableCell numeric>{this.state.dhdata.hasOwnProperty(this.state.age1)?this.state.dhdata[this.state.age1].wifi:"-"}</TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备IP地址</TableCell>
+                          <TableCell numeric>
+                            {this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].ip||"-"):"-"}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow hover>
+                          <TableCell>设备私网IP地址</TableCell>
+                          <TableCell numeric>
+                            {this.state.dhdata.hasOwnProperty(this.state.age1)?(this.state.dhdata[this.state.age1].privateIp||"-"):"-"}
+                            </TableCell>
                         </TableRow>
                   </TableBody>
                 </Table>
               </Paper>
-            </Grid>):"");
-    const plattable=(JSON.stringify(this.state.platdata)!=='{}'?(<Grid item xs={12} sm={6}>
+            </Grid>
+          </Zoom>):"");
+    const plattable=(JSON.stringify(this.state.platdata)!=='{}'?(
+        <Zoom in={true}>
+          <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow >
-                    <TableCell >运管套餐情况</TableCell>
+                    <TableCell >运管设备情况</TableCell>
                     <TableCell numeric>
                         <FormControl className={classes.formControl} fullWidth={true}>
                           <Select
@@ -297,11 +322,11 @@ class PackageInfo extends Component {
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备IMEI号</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_imei:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].cam_imei||"无"):"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备名称</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_name:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_name||"无":"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备状态</TableCell>
@@ -315,19 +340,19 @@ class PackageInfo extends Component {
                   </TableRow>
                   <TableRow hover>
                     <TableCell>云存储机房</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].region:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].region||"-"):"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>APP版本号</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].app_version:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].app_version||"无":"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>固件版本号</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_version:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].cam_version||"无":"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>绑定手机号</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].phone_num:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].phone_num||"无"):"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备绑定时间</TableCell>
@@ -335,7 +360,7 @@ class PackageInfo extends Component {
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐编码/名称</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].name:"无"}</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].name||"-"):"无"}</TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>套餐生效时间</TableCell>
@@ -352,14 +377,21 @@ class PackageInfo extends Component {
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备渠道</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].area_name:""}
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].area_name:"-"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover>
+                    <TableCell>设备备注信息</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].description||"-":"-"}
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </Paper>
-          </Grid>):"")
+          </Grid>
+        </Zoom>):"")
     return (
+    <Slide direction="bottom" in={this.state.in1} timeout={200}>
       <div className={classes.rootdiv}>
         <QueryText 
             setmsg={this.setStateMsg.bind(this)} 
@@ -371,6 +403,7 @@ class PackageInfo extends Component {
           <Snack title={this.state.msg} vertical={"bottom"} />
         </Grid>
       </div>
+    </Slide>
     );
   }
 }

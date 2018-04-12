@@ -27,7 +27,7 @@ import md5 from 'md5';
 import { parseString,Builder } from 'xml2js';
 import { CircularProgress } from 'material-ui/Progress';
 import Zoom from 'material-ui/transitions/Zoom';
-
+import Grow from 'material-ui/transitions/Grow';
 import { ajax } from '../../commons/ajax'
 
 const styles = theme => ({
@@ -315,115 +315,117 @@ class OrderMessage extends React.Component {
       "110":"一级家开"
       }
     return (
-      <div className={classes.rootdiv}>
-        <QueryText 
-            setmsg={this.setStateMsg.bind(this)} 
-            handleQuery={this.handleQuery.bind(this)}
-            loading={this.state.loading} 
-            disSearial={true}
-            />
-        <Paper className={classes.root} >
-          <EnhancedTableToolbar titlemsg={this.props.hasOwnProperty('match')?"家开订购报文明细":"订购报文明细"} />
-          <div className={classes.tableWrapper}>
-            <Table className={classes.table}>
-              <EnhancedTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={this.handleRequestSort}
-                rowCount={data.length}
+      <Grow in={true}>
+        <div className={classes.rootdiv}>
+          <QueryText 
+              setmsg={this.setStateMsg.bind(this)} 
+              handleQuery={this.handleQuery.bind(this)}
+              loading={this.state.loading} 
+              disSearial={true}
               />
-              <TableBody>
-                {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-                  return (
-                    <TableRow
-                      hover
-                      tabIndex={-1}
-                      key={index}
-                      className={classes.tabletr}
-                    >
-                      <TableCell padding="none" >{index++}</TableCell>
-                      <TableCell padding="none">{new Date(parseInt(n.time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")}</TableCell>
-                      <TableCell >{n.phoneNum}</TableCell>
-                      <TableCell >{n.devMac}</TableCell>
-                      <TableCell >{area.hasOwnProperty(n.bossCode)?area[n.bossCode]:""}</TableCell>
-                      <TableCell >{pkgType.hasOwnProperty(n.oprCode)?pkgType[n.oprCode]:""}</TableCell>
-                      <TableCell >{n.oprSrc==="01"?"BOSS正向":(n.oprSrc==="09"?"APP反向":"")}</TableCell>
-                      <TableCell >{n.verifyresult==="0"?"成功":"解析失败["+n.verifyresult+"]"}</TableCell>
-                      <TableCell >
-                        <Tooltip title={n.result}>
-                          <div style={{maxWidth:200,overflow: "hidden"}}>{n.result}</div>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell numeric>
-                        <Button 
-                          variant="flat"  
-                          size="small" 
-                          color="primary"
-                          onClick={this.handleModalOpen.bind(this,n.messages)}>
-                          详细报文
-                        </Button>
+          <Paper className={classes.root} >
+            <EnhancedTableToolbar titlemsg={this.props.hasOwnProperty('match')?"家开订购报文明细":"订购报文明细"} />
+            <div className={classes.tableWrapper}>
+              <Table className={classes.table}>
+                <EnhancedTableHead
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={this.handleRequestSort}
+                  rowCount={data.length}
+                />
+                <TableBody>
+                  {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+                    return (
+                      <TableRow
+                        hover
+                        tabIndex={-1}
+                        key={index}
+                        className={classes.tabletr}
+                      >
+                        <TableCell padding="none" >{index++}</TableCell>
+                        <TableCell padding="none">{new Date(parseInt(n.time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")}</TableCell>
+                        <TableCell >{n.phoneNum}</TableCell>
+                        <TableCell >{n.devMac}</TableCell>
+                        <TableCell >{area.hasOwnProperty(n.bossCode)?area[n.bossCode]:""}</TableCell>
+                        <TableCell >{pkgType.hasOwnProperty(n.oprCode)?pkgType[n.oprCode]:""}</TableCell>
+                        <TableCell >{n.oprSrc==="01"?"BOSS正向":(n.oprSrc==="09"?"APP反向":"")}</TableCell>
+                        <TableCell >{n.verifyresult==="0"?"成功":"解析失败["+n.verifyresult+"]"}</TableCell>
+                        <TableCell >
+                          <Tooltip title={n.result}>
+                            <div style={{maxWidth:200,overflow: "hidden"}}>{n.result}</div>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell numeric>
+                          <Button 
+                            variant="flat"  
+                            size="small" 
+                            color="primary"
+                            onClick={this.handleModalOpen.bind(this,n.messages)}>
+                            详细报文
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 40 * emptyRows }}>
+                      <TableCell colSpan={10} style={{textAlign:"center"}}>
+                        {this.state.loading && <CircularProgress size={100} />}
                       </TableCell>
                     </TableRow>
-                  );
-                })}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: 40 * emptyRows }}>
-                    <TableCell colSpan={10} style={{textAlign:"center"}}>
-                      {this.state.loading && <CircularProgress size={100} />}
-                    </TableCell>
+                  )}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TablePagination
+                      colSpan={10}
+                      count={data.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      backIconButtonProps={{
+                        'aria-label': '上一页',
+                      }}
+                      nextIconButtonProps={{
+                        'aria-label': '下一页',
+                      }}
+                      rowsPerPageOptions={[6,12]}
+                      labelRowsPerPage={"每页显示："}
+                      onChangePage={this.handleChangePage}
+                      onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                    />
                   </TableRow>
-                )}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    colSpan={10}
-                    count={data.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{
-                      'aria-label': '上一页',
-                    }}
-                    nextIconButtonProps={{
-                      'aria-label': '下一页',
-                    }}
-                    rowsPerPageOptions={[6,12]}
-                    labelRowsPerPage={"每页显示："}
-                    onChangePage={this.handleChangePage}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                  />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </div>
-          <Snack title={this.state.msg} vertical={"bottom"} />
-        </Paper>
-        <Dialog
-          open={this.state.modelopen}
-          transition={Transition}
-          keepMounted
-          maxWidth={"md"}
-          onClose={this.handleModalClose.bind(this)}
-          aria-labelledby="form-dialog-title"
-           >
-          <DialogTitle id="form-dialog-title" className={classes.dialogtitle}>详细报文</DialogTitle>
-          <DialogContent className={classes.dialogContent}>
-            <pre style={{ backgroundColor: "#1f1e1e",
-                          color: "#a0a0a0",
-                          padding: 10,
-                          lineHeight:1.7,
-                          borderRadius:3,
-                          margin:0}}>
-              {this.state.messages}
-            </pre>           
-          </DialogContent>
-          <DialogActions className={classes.dialogActions} >
-            <Button onClick={this.handleModalClose.bind(this)} color="primary">
-              关闭
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+                </TableFooter>
+              </Table>
+            </div>
+            <Snack title={this.state.msg} vertical={"bottom"} />
+          </Paper>
+          <Dialog
+            open={this.state.modelopen}
+            transition={Transition}
+            keepMounted
+            maxWidth={"md"}
+            onClose={this.handleModalClose.bind(this)}
+            aria-labelledby="form-dialog-title"
+             >
+            <DialogTitle id="form-dialog-title" className={classes.dialogtitle}>详细报文</DialogTitle>
+            <DialogContent className={classes.dialogContent}>
+              <pre style={{ backgroundColor: "#1f1e1e",
+                            color: "#a0a0a0",
+                            padding: 10,
+                            lineHeight:1.7,
+                            borderRadius:3,
+                            margin:0}}>
+                {this.state.messages}
+              </pre>           
+            </DialogContent>
+            <DialogActions className={classes.dialogActions} >
+              <Button onClick={this.handleModalClose.bind(this)} color="primary">
+                关闭
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      </Grow>
     );
   }
 }

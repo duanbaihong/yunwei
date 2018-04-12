@@ -50,7 +50,13 @@ const styles = theme => ({
     marginLeft: -20,
   },
 });
-  class QueryText extends Component {
+class QueryText extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      in: true,
+    }
+  }
   handleQuery(){
     let macimei=this.macimei
     let phone=this.phone
@@ -101,50 +107,50 @@ const styles = theme => ({
     const {classes} = this.props;
     const {loading} = this.props;
     return (
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-          <span className={classes.wordshow}>查询方式：</span>
-            <TextField
-              id="phone_imei"
-              label="手机号"
-              className={classes.textField}
-              type="text"
-              autoComplete="phone"
-              margin="normal"
-              inputRef={(c) => this.phone = c}
-            /> 
-            <TextField
-              id="password-input"
-              label="设备号MAC或IMEI号查询"
-              className={classes.textField}
-              type="text"
-              autoComplete="macimei"
-              margin="normal"
-              inputRef={(c) => this.macimei = c}
-            /> 
-            {this.props.disSearial?(<TextField
-              id="orderno-input"
-              label="订单号"
-              className={classes.textField}
-              type="text"
-              autoComplete="orderno"
-              margin="normal"
-              inputRef={(c) => this.orderno = c}
-            />):""}
-            <div className={classes.search}>
-              <Button variant="raised" 
-                      color="secondary" 
-                      disabled={loading}
-                      onClick={this.handleQuery.bind(this)}>
-                <SearchIcon />
-                查询
-              </Button>
-              {loading && <CircularProgress size={40} className={classes.buttonProgress} />}
-            </div>
-          </Paper>
+        <Grid container spacing={24}>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+            <span className={classes.wordshow}>查询方式：</span>
+              <TextField
+                id="phone_imei"
+                label="手机号"
+                className={classes.textField}
+                type="text"
+                autoComplete="phone"
+                margin="normal"
+                inputRef={(c) => this.phone = c}
+              /> 
+              <TextField
+                id="password-input"
+                label="设备号MAC或IMEI号查询"
+                className={classes.textField}
+                type="text"
+                autoComplete="macimei"
+                margin="normal"
+                inputRef={(c) => this.macimei = c}
+              /> 
+              {this.props.disSearial?(<TextField
+                id="orderno-input"
+                label="订单号"
+                className={classes.textField}
+                type="text"
+                autoComplete="orderno"
+                margin="normal"
+                inputRef={(c) => this.orderno = c}
+              />):""}
+              <div className={classes.search}>
+                <Button variant="raised" 
+                        color="secondary" 
+                        disabled={loading}
+                        onClick={this.handleQuery.bind(this)}>
+                  <SearchIcon />
+                  查询
+                </Button>
+                {loading && <CircularProgress size={40} className={classes.buttonProgress} />}
+              </div>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
     );
   }
 }

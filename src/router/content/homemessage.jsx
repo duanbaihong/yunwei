@@ -26,6 +26,7 @@ import EnhancedTableToolbar from './othercomponents/enhancedtabletoolbar';
 import md5 from 'md5';
 import { CircularProgress } from 'material-ui/Progress';
 import Zoom from 'material-ui/transitions/Zoom';
+import Slide from 'material-ui/transitions/Slide';
 
 import { ajax } from '../../commons/ajax'
 
@@ -82,7 +83,8 @@ class OrderMessage extends React.Component {
       msg: "",
       loading:false,
       modelopen:false,
-      messages:''
+      messages:'',
+      in:true,
     };
   }
 
@@ -272,6 +274,7 @@ class OrderMessage extends React.Component {
       "110":"一级家开"
       }
     return (
+    <Slide direction="bottom" in={this.state.in} timeout={300}>
       <div className={classes.rootdiv}>
         <QueryText 
             setmsg={this.setStateMsg.bind(this)} 
@@ -382,6 +385,7 @@ class OrderMessage extends React.Component {
           </DialogActions>
         </Dialog>
       </div>
+    </Slide>
     );
   }
 }

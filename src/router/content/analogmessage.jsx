@@ -12,7 +12,7 @@ import { parseString,Builder } from 'xml2js';
 // import Zoom from 'material-ui/transitions/Zoom';
 import { LinearProgress } from 'material-ui/Progress';
 import { ajax } from '../../commons/ajax'
-
+import Zoom from 'material-ui/transitions/Zoom';
 const styles = theme => ({
   root: {
     width: '100%',
@@ -119,40 +119,42 @@ class HomeMessage extends React.Component {
   render() { 
     let {classes}=this.props   
     return (
-      <div className={classes.root}>
-        <Paper>
-          <Typography variant="title" className={classes.title}>模拟报文发送</Typography>
-        </Paper>
-        {this.state.completed>0 && this.state.completed<100?<LinearProgress color="secondary" variant="determinate" value={this.state.completed} />:""}
-        <Paper className={classes.context} >
-          <Grid container spacing={8}>
-            <Grid item md={7} sm={7} xs={12}>
-                <textarea 
-                  ref={"messages"}
-                  className={classes.messages}
-                  aria-invalid="false" 
-                  aria-required="false" 
-                  id="messages_content" 
-                  placeholder="{}"
-                  rows="15"
-                  type="text"></textarea>
+      <Zoom in={true}>
+        <div className={classes.root}>
+          <Paper>
+            <Typography variant="title" className={classes.title}>模拟报文发送</Typography>
+          </Paper>
+          {this.state.completed>0 && this.state.completed<100?<LinearProgress color="secondary" variant="determinate" value={this.state.completed} />:""}
+          <Paper className={classes.context} >
+            <Grid container spacing={8}>
+              <Grid item md={7} sm={7} xs={12}>
+                  <textarea 
+                    ref={"messages"}
+                    className={classes.messages}
+                    aria-invalid="false" 
+                    aria-required="false" 
+                    id="messages_content" 
+                    placeholder="{}"
+                    rows="15"
+                    type="text"></textarea>
+              </Grid>
+              <Grid item md={5} sm={5} xs={12}>
+                <Paper className={classes.paper}>
+                  <SelectUrl loading={this.state.loading} 
+                  handleQuery={this.handleQuery.bind(this)}
+                  handleSetStatus={this.handleSetStatus.bind(this)} />
+                </Paper>
+              </Grid>
             </Grid>
-            <Grid item md={5} sm={5} xs={12}>
-              <Paper className={classes.paper}>
-                <SelectUrl loading={this.state.loading} 
-                handleQuery={this.handleQuery.bind(this)}
-                handleSetStatus={this.handleSetStatus.bind(this)} />
-              </Paper>
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper className={classes.context} >
-          <pre style={{overflow:"auto"}}>
-          {(typeof(this.state.returndata)==='object'?JSON.stringify(this.state.returndata,null,5):this.state.returndata)||"返回内容"}
-          </pre>
-        </Paper>
-        <Snack title={this.state.msg} vertical={"bottom"} />
-      </div>
+          </Paper>
+          <Paper className={classes.context} >
+            <pre style={{overflow:"auto"}}>
+            {(typeof(this.state.returndata)==='object'?JSON.stringify(this.state.returndata,null,5):this.state.returndata)||"返回内容"}
+            </pre>
+          </Paper>
+          <Snack title={this.state.msg} vertical={"bottom"} />
+        </div>
+      </Zoom>
     );
   }
 }

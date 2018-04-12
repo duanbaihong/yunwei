@@ -201,10 +201,10 @@ function querydevinfo(req,res,next){
             WHERE f.phone_num="'+req.body.phone+'" LIMIT 0,40 ';
       // where+='b.phone_number="'+req.body.phone+'" OR f.phone_num="'+req.body.phone+'"';
     }else if(req.body.hasOwnProperty('macimei')){
-       queryparams['deviceId']='xxxxS_'+req.body.macimei;
-       if(req.body.macimei.length===16){
+       if(req.body.macimei.match(/\d{15,}/g)){
         where+='a.cam_imei="'+req.body.macimei+'"'
        }else{
+        queryparams['deviceId']='xxxxS_'+req.body.macimei;
         where+='a.cam_sn="'+req.body.macimei+'"'
        }
        sql='SELECT  a.cam_sn,\
@@ -260,6 +260,9 @@ function querydevinfo(req,res,next){
     devQuery.then((platdata)=>{
       // 异步登陆
       resultData['platdata']=platdata;
+      if(req.body.macimei.length>=15 && req.body.macimei.match(/\d{15,}/g) && platdata.length>0){
+        queryparams['deviceId']='xxxxS_'+platdata[0]['cam_sn'];
+      }
       if(!req.session.isdhlogin){
         loginurl=thirtyhttpoption.url+thirtyhttpoption.loginuri
         loginparams={
@@ -303,6 +306,9 @@ function querydevinfo(req,res,next){
               tmpdata['mac']=result.profile.general.macAddress._||""
               tmpdata['imei']=result.profile.general.deviceId._||""
               tmpdata['devtype']=result.profile.general.deviceType||""
+              tmpdata['wifi']=result.profile.general.wifiNetWork._||""
+              tmpdata['ip']=n.resultMap.ip||""
+              tmpdata['privateIp']=n.resultMap.privateIp||""
               resultData['dh1data'].push(tmpdata)
             }else{
               console.log(n.result.context)
