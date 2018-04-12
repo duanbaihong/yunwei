@@ -6,16 +6,27 @@ import { Route,
          Switch,
          Redirect,
        } from 'react-router-dom';
+import asyncComponent from '../components/asynccomponent';
 
-import SideMenu from './sidemenu';
-import TopMenu from './topmenu';
-import Password from './password';
-import UserInfo from './userinfo';
-import PackageInfo from './packageinfo';
-import OrderMessage from './ordermessage';
-import HomeMessage from './homemessage';
-import AnalogMessage from './analogmessage';
-import ModuleLogs from './modulelogs';
+const AsyncSideMenu = asyncComponent(() => import('./sidemenu'));
+const AsyncTopMenu = asyncComponent(() => import('./topmenu'));
+const AsyncPassword = asyncComponent(() => import('./password'));
+const AsyncUserInfo = asyncComponent(() => import('./userinfo'));
+const AsyncPackageInfo = asyncComponent(() => import('./packageinfo'));
+const AsyncOrderMessage = asyncComponent(() => import('./ordermessage'));
+const AsyncHomeMessage = asyncComponent(() => import('./homemessage'));
+const AsyncAnalogMessage = asyncComponent(() => import('./analogmessage'));
+const AsyncModuleLogs = asyncComponent(() => import('./modulelogs'));
+
+// import SideMenu from './sidemenu';
+// import TopMenu from './topmenu';
+// import Password from './password';
+// import UserInfo from './userinfo';
+// import PackageInfo from './packageinfo';
+// import OrderMessage from './ordermessage';
+// import HomeMessage from './homemessage';
+// import AnalogMessage from './analogmessage';
+// import ModuleLogs from './modulelogs';
 
 const styles = theme => ({
   root: {
@@ -50,36 +61,36 @@ class Content extends Component {
     return (
     <div className={classes.root}>
       <div className={classes.topmenu}>
-        <TopMenu />
+        <AsyncTopMenu />
       </div>
       <div className={classes.bottomcontent} >
-        <SideMenu />
+        <AsyncSideMenu />
         <main className={classes.content}>
           <Grid container >
               <Switch>
                 <Route path="/content/password" render={(props)=>(
-                    window.isLogin?<Password userLoginOut={this.props.userLoginOut}   />:<Redirect to="/login" />
+                    window.isLogin?<AsyncPassword userLoginOut={this.props.userLoginOut}   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/userinfo" render={(props)=>(
-                    window.isLogin?<UserInfo   />:<Redirect to="/login" />
+                    window.isLogin?<AsyncUserInfo   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/packageinfo" render={(props)=>(
-                    window.isLogin?<PackageInfo userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
+                    window.isLogin?<AsyncPackageInfo userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/ordermessage" render={(props)=>(
-                    window.isLogin?<OrderMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
+                    window.isLogin?<AsyncOrderMessage userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/homemessage" render={(props)=>(
-                    window.isLogin?<HomeMessage {...props} userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
+                    window.isLogin?<AsyncHomeMessage {...props} userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/modulelogs" render={(props)=>(
-                    window.isLogin?<ModuleLogs {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<AsyncModuleLogs {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/operateresults" render={(props)=>(
-                    window.isLogin?<PackageInfo {...props}  />:<Redirect to="/login" />
+                    window.isLogin?<AsyncPackageInfo {...props}  />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/analogmessage" render={(props)=>(
-                    window.isLogin?<AnalogMessage {...props} userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
+                    window.isLogin?<AsyncAnalogMessage {...props} userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />
                   )} />
               </Switch>
           </Grid>

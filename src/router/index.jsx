@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-// import { TransitionGroup, CSSTransition } from "react-transition-group";
-// Router party
+
 import { HashRouter as Router,
          Route,
          Switch,
          Redirect,
        } from 'react-router-dom';
-
-import Login from './login';
-import Content from './content';
 import NotFound from './notfound';
 import { ajax } from '../commons/ajax'
 import {userCheckLogin} from '../actions'
 import md5 from 'md5';
+// 导入异步加载组件
+import asyncComponent from './components/asynccomponent';
+
+const AsyncLogin = asyncComponent(() => import('./login'));
+const AsyncContent = asyncComponent(() => import('./content'));
+// import Login from './login';
+// import Content from './content';
+
+
+
 Date.prototype.Format = function(format) {
    var o = {
        "M+": this.getMonth() + 1,
@@ -80,10 +86,10 @@ class YunweiRouter extends Component {
             window.isLogin?<Redirect to="/content" />:<Redirect to="/login" />
             )} />
           <Route path="/login" render={(props)=>(
-              window.isLogin?<Redirect to="/content" />:<Login {...props} />
+              window.isLogin?<Redirect to="/content" />:<AsyncLogin {...props} />
             )} />
           <Route path="/content" render={(props)=>(
-              window.isLogin?<Content {...props}  />:<Redirect to="/login" />
+              window.isLogin?<AsyncContent {...props}  />:<Redirect to="/login" />
             )} />
           <Route render={(props)=>(
               window.isLogin?<NotFound {...props}/>:<Redirect to="/login"/>
