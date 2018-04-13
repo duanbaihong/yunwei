@@ -1,5 +1,6 @@
 var md5 = require('md5');
 var request=require('request');
+var iconv=require('iconv-lite');
 var errormsg =  require('./msgtypes');
 var {thirtyhttpoption,hemumysqloption} =  require('../initconfig');
 request.debug = true
@@ -153,13 +154,15 @@ function querydevinfo(req,res,next){
                    a.`app_version`, \
                    h.access_region region, \
                    f.phone_num, \
+                   b.phone_number feephone, \
                    c.name, \
                    b.`package_code`, \
                    ifnull(e.`bind_time`,"") bind_time, \
                    ifnull(b.`create_time`,"") create_time, \
                    ifnull(b.`effective_time`,"") effective_time, \
                    ifnull(b.`failure_time`,"") failure_time, \
-                   a.`description` \
+                   a.`description` , \
+                   j.`area_name` pkgareaname \
             FROM t_camera_info a \
             LEFT JOIN t_order_table b ON cam_sn=b.dev_sn \
             AND (b.failure_time IS NULL \
@@ -169,6 +172,7 @@ function querydevinfo(req,res,next){
             LEFT JOIN t_user_camera_relation e ON a.cam_sn=e.cam_sn \
             LEFT JOIN t_user_info f ON e.user_id=f.user_id \
             LEFT JOIN t_mac_storage_relation h ON h.cam_mac=a.cam_sn \
+            LEFT JOIN t_bosscode_area_relation j ON b.`organization_code`=j.`boss_code`\
             WHERE b.phone_number="'+req.body.phone+'" LIMIT 0,40) \
             UNION  \
             SELECT a.cam_sn, \
@@ -182,13 +186,15 @@ function querydevinfo(req,res,next){
                    a.`app_version`, \
                    h.access_region region, \
                    f.phone_num, \
+                   b.phone_number feephone, \
                    c.name, \
                    b.`package_code`, \
                    ifnull(e.`bind_time`,"") bind_time, \
                    ifnull(b.`create_time`,"") create_time, \
                    ifnull(b.`effective_time`,"") effective_time, \
                    ifnull(b.`failure_time`,"") failure_time, \
-                   a.`description` \
+                   a.`description` ,\
+                   j.`area_name` pkgareaname \
             FROM t_camera_info a \
             LEFT JOIN t_order_table b ON cam_sn=b.dev_sn \
             AND (b.failure_time IS NULL \
@@ -198,6 +204,7 @@ function querydevinfo(req,res,next){
             LEFT JOIN t_user_camera_relation e ON a.cam_sn=e.cam_sn \
             LEFT JOIN t_user_info f ON e.user_id=f.user_id \
             LEFT JOIN t_mac_storage_relation h ON h.cam_mac=a.cam_sn \
+            LEFT JOIN t_bosscode_area_relation j ON b.`organization_code`=j.`boss_code`\
             WHERE f.phone_num="'+req.body.phone+'" LIMIT 0,40 ';
       // where+='b.phone_number="'+req.body.phone+'" OR f.phone_num="'+req.body.phone+'"';
     }else if(req.body.hasOwnProperty('macimei')){
@@ -218,13 +225,15 @@ function querydevinfo(req,res,next){
                    a.`app_version`,\
                    h.access_region region,\
                    f.phone_num,\
+                   b.phone_number feephone, \
                    c.name,\
                    b.`package_code`,\
                    ifnull(e.`bind_time`,"") bind_time,\
                    ifnull(b.`create_time`,"") create_time,\
                    ifnull(b.`effective_time`,"") effective_time,\
                    ifnull(b.`failure_time`,"") failure_time,\
-                   a.`description`\
+                   a.`description` ,\
+                   j.`area_name` pkgareaname \
             FROM t_camera_info a \
             LEFT JOIN t_order_table b ON cam_sn=b.dev_sn AND (b.failure_time is null or b.failure_time >=unix_timestamp(curdate()))\
             LEFT JOIN t_package_info c ON b.`package_code`=c.`code`\
@@ -232,6 +241,7 @@ function querydevinfo(req,res,next){
             LEFT JOIN t_user_camera_relation e on a.cam_sn=e.cam_sn \
             LEFT JOIN t_user_info f on e.user_id=f.user_id \
             LEFT JOIN t_mac_storage_relation h on h.cam_mac=a.cam_sn \
+            LEFT JOIN t_bosscode_area_relation j ON b.`organization_code`=j.`boss_code`\
             '+where+' limit 0,40';
     }else{
       return res.send({resultCode: "11006",resultMsg: errormsg['11006']});
@@ -260,7 +270,7 @@ function querydevinfo(req,res,next){
     devQuery.then((platdata)=>{
       // 异步登陆
       resultData['platdata']=platdata;
-      if(req.body.macimei.length>=15 && req.body.macimei.match(/\d{15,}/g) && platdata.length>0){
+      if(req.body.hasOwnProperty('macimei') && req.body.macimei.length>=15 && req.body.macimei.match(/\d{15,}/g) && platdata.length>0){
         queryparams['deviceId']='xxxxS_'+platdata[0]['cam_sn'];
       }
       if(!req.session.isdhlogin){
@@ -321,7 +331,7 @@ function querydevinfo(req,res,next){
     }).catch((error)=>{
       console.log(error);
       req.session.isdhlogin=false;
-      return res.send({resultCode:"13001",resultMsg: errormsg['13001']});
+      return res.send({resultCode:"13001",resultMsg: errormsg['13001'],resultErrorMsg:JSON.stringify(error)});
     });
 }
 /**

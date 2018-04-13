@@ -171,7 +171,7 @@ class PackageInfo extends Component {
           setTimeout(()=>{this.props.userLoginOut()}, 1000);
           break;
         default:
-          this.setState({msg:req.data.resultMsg,loading:false});
+          this.setState({msg:req.data.resultMsg,loading:false,dhdata:{},platdata:{}});
       }
     }).catch(error=>{
       this.setState({msg:"数据提交错误！或网络异常！",loading:false});
@@ -374,10 +374,20 @@ class PackageInfo extends Component {
                     <TableCell>套餐订购时间</TableCell>
                     <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?(this.state.platdata[this.state.age1].create_time!==""?(new Date(parseInt(this.state.platdata[this.state.age1].create_time,10)*1000).Format("yyyy-MM-dd hh:mm:ss")):"-"):"-"}
                     </TableCell>
+                  </TableRow>{(this.state.platdata.hasOwnProperty(this.state.age1) && this.state.platdata[this.state.age1].feephone !=="")?
+                  (<TableRow hover>
+                    <TableCell>扣费手机号</TableCell>
+                    <TableCell numeric>{this.state.platdata[this.state.age1].feephone}
+                    </TableCell>
+                  </TableRow>):""}
+                  <TableRow hover>
+                    <TableCell>套餐渠道</TableCell>
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].pkgareaname||"-":"-"}
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
                     <TableCell>设备渠道</TableCell>
-                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].area_name:"-"}
+                    <TableCell numeric>{this.state.platdata.hasOwnProperty(this.state.age1)?this.state.platdata[this.state.age1].area_name||"-":"-"}
                     </TableCell>
                   </TableRow>
                   <TableRow hover>
