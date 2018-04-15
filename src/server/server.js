@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var myconnect = require('express-myconnection');
+var compression = require('compression')
 
 var index = require('./router/index');
 var api = require('./router/api');
@@ -25,6 +26,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
 }));
+// 开启GZIP
+app.use(compression());
 
 app.use(myconnect(mysql,mysqloption));
 // uncomment after placing your favicon in /public
