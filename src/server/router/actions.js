@@ -17,7 +17,7 @@ function login(req,res,next) {
             })
     }else{
       sign=md5(md5(req.body.UserName)+req.body.PassWord+"yunwei");
-      sql='select loginuser,username,token,department,createtime,lastloginip,logintime from t_user_info where token="'+sign+'";';
+      sql='select loginuser,username,token,department,createtime,lastloginip,logintime,avaterimg from t_user_info where token="'+sign+'";';
       updatesql='update t_user_info set logintime="'+'",lastloginip="'+req._remoteAddress.split(':')
       conn.query(sql,[],(err,results)=>{
         if (err){
@@ -35,6 +35,8 @@ function login(req,res,next) {
           conn.query(updatesql)
           req.session.token=results[0].token
           req.session.userinfo=results[0]
+          res.cookie('username',req.body.UserName,{ maxAge: 6000000 });
+          res.cookie('avater',results[0].avaterimg,{ maxAge: 6000000 });
           res.send({
             resultCode: "10000",
             resultMsg: errormsg['10000'],

@@ -4,7 +4,7 @@ import md5 from 'md5';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import Menu, { MenuItem } from 'material-ui/Menu';
-import back from '../../images/back.jpg';
+import user from '../../images/user.png';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
@@ -83,7 +83,7 @@ class UserAvater extends Component {
       <div className={classes.avatarRoot}>
         <Tooltip title={this.props.userInfo.loginuser}>
           <Avatar alt="用户"
-                  src={back}
+                  src={user}
                   onClick={this.handleOpenUserMenu.bind(this)}
                   className={classNames(classes.avatar, classes.bigAvatar)} />
         </Tooltip>

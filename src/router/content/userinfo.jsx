@@ -10,7 +10,7 @@ import Typography from 'material-ui/Typography';
 import Fade from 'material-ui/transitions/Fade';
 import Zoom from 'material-ui/transitions/Zoom';
 import green from 'material-ui/colors/green';
-import back from '../../images/back.jpg';
+import user from '../../images/user.png';
 const styles = theme=>({
   card: {
     width: 400,
@@ -19,7 +19,9 @@ const styles = theme=>({
     position: "relative",
   },
   media: {
-    height: 350,
+    height: 360,
+    backgroundSize:"100% 100%",
+    cursor: "pointer"
   },
   topinfo:{
     width: "100%",
@@ -81,9 +83,63 @@ export class UserInfo extends Component {
     }
   componentDidMount() {
     this.setState({in:true})
+    const { upload }=this.refs
+    upload.onchange=()=>{
+      if(upload.value!=""){
+        this.handleUpload(upload.files);
+      }
+    }
   }
   handleChange(){
     this.setState({display:!this.state.display});
+  }
+  handleUpload(files){
+    var form = new FormData(),   
+    url = '/api/upload', //服务器上传地址  
+    file = files[0];  
+    form.append('file', file); 
+    form.append('Token', sessionStorage.token); 
+    form.append('MsgType', "ACTION_AVATER_UPLOAD"); 
+
+    var xhr = new XMLHttpRequest();  
+    xhr.open("post", url, true);  
+    //上传进度事件  
+    xhr.upload.addEventListener("progress", function(result) {  
+        if (result.lengthComputable) {  
+            //上传进度  
+            var percent = (result.loaded / result.total * 100).toFixed(2); 
+            console.log(percent)  
+        }  
+    }, false);  
+    const _logout=this.props.userLoginOut 
+    xhr.addEventListener("readystatechange", function() {  
+        var result = xhr; 
+        if(result.readyState===4){
+          if (result.status != 200 ) { //error  
+              console.log('上传失败', result.status, result.statusText, result.response);  
+          } else { //finished  
+              try{
+                const data=JSON.parse(result.response);
+                switch(data.resultCode){
+                  case "10000":
+                    console.log('上传成功', result);  
+                    break;
+                  case "22222":
+                    _logout()
+                    break;
+                  default:
+                    console.log(data)
+                }
+              }catch(err){
+
+              }
+            }
+        }
+    });  
+    xhr.send(form); //开始上传 
+  }
+  handleChangeUpload(){
+    this.refs.upload.click()
   }
   render() {
     const { classes,userInfo } = this.props;
@@ -117,9 +173,14 @@ export class UserInfo extends Component {
           </Fade>
         <CardMedia
           className={classes.media}
-          image={back}
+          image={user}
           title={"点击修改图片"}
+          onClick={this.handleChangeUpload.bind(this)}
         />
+        <input ref="upload" type="file" 
+              multiple="multiple"
+              accept="image/png,image/jpeg,image/gif,image/jpg" 
+              style={{display:"none"}} />  
         <CardContent className={classes.carcontent}>
 
           <Typography gutterBottom variant="display1">

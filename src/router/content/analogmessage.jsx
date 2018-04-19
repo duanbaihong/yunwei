@@ -148,7 +148,12 @@ class HomeMessage extends React.Component {
             </Grid>
           </Paper>
           <Paper className={classes.context} >
-            <pre style={{overflow:"auto"}}>
+            <pre style={{overflow:"auto",
+                  backgroundColor: "#191919",
+                  color: "#36fb3d",
+                  padding: 10,
+                  lineHeight: 1.4,
+                  borderRadius: 2}}>
             {(typeof(this.state.returndata)==='object'?JSON.stringify(this.state.returndata,null,5):this.state.returndata)||"返回内容"}
             </pre>
           </Paper>

@@ -72,7 +72,7 @@ class Content extends Component {
                     window.isLogin?<AsyncPassword userLoginOut={this.props.userLoginOut}   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/userinfo" render={(props)=>(
-                    window.isLogin?<AsyncUserInfo   />:<Redirect to="/login" />
+                    window.isLogin?<AsyncUserInfo userLoginOut={this.props.userLoginOut}   />:<Redirect to="/login" />
                   )} />
                 <Route path="/content/packageinfo" render={(props)=>(
                     window.isLogin?<AsyncPackageInfo userLoginOut={this.props.userLoginOut}  />:<Redirect to="/login" />

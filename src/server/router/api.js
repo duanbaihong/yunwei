@@ -2,6 +2,21 @@
 
 var express = require('express');
 var md5 = require('md5');
+var multer=require('multer')
+var fs = require("fs");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'build/uploads/')
+  },
+  filename: function (req, file, cb) {
+    tmpFile=file.originalname.split(".")
+    cb(null, md5(tmpFile[0] + '-' + Date.now())+"."+tmpFile[1])
+  }
+})
+ 
+const upload = multer({ storage:storage,limits:{ fileSize: 1000000} });
+
 
 var router = express.Router();
 var errormsg =  require('./msgtypes');
@@ -150,6 +165,15 @@ function sessionHandle(req, res, next) {
   next();
 }
 router.post('/', logincheck,sessionHandle,function(req, res, next) {
+  
+});
+router.post('/upload',upload.single('file'),function(req, res, next) {
+  console.log('======================= 上传文件 =============================');
+  if(req.body.Token=== req.session.token){
+    console.log(req.file);
+  }else{
+    fs.unlink(req.file.path)
+  }
   
 });
 

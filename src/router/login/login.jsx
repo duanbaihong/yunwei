@@ -1,5 +1,6 @@
 
 import React, { Component }  from 'react';
+import Cookies from 'universal-cookie';
 import Snack from '../components/snackbar'
 import PropTypes from 'prop-types';
 import Avatar from 'material-ui/Avatar';
@@ -23,6 +24,7 @@ import user from '../../images/user.png';
 
 import { ajax } from '../../commons/ajax'
 import md5 from 'md5';
+const cookies = new Cookies();
 
 const styles = theme => ({
   root: {
@@ -85,7 +87,7 @@ const theme = createMuiTheme({
 class Login extends Component {
   constructor(props){
     super(props);
-    this.state={ SnackBarMsg:"" }
+    this.state={ SnackBarMsg:""}
     this._isMounted=false
   }
   handleClickShowPasssword(){
@@ -93,6 +95,7 @@ class Login extends Component {
   }
   componentDidMount() {
     if(!this._isMounted){
+
       this.setState({ display: true})
     }
   }
@@ -171,7 +174,8 @@ class Login extends Component {
               placeholder="请输入用户帐号"
               required={true}
               fullWidth={true}
-              autoFocus={true}
+              defaultValue={cookies.get('username')||""}
+              autoFocus={cookies.get('username')?false:true}
               inputRef={(c) => this.username = c}
               onKeyDown={this.handleEnterPress.bind(this)}
             />
@@ -183,6 +187,7 @@ class Login extends Component {
                 type={showPassword ? 'text' : 'password'}
                 placeholder="请输入用户密码"
                 onKeyDown={this.handleEnterPress.bind(this)}
+                autoFocus={cookies.get('username')?true:false}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton

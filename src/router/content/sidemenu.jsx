@@ -68,7 +68,7 @@ class SideMenu extends Component {
     }
     render() {
       let {classes} = this.props
-      return (
+      return (        
         <Drawer variant="permanent"
             classes={{paper: classes.drawerPaper}} >
           <MenuList className={classes.menuItem}>
