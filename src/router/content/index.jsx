@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Content from './content'
-import {userLoginOut} from '../../actions'
+import {userLoginOut,changeAvaterImg} from '../../actions'
 
 function mapStateToProps(state) {
   return {
@@ -11,6 +11,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     userLoginOut: bindActionCreators(userLoginOut, dispatch),
+    changeAvaterImg: bindActionCreators(changeAvaterImg, dispatch),
     dispatch:dispatch
   }
 }

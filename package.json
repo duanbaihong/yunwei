@@ -6,6 +6,10 @@
     "/api": {
       "target": "http://localhost:5000",
       "secure": false
+    },
+    "/uploads/": {
+      "target": "http://localhost:5000",
+      "secure": false
     }
   },
   "dependencies": {
@@ -65,7 +69,6 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
-    "react-upload": "^0.0.3",
     "redux": "^3.7.2",
     "redux-actions": "^2.3.0",
     "redux-logger": "^3.0.6",

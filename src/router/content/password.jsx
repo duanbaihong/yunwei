@@ -22,7 +22,10 @@ const styles = theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: theme.spacing.unit * 2,
+    paddingLeft:  theme.spacing.unit * 2,
     textAlign: 'right',
     color: theme.palette.text.error,
     lineHeight:4

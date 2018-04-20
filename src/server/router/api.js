@@ -3,21 +3,6 @@
 var express = require('express');
 var md5 = require('md5');
 var multer=require('multer')
-var fs = require("fs");
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'build/uploads/')
-  },
-  filename: function (req, file, cb) {
-    tmpFile=file.originalname.split(".")
-    cb(null, md5(tmpFile[0] + '-' + Date.now())+"."+tmpFile[1])
-  }
-})
- 
-const upload = multer({ storage:storage,limits:{ fileSize: 1000000} });
-
-
 var router = express.Router();
 var errormsg =  require('./msgtypes');
 var {login,
@@ -26,14 +11,12 @@ var {login,
   changepass,
   querydevinfo,
   querybuyreportinfo,
-  proxyurl} = require('./actions');
+  uploadavaterimg,
+  proxyurl,
+} = require('./actions');
 /* GET users listing. */
 
 let sendMsg=""
-function handleLoginCheck(req,res,next){
-
-next()
-}
 function logincheck(req,res,next){
   if (!req.session.hasOwnProperty('userinfo') && !req.session.hasOwnProperty('token') ){
     if(req.body.MsgType !== "ACTION_USER_LOGIN" && req.body.MsgType !== "ACTION_CHECK_USER_LOGIN"){
@@ -164,16 +147,50 @@ function sessionHandle(req, res, next) {
   }
   next();
 }
-router.post('/', logincheck,sessionHandle,function(req, res, next) {
-  
+router.post('/', logincheck,sessionHandle,function(req,res,next){
+
 });
-router.post('/upload',upload.single('file'),function(req, res, next) {
-  console.log('======================= 上传文件 =============================');
-  if(req.body.Token=== req.session.token){
-    console.log(req.file);
-  }else{
-    fs.unlink(req.file.path)
+
+
+// ===================================
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'build/uploads/')
+  },
+  filename: function (req, file, cb) {
+    tmpFile=file.originalname.split(".")
+    cb(null, md5(tmpFile[0] + '-' + Date.now())+"."+tmpFile[tmpFile.length-1])
   }
+})
+var fileFilter=(req,file,cb)=>{
+  if(file.mimetype === 'image/gif'){
+    cb(null,true);
+  }else if(file.mimetype === 'image/jpg'){
+    cb(null,true);
+  }else if(file.mimetype === 'image/png'){
+    cb(null,true);
+  }else if(file.mimetype === 'image/jpeg'){
+    cb(null,true);
+  }else{
+    cb(new Error(errormsg['30001']),false);
+  }
+}
+var upload = multer({ 
+    storage:storage,
+    limits:{ 
+      fileSize: 1000000
+    },
+    onFileSizeLimit: function(file){
+      //如果大于100M,删除它
+      if(file.size > 1000000) {
+          fs.unlink('./' + file.path) // delete the partially written file
+      }
+    },
+    fileFilter:fileFilter
+  });
+
+router.post('/upload',upload.single('file'),uploadavaterimg,function(req,res,next){
   
 });
 

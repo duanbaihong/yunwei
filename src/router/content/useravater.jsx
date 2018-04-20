@@ -83,7 +83,7 @@ class UserAvater extends Component {
       <div className={classes.avatarRoot}>
         <Tooltip title={this.props.userInfo.loginuser}>
           <Avatar alt="用户"
-                  src={user}
+                  src={this.props.userInfo.avaterimg||user}
                   onClick={this.handleOpenUserMenu.bind(this)}
                   className={classNames(classes.avatar, classes.bigAvatar)} />
         </Tooltip>

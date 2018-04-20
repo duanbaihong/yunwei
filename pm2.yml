@@ -1,0 +1,17 @@
+apps:
+  - script      : bin/www
+    instances   : 1
+    exec_mode   : cluster
+    watch       : true
+    name        : yunwei
+    # out_file : log/out.log
+    # err_file : log/err.log
+    # merge_logs : true
+    ignore_watch: 
+        - log
+        - build/uploads/
+    # log_date_format : YYYY-MM-DD HH:mm Z
+    # env    :
+    #   NODE_ENV: development
+    # env_production:
+    #   NODE_ENV: production

@@ -1,5 +1,6 @@
 var md5 = require('md5');
 var request=require('request');
+var fs = require("fs");
 var iconv=require('iconv-lite');
 var errormsg =  require('./msgtypes');
 var {thirtyhttpoption,hemumysqloption} =  require('../initconfig');
@@ -18,7 +19,6 @@ function login(req,res,next) {
     }else{
       sign=md5(md5(req.body.UserName)+req.body.PassWord+"yunwei");
       sql='select loginuser,username,token,department,createtime,lastloginip,logintime,avaterimg from t_user_info where token="'+sign+'";';
-      updatesql='update t_user_info set logintime="'+'",lastloginip="'+req._remoteAddress.split(':')
       conn.query(sql,[],(err,results)=>{
         if (err){
           return res.send({
@@ -459,4 +459,46 @@ function proxyurl(req,res,next) {
           });
   })
 }
-module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo,proxyurl}
+
+function uploadavaterimg(req,res,next){
+  console.log('======================= 上传文件 =============================');
+  console.log("==========文件名"+req.file.filename+"==========")
+  if(req.body.Token === req.session.token){
+    let imgAddr=req.file.path.replace("build",".");
+    req.getConnection((err,conn)=>{
+      if(err){
+        return res.send({
+              resultCode: "12003",
+              resultMsg: errormsg['12003']
+              })
+      }else{
+        let sql='update t_user_info set avaterimg="'+imgAddr+'",updatetime="'+new Date().toLocaleString()+'" where token="'+req.body.Token+'";'
+        console.log(sql)
+        conn.query(sql,[],(err,results)=>{
+          if(!err){
+            res.cookie('avater',imgAddr,{ maxAge: 6000000 });
+            res.send({resultCode:"10000",resultMsg:errormsg['10000'],resultImg:imgAddr })
+            console.log('======================= 上传完成 =============================');
+          }else{
+            fs.unlink(req.file.path,(err)=>{
+              if(err){
+                console.log('删除无效文件出错！')
+              }
+            })
+
+            res.send({resultCode:"30002",resultMsg: errormsg['30002']})
+            console.log('======================= 上传失败 =============================');
+          }
+        })
+      }
+    })
+  }else{
+    fs.unlink(req.file.path,(err)=>{
+              if(err){
+                console.log('删除无效文件出错！')
+              }})
+    res.send({resultCode:"22222",resultMsg:errormsg['22222']})
+    console.log('======================= 上传失败 =============================');
+  }
+}
+module.exports={checklogin,login,loginout,changepass,querydevinfo,querybuyreportinfo,proxyurl,uploadavaterimg}

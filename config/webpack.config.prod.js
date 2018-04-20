@@ -10,7 +10,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const FileManagerPlugin = require('filemanager-webpack-plugin');
+// const FileManagerPlugin = require('filemanager-webpack-plugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 
@@ -330,38 +330,6 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new FileManagerPlugin({
-      onEnd: {
-        copy: [
-          { source: paths.appBuild, destination: paths.appDestDir+"/build" },
-          { source: paths.appNodeModules, destination: paths.appDestDir+"/node_modules" },
-          { source: paths.appSrc+"../bin", destination: paths.appDestDir+"/bin" },
-          { source: paths.appSrc+"../config", destination: paths.appDestDir+"/config" },
-          { source: paths.appSrc+"/server", destination: paths.appDestDir+"/server" },
-        ],
-        mkdir: [
-         paths.appDestDir,
-         paths.appDestDir+"/build",
-         paths.appDestDir+"/server",
-         paths.appDestDir+"/bin",
-         paths.appDestDir+"/node_modules",
-         paths.appDestDir+"/config",
-        ],
-        archive: [
-          { 
-           source: paths.appDestDir, 
-           destination: paths.appDestDir+"/yunwei.tar.gz", 
-           format: 'tar',
-           options: {
-             gzip: true,
-             gzipOptions: {
-              level: 9
-             }
-           }
-         }
-        ]
-      }
-    })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

@@ -151,6 +151,7 @@ class Login extends Component {
     
   }
   render(){
+    console.log(cookies.get('avater'))
     const { classes } = this.props;
     const { showPassword,isloginStatus,display } = this.state;
     return (
@@ -166,7 +167,7 @@ class Login extends Component {
               variant="indeterminate"
               thickness={0.4} />}
             
-            <Avatar src={user} className={classes.useravater} />
+            <Avatar src={cookies.get('avater')||user} className={classes.useravater} />
             
             <TextField
               id="login_user"

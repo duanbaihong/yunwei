@@ -46,6 +46,11 @@ export const LoginReducer = (state = initialState , action={}) => {
         userAuthenticated:false,
         userInfo: {}
       });
+    case 'ACTION_USER_AVATER_CHANGE':
+      let tmp=Object.assign({},state.userInfo,{avaterimg:payload.avaterimg});
+      sessionStorage.userInfo=new Buffer(JSON.stringify(tmp)).toString('base64');
+      return Object.assign({},state,
+        {userInfo:tmp});
     default: 
       return state;
   }

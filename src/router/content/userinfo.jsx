@@ -85,7 +85,7 @@ export class UserInfo extends Component {
     this.setState({in:true})
     const { upload }=this.refs
     upload.onchange=()=>{
-      if(upload.value!=""){
+      if(upload.value!==""){
         this.handleUpload(upload.files);
       }
     }
@@ -112,17 +112,19 @@ export class UserInfo extends Component {
         }  
     }, false);  
     const _logout=this.props.userLoginOut 
+    const _changeAvaterImg=this.props.changeAvaterImg 
     xhr.addEventListener("readystatechange", function() {  
         var result = xhr; 
         if(result.readyState===4){
-          if (result.status != 200 ) { //error  
+          if (result.status !== 200 ) { //error  
               console.log('上传失败', result.status, result.statusText, result.response);  
           } else { //finished  
               try{
                 const data=JSON.parse(result.response);
                 switch(data.resultCode){
                   case "10000":
-                    console.log('上传成功', result);  
+                    console.log('上传成功', data); 
+                    _changeAvaterImg({'avaterimg':data.resultImg}) 
                     break;
                   case "22222":
                     _logout()
@@ -143,12 +145,6 @@ export class UserInfo extends Component {
   }
   render() {
     const { classes,userInfo } = this.props;
-    const options={
-        baseUrl:'http://127.0.0.1',
-        param:{
-            fid:0
-        }
-    }
     return (
     <Zoom timeout={500} in={this.state.in}>
       <Card className={classes.card} onMouseOver={this.handleChange.bind(this)} onMouseOut={this.handleChange.bind(this)}>
@@ -173,7 +169,7 @@ export class UserInfo extends Component {
           </Fade>
         <CardMedia
           className={classes.media}
-          image={user}
+          image={this.props.userInfo.avaterimg||user}
           title={"点击修改图片"}
           onClick={this.handleChangeUpload.bind(this)}
         />

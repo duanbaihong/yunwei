@@ -10,3 +10,6 @@ export const userLoginOut = createAction(type.ACTION_USER_LOGOUT, ()=>{
 export const userCheckLogin = createAction(type.ACTION_CHECK_USER_LOGIN, (resp)=>{
   return resp;
 });
+export const changeAvaterImg = createAction(type.ACTION_USER_AVATER_CHANGE, (resp)=>{
+  return resp;
+});
