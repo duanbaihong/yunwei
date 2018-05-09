@@ -146,35 +146,97 @@ class OrderMessage extends React.Component {
               req.data.resultData.reports.forEach((n)=>{
                 parseString(n.msgbody,{explicitArray : false},(err,result)=>{
                   if(!err){
+                    // console.log(result)
                     let devmac=""
-                    if(result.OwnPlatForm.Content.BizProcReq.hasOwnProperty('DeviceInfo')){
-                      devmac=result.OwnPlatForm.Content.BizProcReq.DeviceInfo.DevMac;
+                    let fistfield='OwnPlatForm'
+                    if (result.operation_in){
+                      fistfield='operation_in'
+                      if(result[fistfield].content.request.BizProcReq.DeviceInfo){
+                        devmac=result[fistfield].content.request.BizProcReq.DeviceInfo.DevMac;
+                      }
+                      dhdata.push(
+                        { time:n.time,
+                          devMac:devmac,
+                          phoneNum:result[fistfield].content.request.BizProcReq.IDValue||"",
+                          oprCode:result[fistfield].content.request.BizProcReq.OprCode||"",
+                          oprSrc:result[fistfield].oprsrc||"",
+                          bossCode:result[fistfield].content.request.BizProcReq.BossCode||"",
+                          verifyresult:n.verifyresult,
+                          result:n.result,
+                          messages:new Builder().buildObject(result)
+                        })
+                    }else if (result.httpsbody){
+                      fistfield='httpsbody'
+                      if(result[fistfield].devSn){
+                        devmac=result[fistfield].devSn;
+                      }
+                      dhdata.push(
+                        { time:n.time,
+                          devMac:devmac,
+                          phoneNum:result[fistfield].phoneNumber||"",
+                          oprCode:result[fistfield].msgType||"",
+                          oprSrc:result[fistfield].oprsrc||"",
+                          bossCode:result[fistfield].organizationCode||"",
+                          verifyresult:n.verifyresult,
+                          result:n.result,
+                          messages:new Builder().buildObject(result)
+                        })
+                    }else{
+                      if(result[fistfield].Content.BizProcReq.DeviceInfo){
+                        devmac=result[fistfield].Content.BizProcReq.DeviceInfo.DevMac;
+                      }
+                      dhdata.push(
+                        { time:n.time,
+                          devMac:devmac,
+                          phoneNum:result[fistfield].Content.BizProcReq.IDValue||"",
+                          oprCode:result[fistfield].Content.BizProcReq.OprCode||"",
+                          oprSrc:result[fistfield].OprSrc||"",
+                          bossCode:result[fistfield].Content.BizProcReq.BossCode||"",
+                          verifyresult:n.verifyresult,
+                          result:n.result,
+                          messages:new Builder().buildObject(result)
+                        })
                     }
-                    dhdata.push(
-                      { time:n.time,
-                        devMac:devmac,
-                        phoneNum:result.OwnPlatForm.Content.BizProcReq.IDValue||"",
-                        oprCode:result.OwnPlatForm.Content.BizProcReq.OprCode||"",
-                        oprSrc:result.OwnPlatForm.OprSrc||"",
-                        bossCode:result.OwnPlatForm.Content.BizProcReq.BossCode||"",
-                        verifyresult:n.verifyresult,
-                        result:n.result,
-                        messages:new Builder().buildObject(result)
-                      })
                   }else{
                     try {
                       result=JSON.parse(n.msgbody)
-                      dhdata.push({
-                          time:n.time,
-                          devMac:params['Type']==='homeopen'?result.idValue:result.devMac,
-                          phoneNum:params['Type']==='homeopen'?result.idValue:result.phoneNum,
-                          oprCode:params['Type']==='homeopen'?result.orderType:result.oprCode,
-                          oprSrc:result.funCode,
-                          bossCode:result.area||"",
-                          verifyresult:n.verifyresult,
-                          result:n.result,
-                          messages:JSON.stringify(result,null,4)
-                      })
+                      if(result.OwnPlatForm){
+                        dhdata.push({
+                            time:n.time,
+                            devMac:result.OwnPlatForm.Content.BizProcReq.DeviceInfo.DevMac,
+                            phoneNum:result.OwnPlatForm.Content.BizProcReq.IDValue,
+                            oprCode:result.OwnPlatForm.Content.BizProcReq.OprCode,
+                            oprSrc:result.OwnPlatForm.OprSrc,
+                            bossCode:result.OwnPlatForm.Content.BizProcReq.BossCode||"",
+                            verifyresult:n.verifyresult,
+                            result:n.result,
+                            messages:JSON.stringify(result,null,4)
+                        })
+                      }else if(result.BizProcReq){
+                        dhdata.push({
+                            time:n.time,
+                            devMac:result.BizProcReq.ProductInfo.ExtendInfo.DevMac,
+                            phoneNum:result.BizProcReq.IDValue,
+                            oprCode:result.BizProcReq.OprCode,
+                            oprSrc:result.BizProcReq.OprSrc,
+                            bossCode:result.BizProcReq.SrcCode||"",
+                            verifyresult:n.verifyresult,
+                            result:n.result,
+                            messages:JSON.stringify(result,null,4)
+                        })
+                      }else{
+                        dhdata.push({
+                            time:n.time,
+                            devMac:params['Type']==='homeopen'?result.idValue:result.devMac,
+                            phoneNum:params['Type']==='homeopen'?result.idValue:result.phoneNum,
+                            oprCode:params['Type']==='homeopen'?result.orderType:result.oprCode,
+                            oprSrc:result.funCode,
+                            bossCode:result.area||"",
+                            verifyresult:n.verifyresult,
+                            result:n.result,
+                            messages:JSON.stringify(result,null,4)
+                        })
+                      }
                     }catch(err){
                       if(n.msgbody.match("REQ|")){
                         let tmpres=n.msgbody.split("|");
@@ -208,8 +270,8 @@ class OrderMessage extends React.Component {
         default:
           this.setState({msg:req.data.resultMsg,loading:false});
       }
-    }).catch(()=>{
-      console.log('')
+    }).catch((e)=>{
+      console.log(e)
     })
 
   }
@@ -224,7 +286,7 @@ class OrderMessage extends React.Component {
     let index=0;
     const pkgType={
       MSG_PACKAGE_ORDER_REQ:"套餐订购",
-      MSG_PACKAGE_UNSUBSCRIBE_REQ:"未知",
+      MSG_PACKAGE_UNSUBSCRIBE_REQ:"套餐退订",
       MSG_DEVSN_CHANGE_REQ:"设备变更",
       MSG_PACKAGE_CHANGE_REQ:"套餐变更",
       "01":"套餐开通",

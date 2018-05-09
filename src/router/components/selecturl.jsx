@@ -14,7 +14,8 @@ import green from 'material-ui/colors/green';
 import { CircularProgress } from 'material-ui/Progress';
 
 const suggestions = [
-  {label: "elk",url: "http://127.0.0.1:9200/_template"},
+  {label: "ELK模版",url: "https://192.168.111.66:9200/_template"},
+  {label: "ELK节点",url: "https://192.168.111.66:9200/_nodes"},
   {label: "一级家开查询",url: "http://192.168.20.16:8017/fcha/auth/fch/queryOrderDetails"},
   {label: "一级家开",url: "http://192.168.20.16:8017/fcha/auth/fch/normalRequestHandler"},
   {label: "云南BOSS",url: "http://192.168.20.16:8017/bossagent/auth/yn/normalRequestHandler"},
@@ -203,7 +204,11 @@ class SelectUrl extends React.Component {
     this.setState({bodytype:e.target.value})
   }
   render() {
-    const { classes } = this.props;
+    const { classes,theme } = this.props;
+    const transitionDuration = {
+      enter: theme.transitions.duration.enteringScreen,
+      exit: theme.transitions.duration.leavingScreen,
+    };
     const menu=[
         {id:1,name: "TEXT" ,val:"text"},
         {id:2,name: "XML(application/xml)" ,val:"application/xml"},
@@ -245,24 +250,30 @@ class SelectUrl extends React.Component {
       >
         <FormControlLabel className={classes.label} value="GET" control={<Radio className={classes.radio} checked={this.state.optionValue==="GET"} onChange={this.handleChange2.bind(this,"GET")} />} label="GET" />
         <FormControlLabel className={classes.label}  value="POST" control={<Radio className={classes.radio} checked={this.state.optionValue==="POST"} onChange={this.handleChange2.bind(this,"POST")} />} label="POST" />
-        {this.state.optionValue==="POST"?(<Zoom in={true}><FormControl className={classes.formControl}>
-          <Select
-              value={this.state.bodytype}
-              onChange={this.handleSelectChange.bind(this)}
-              className={classes.select}
-              inputProps={{
-                name: 'bodytype',
-                id: 'bodytype',
-                className: classes.input
-              }}
-            >
-              {menu.map((n)=>{
-                return <MenuItem key={n.id} value={n.val} className={classes.itemmenu} >
-                        {n.name}
-                      </MenuItem>
-              })}             
-            </Select>
-          </FormControl></Zoom>):""}
+        <Zoom in={this.state.optionValue==="POST"} 
+          timeout={transitionDuration}
+          style={{
+            transitionDelay: this.state.optionValue==="POST" ? transitionDuration.exit : 0,
+          }} unmountOnExit >
+          <FormControl className={classes.formControl}>
+            <Select
+                value={this.state.bodytype}
+                onChange={this.handleSelectChange.bind(this)}
+                className={classes.select}
+                inputProps={{
+                  name: 'bodytype',
+                  id: 'bodytype',
+                  className: classes.input
+                }}
+              >
+                {menu.map((n)=>{
+                  return <MenuItem key={n.id} value={n.val} className={classes.itemmenu} >
+                          {n.name}
+                        </MenuItem>
+                })}             
+              </Select>
+          </FormControl>
+        </Zoom>
       </RadioGroup>   
       <Button
           className={classes.buttonSubmit}
@@ -282,4 +293,4 @@ SelectUrl.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SelectUrl);
+export default withStyles(styles,{ withTheme: true })(SelectUrl);
